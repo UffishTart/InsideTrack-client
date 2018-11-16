@@ -1,5 +1,6 @@
 import axios from 'axios'
-import history from '../history'
+const server = 'https://inside-track-server-boil.herokuapp.com'
+// import history from '../history'
 
 /**
  * ACTION TYPES
@@ -23,7 +24,7 @@ const removeUser = () => ({type: REMOVE_USER})
  */
 export const me = () => async dispatch => {
   try {
-    const res = await axios.get('https://inside-track-server.herokuapp.com/auth/me')
+    const res = await axios.get(`${server}/auth/me`)
     dispatch(getUser(res.data || defaultUser))
   } catch (err) {
     console.error(err)
@@ -32,15 +33,16 @@ export const me = () => async dispatch => {
 
 export const auth = (email, password, method) => async dispatch => {
   let res
+  console.log('should say login', method)
   try {
-    res = await axios.post(`https://inside-track-server.herokuapp.com/auth/${method}`, {email, password})
+    res = await axios.post(`${server}/auth/${method}`, {email, password})
   } catch (authError) {
     return dispatch(getUser({error: authError}))
   }
 
   try {
     dispatch(getUser(res.data))
-    history.push('/home')
+    // history.push('/home')
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
   }
@@ -48,9 +50,9 @@ export const auth = (email, password, method) => async dispatch => {
 
 export const logout = () => async dispatch => {
   try {
-    await axios.post('https://inside-track-server.herokuapp.com/auth/logout')
+    await axios.post(`${server}/auth/logout`)
     dispatch(removeUser())
-    history.push('/login')
+    // history.push('/login')
   } catch (err) {
     console.error(err)
   }

@@ -1,7 +1,7 @@
 import React from 'react'
 import {View, Text, TextInput, TouchableOpacity} from 'react-native'
 import {connect} from 'react-redux'
-import {auth} from '../store'
+import {auth} from '../store/user'
 // import {FormLabel, FormInput, FormValidationMessage} from 'react-native-elements'
 
 export default class AuthForm extends React.Component {
@@ -15,15 +15,15 @@ export default class AuthForm extends React.Component {
     this.passwordHandleChange = this.passwordHandleChange.bind(this)
   }
 
-  emailHandleChange(event) {
+  emailHandleChange(text) {
     this.setState({
-      email: event
+      email: text
     })
   }
 
-  passwordHandleChange(event) {
+  passwordHandleChange(text) {
     this.setState({
-      password: event
+      password: text
     })
   }
 
@@ -45,9 +45,16 @@ export default class AuthForm extends React.Component {
           keyboardType="default"
         />
         <TouchableOpacity
-          onPress={this.props.handleSubmit}
-          disabled={!this.state.email && !this.state.password}
-        >{this.props.displayName}
+          onPress={(evt) => this.props.handleSubmit(evt, 
+            {
+              name: this.props.name,
+              email: this.state.email,
+              password: this.state.password
+            }
+          )}
+          // disabled={!this.state.email && !this.state.password}
+        >
+          <Text>{this.props.displayName}</Text>
         </TouchableOpacity>
       </View> 
     )
@@ -77,11 +84,11 @@ const mapSignup = state => {
 
 const mapDispatch = dispatch => {
   return {
-    handleSubmit(evt) {
+    handleSubmit(evt, infoObj) {
       evt.preventDefault()
-      const formType = this.props.name
-      const email = this.state.email
-      const password = this.state.password
+      const formType = infoObj.name
+      const email = infoObj.email
+      const password = infoObj.password
       dispatch(auth(email, password, formType))
     }
   }
