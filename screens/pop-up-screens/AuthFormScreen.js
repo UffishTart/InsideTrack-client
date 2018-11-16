@@ -5,7 +5,7 @@ import { auth } from '../../store/user'
 // import {FormLabel, FormInput, FormValidationMessage} from 'react-native-elements'
 
 export default class AuthFormScreen extends React.Component {
-  constructor() {
+  constructor(props) {
     super()
     this.state = {
       email: '',
@@ -13,6 +13,7 @@ export default class AuthFormScreen extends React.Component {
     }
     this.emailHandleChange = this.emailHandleChange.bind(this)
     this.passwordHandleChange = this.passwordHandleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   emailHandleChange(text) {
@@ -27,6 +28,14 @@ export default class AuthFormScreen extends React.Component {
     })
   }
 
+  handleSubmit(event){
+    event.preventDefault()
+    const formType = this.props.name
+    const email = this.state.email
+    const password = this.state.password
+    console.log('props', this.props)
+    this.props.auth(email, password, formType)
+  }
   render() {
     return (
       <View>
@@ -45,13 +54,7 @@ export default class AuthFormScreen extends React.Component {
           keyboardType="default"
         />
         <TouchableOpacity
-          onPress={(evt) => this.props.handleSubmit(evt,
-            {
-              name: this.props.name,
-              email: this.state.email,
-              password: this.state.password
-            }
-          )}
+          onPress={this.handleSubmit}
         // disabled={!this.state.email && !this.state.password}
         >
           <Text>{this.props.displayName}</Text>
@@ -84,15 +87,10 @@ const mapSignup = state => {
 
 const mapDispatch = dispatch => {
   return {
-    handleSubmit(evt, infoObj) {
-      evt.preventDefault()
-      const formType = infoObj.name
-      const email = infoObj.email
-      const password = infoObj.password
-      dispatch(auth(email, password, formType))
-    }
+    auth: (email, password, formType) => dispatch(auth(email, password, formType))
   }
 }
 
-export const Login = connect(mapLogin, mapDispatch)(AuthForm)
-export const Signup = connect(mapSignup, mapDispatch)(AuthForm)
+
+export const Login = connect(mapLogin, mapDispatch)(AuthFormScreen)
+export const Signup = connect(mapSignup, mapDispatch)(AuthFormScreen)

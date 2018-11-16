@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Constants, Ionicons } from 'expo'
 import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
-import AuthFormScreen from '../pop-up-screens/AuthFormScreen'
+import AuthFormScreen, {Login, Signup} from '../pop-up-screens/AuthFormScreen'
 import { createStackNavigator } from 'react-navigation'
 import { Foundation } from '@expo/vector-icons'
 import Modal from 'react-native-modal'
@@ -16,7 +16,8 @@ export default class HomeScreen extends Component {
   toggleView = () => this.setState({ showLogin: !this.state.showLogin });
 
   renderAuthForm() {
-    return <AuthFormScreen onPress={this.toggleView.bind(this)} />;
+    // return <AuthFormScreen onPress={this.toggleView.bind(this)} />;
+    return <Login />
   }
 
 
