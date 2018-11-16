@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Constants, Ionicons } from 'expo'
 import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
-import AuthFormScreen from './AuthFormScreen'
+import AuthFormScreen from '../pop-up-screens/AuthFormScreen'
 import { createStackNavigator } from 'react-navigation'
 import { Foundation } from '@expo/vector-icons'
 import Modal from 'react-native-modal'

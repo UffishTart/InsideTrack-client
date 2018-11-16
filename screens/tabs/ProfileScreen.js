@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import HorseComponent from '../components/HorseComponent'
+import HorseComponent from '../../components/HorseComponent'
 import { View, Text, StyleSheet, Button } from 'react-native';
 
 // create a component

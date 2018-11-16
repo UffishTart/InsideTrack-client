@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, } from 'react-native';
-import HomeScreen from './screens/HomeScreen'
-import ProfileScreen from './screens/ProfileScreen'
+import HomeScreen from './screens/tabs/HomeScreen'
+import ProfileScreen from './screens/tabs/ProfileScreen'
 // import TabBarIcon from '../components/TabBarIcon';
 
-import AuthFormScreen from './screens/AuthFormScreen'
+// import AuthFormScreen from './screens/ToucableOpacities/AuthFormScreen'
 // Login, Signup
 
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation'
@@ -44,8 +44,6 @@ const BottomAppStackNavigator = createBottomTabNavigator({
 
 
 export default BottomAppStackNavigator
-
-
 
 // export default createBottomTabNavigator({
 //   AuthForm: {

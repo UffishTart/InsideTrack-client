@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
-import { auth } from '../store'
+import { auth } from '../../store'
 import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
 
 export default class AuthFormScreen extends Component {
