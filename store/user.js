@@ -2,26 +2,19 @@ import axios from 'axios'
 const server = 'https://inside-track-server-boil.herokuapp.com'
 // import history from '../history'
 
-/**
- * ACTION TYPES
- */
+//  * ACTION TYPES
+
 const GET_USER = 'GET_USER'
 const REMOVE_USER = 'REMOVE_USER'
 
-/**
- * INITIAL STATE
- */
+//  * INITIAL STATE
 const defaultUser = {}
 
-/**
- * ACTION CREATORS
- */
-const getUser = user => ({type: GET_USER, user})
-const removeUser = () => ({type: REMOVE_USER})
+//  * ACTION CREATORS
+const getUser = user => ({ type: GET_USER, user })
+const removeUser = () => ({ type: REMOVE_USER })
 
-/**
- * THUNK CREATORS
- */
+// * THUNK CREATORS
 export const me = () => async dispatch => {
   try {
     const res = await axios.get(`${server}/auth/me`)
@@ -35,9 +28,9 @@ export const auth = (email, password, method) => async dispatch => {
   let res
   console.log('should say login', method)
   try {
-    res = await axios.post(`${server}/auth/${method}`, {email, password})
+    res = await axios.post(`${server}/auth/${method}`, { email, password })
   } catch (authError) {
-    return dispatch(getUser({error: authError}))
+    return dispatch(getUser({ error: authError }))
   }
 
   try {
@@ -58,10 +51,8 @@ export const logout = () => async dispatch => {
   }
 }
 
-/**
- * REDUCER
- */
-export default function(state = defaultUser, action) {
+// * REDUCER
+export default function (state = defaultUser, action) {
   switch (action.type) {
     case GET_USER:
       return action.user
