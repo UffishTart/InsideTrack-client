@@ -38,7 +38,7 @@ export default class HomeScreen extends Component {
       <View style={styles.container}>
         <TouchableOpacity
           style={styles.button}
-          onPress={this.toggleSettingsView}>
+          onPress={this.toggleSettingsView} >
           <View>{settingsTent}</View>
         </TouchableOpacity>
       </View>
@@ -48,8 +48,9 @@ export default class HomeScreen extends Component {
 
   renderAuthForm() {
     // return <AuthFormScreen onPress={this.toggleAuthView.bind(this)} />;
-    return <Login />;
-
+    return (
+      <Login />
+    )
   }
   renderSettings() {
     return <Settings onPress={this.toggleSettingsView.bind(this)} />;

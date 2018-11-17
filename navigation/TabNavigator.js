@@ -26,6 +26,7 @@ const BottomTabNavigator = createBottomTabNavigator({
     screen: HomeScreen,
     navigationOptions: {
       tabBarLabel: 'Home',
+      tabBarVisible: false
       // tabBarIcon: () => (
       //   <Icon
       //     name="ios-home" color={tintColor} size={24} />
@@ -36,6 +37,7 @@ const BottomTabNavigator = createBottomTabNavigator({
     screen: RacesScreen,
     navigationOptions: {
       tabBarLabel: 'My Races',
+      tabBarVisible: false
       // tabBarIcon: () => (
       //   <Icon
       //     name="ios-home" color={tintColor} size={24} />

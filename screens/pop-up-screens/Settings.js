@@ -1,14 +1,22 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Modal } from 'react-native';
 
 // create a component
 class Settings extends Component {
+  state = {
+
+    modalVisible: false
+
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Settings</Text>
-      </View>
+      <Modal >
+        <View style={styles.container}>
+          <Text>Settings</Text>
+        </View>
+      </Modal>
     );
   }
 }
