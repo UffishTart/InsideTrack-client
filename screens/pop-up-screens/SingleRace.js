@@ -1,13 +1,14 @@
 //import liraries
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import HorseComponent from '../../components/HorseComponent';
 
 // create a component
-class Stats extends Component {
+class SingleRace extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Stats</Text>
+        <HorseComponent />
       </View>
     );
   }
@@ -24,4 +25,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default Stats;
+export default SingleRace;

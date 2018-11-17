@@ -1,85 +1,39 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, } from 'react-native';
-import HomeScreen from './screens/tabs/HomeScreen'
-import ProfileScreen from './screens/tabs/ProfileScreen'
-// import TabBarIcon from '../components/TabBarIcon';
+import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { AppLoading, Asset, Font, Icon } from 'expo';
+import AppNavigator from './navigation/AppNavigator';
 
-// import AuthFormScreen from './screens/ToucableOpacities/AuthFormScreen'
-// Login, Signup
+class App extends React.Component {
+  state = {
+    isLoadingComplete: true,
+  };
 
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation'
-// import Icon from 'react-native-vector-icons/Ionicons' //Need to install
-
-export class App extends React.Component {
   render() {
-    return (
-      <BottomAppStackNavigator />
-    );
+    if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
+      return (
+        <AppLoading
+          startAsync={this._loadResourcesAsync}
+          onError={this._handleLoadingError}
+          onFinish={this._handleFinishLoading}
+        />
+      );
+    } else {
+      return (
+        <View style={styles.container}>
+          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+          <AppNavigator />
+        </View>
+      );
+    }
   }
 }
-
-
-const BottomAppStackNavigator = createBottomTabNavigator({
-  Home: {
-    screen: HomeScreen,
-    navigationOptions: {
-      tabBarLabel: 'Home',
-      // tabBarIcon: () => (
-      //   <Icon
-      //     name="ios-home" color={tintColor} size={24} />
-      // )
-    }
-  },
-  Profile: {
-    screen: ProfileScreen,
-    navigationOptions: {
-      tabBarLabel: 'My Steed',
-      // tabBarIcon: () => (
-      //   <Icon
-      //     name="ios-home" color={tintColor} size={24} />
-      // )
-    }
-  }
-})
-
-
-export default BottomAppStackNavigator
-
-// export default createBottomTabNavigator({
-//   AuthForm: {
-//     screen: AuthForm,
-//     navigationOptions: {
-//       tabBarLabel: 'AuthForm',
-//       // tabBarIcon: () => (
-//       //   <Icon />
-//       //   // name="ios-home" color={tintColor} size={24} 
-//       // )
-//     }
-//   }
-// })
-// }, initialRouteName: 'AuthForm',
-// order: [AuthForm],
-// //navigation for complete tab navigator
-// navigationOptions: {
-//   tabBarVisible: true
-// },
-//   tabBarOptions: {
-//     activeTintColor: 'red',
-//     inactiveTintColor: 'grey'
-//   }
-// });
 
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
 
-{/* <View style={styles.container}>
-  <Text>Open up App.js to start working on your app!</Text>
-  <AuthForm />
-</View> */}
+export default App

@@ -3,16 +3,16 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 // create a component
-class Races extends Component {
+class Shop extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {/* {map function?} */}
-        <CurrentRaces />
+        <Text> Shop </Text>
       </View>
     );
   }
 }
+
 // define your styles
 const styles = StyleSheet.create({
   container: {
@@ -24,4 +24,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default Races;
+export default Shop;
