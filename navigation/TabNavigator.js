@@ -4,84 +4,65 @@ import { StyleSheet, Text, View, } from 'react-native';
 import HomeScreen from '../screens/tabs/HomeScreen'
 import ProfileScreen from '../screens/tabs/ProfileScreen'
 import RacesScreen from '../screens/tabs/RacesScreen'
-// import TabBarIcon from '../components/TabBarIcon';
+import PedometerScreen from '../screens/tabs/PedometerScreen'
+import {Login} from '../screens/pop-up-screens/AuthFormScreen'
 
-// import AuthFormScreen from './screens/ToucableOpacities/AuthFormScreen'
-// Login, Signup
-
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation'
+import { createStackNavigator, createSwitchNavigator, createBottomTabNavigator } from 'react-navigation'
 // import Icon from 'react-native-vector-icons/Ionicons' //Need to install
 
-export class TabNavigator extends React.Component {
-  render() {
-    return (
-      <BottomTabNavigator />
-    );
+export const SignedOut = createStackNavigator({
+  Login: {
+    screen: Login,
+    navigationOptions: {
+      title: "Login",
+    }
   }
-}
+})
 
-
-const BottomTabNavigator = createBottomTabNavigator({
+const SignedIn = createBottomTabNavigator({
   Home: {
     screen: HomeScreen,
     navigationOptions: {
       tabBarLabel: 'Home',
-      tabBarVisible: false
-      // tabBarIcon: () => (
-      //   <Icon
-      //     name="ios-home" color={tintColor} size={24} />
-      // )
     }
   },
   Races: {
     screen: RacesScreen,
     navigationOptions: {
       tabBarLabel: 'My Races',
-      tabBarVisible: false
-      // tabBarIcon: () => (
-      //   <Icon
-      //     name="ios-home" color={tintColor} size={24} />
-      // )
     }
   },
   Profile: {
     screen: ProfileScreen,
     navigationOptions: {
       tabBarLabel: 'My Steed',
-      // tabBarIcon: () => (
-      //   <Icon
-      //     name="ios-home" color={tintColor} size={24} />
-      // )
+    }
+  },
+  PedometerTest: {
+    screen: PedometerScreen,
+    navigationOptions: {
+      tabBarLabel: 'Pedometer Test'
     }
   }
 })
 
 
-export default BottomTabNavigator
-
-// export default createBottomTabNavigator({
-//   AuthForm: {
-//     screen: AuthForm,
-//     navigationOptions: {
-//       tabBarLabel: 'AuthForm',
-//       // tabBarIcon: () => (
-//       //   <Icon />
-//       //   // name="ios-home" color={tintColor} size={24} 
-//       // )
-//     }
-//   }
-// })
-// }, initialRouteName: 'AuthForm',
-// order: [AuthForm],
-// //navigation for complete tab navigator
-// navigationOptions: {
-//   tabBarVisible: true
-// },
-//   tabBarOptions: {
-//     activeTintColor: 'red',
-//     inactiveTintColor: 'grey'
-//   }
-// });
+export const createRootNavigator = (signedIn = false) => {
+  console.log(signedIn)
+  return createSwitchNavigator(
+    {
+      SignedIn: {
+        screen: SignedIn
+      },
+      SignedOut: {
+        screen: SignedOut
+      }
+    },
+    {
+      initialRouteName: signedIn ? "SignedIn" : "SignedOut"
+    }
+  );
+};
 
 
 const styles = StyleSheet.create({
@@ -93,7 +74,3 @@ const styles = StyleSheet.create({
   },
 });
 
-{/* <View style={styles.container}>
-  <Text>Open up App.js to start working on your app!</Text>
-  <AuthForm />
-</View> */}

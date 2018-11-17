@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Text, TextInput, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { auth } from '../../store/user'
+import { isSignedIn } from '../../navigation/AsyncStorageAuth'
 // import {FormLabel, FormInput, FormValidationMessage} from 'react-native-elements'
 
 export default class AuthFormScreen extends React.Component {
@@ -28,14 +29,20 @@ export default class AuthFormScreen extends React.Component {
     })
   }
 
-  handleSubmit(event) {
+  async handleSubmit(event) {
     event.preventDefault()
     const formType = this.props.name
     const email = this.state.email
     const password = this.state.password
     console.log('props', this.props)
-    this.props.auth(email, password, formType)
+    await this.props.auth(email, password, formType)
+    const correctLogin = await isSignedIn()
+    console.log('the call to isSignedIn in handleSubmit', correctLogin)
+    correctLogin ? 
+      this.props.navigation.navigate('SignedIn') :
+      this.props.navigation.navigate('SignedOut')
   }
+
   render() {
     return (
       <View>
