@@ -1,5 +1,7 @@
 import axios from 'axios'
 const server = 'https://inside-track-server-boil.herokuapp.com'
+import {onSignIn, onSignOut} from '../navigation/AsyncStorageAuth'
+
 // import history from '../history'
 
 //  * ACTION TYPES
@@ -11,7 +13,7 @@ const REMOVE_USER = 'REMOVE_USER'
 const defaultUser = {}
 
 //  * ACTION CREATORS
-const getUser = user => ({ type: GET_USER, user })
+export const getUser = user => ({ type: GET_USER, user })
 const removeUser = () => ({ type: REMOVE_USER })
 
 // * THUNK CREATORS
@@ -35,7 +37,7 @@ export const auth = (email, password, method) => async dispatch => {
 
   try {
     dispatch(getUser(res.data))
-    // history.push('/home')
+    onSignIn(res.data)
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
   }
@@ -45,7 +47,7 @@ export const logout = () => async dispatch => {
   try {
     await axios.post(`${server}/auth/logout`)
     dispatch(removeUser())
-    // history.push('/login')
+    onSignOut()
   } catch (err) {
     console.error(err)
   }

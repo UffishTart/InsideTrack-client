@@ -7,51 +7,43 @@ import { createStackNavigator } from 'react-navigation'
 import { Foundation } from '@expo/vector-icons'
 import Modal from 'react-native-modal'
 import Settings from '../pop-up-screens/Settings';
+import {onSignOut} from '../../navigation/AsyncStorageAuth'
 
 // create a component
-export default class HomeScreen extends Component {
+class HomeScreen extends Component {
   state = {
-    showLogin: false,
     showSettings: false,
   }
 
-  toggleAuthView = () => this.setState({ showLogin: !this.state.showLogin });
-
   toggleSettingsView = () => this.setState({ showSettings: !this.state.showSettings });
-
-  renderTouchAuth() {
-    const authTent = this.state.showLogin ? this.renderAuthForm() : console.log('No auth!')
-    return (
-      <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={this.toggleAuthView}>
-          <View>{authTent}</View>
-        </TouchableOpacity>
-      </View>
-    )
-  }
 
   renderTouchSettings() {
     const settingsTent = this.state.showSettings ? this.renderSettings() : console.log('No settings!')
     return (
-      <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={this.toggleSettingsView} >
-          <View>{settingsTent}</View>
-        </TouchableOpacity>
+      <View>
+        <View style={styles.container}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={this.toggleSettingsView} >
+            <View>{settingsTent}</View>
+          </TouchableOpacity>
+        </View>
+        <View>
+          {/* makeshift logout button */}
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              // onSignOut
+              this.props.navigation.navigate("SignedOut")
+            }}
+          >
+          </TouchableOpacity>
+        </View>
       </View>
     )
 
   }
 
-  renderAuthForm() {
-    // return <AuthFormScreen onPress={this.toggleAuthView.bind(this)} />;
-    return (
-      <Login />
-    )
-  }
   renderSettings() {
     return <Settings onPress={this.toggleSettingsView.bind(this)} />;
   }
@@ -60,9 +52,6 @@ export default class HomeScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.container}>
-          {this.renderTouchAuth()}
-        </View>
         <View style={styles.container}>
           {this.renderTouchSettings()}
         </View>
@@ -73,13 +62,6 @@ export default class HomeScreen extends Component {
     )
   }
 }
-
-// render() {
-//   const content = this.state.showLogin && this.renderLogin();
-//   // this.renderTopBar()
-//   return (<View style={styles.container}>{content}</View>
-//   );
-// }}
 
 // define your styles
 const styles = StyleSheet.create({
@@ -122,9 +104,5 @@ const styles = StyleSheet.create({
   // }
 });
 
-{/* <Button title='Giddy yup'
-onPress={() => this.state.navigation.navigate('AuthForm')} /> */}
-
-
-
 //make this component available to the app
+export default HomeScreen
