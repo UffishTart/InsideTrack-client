@@ -1,22 +1,14 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Modal } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
 // create a component
-class Settings extends Component {
-  state = {
-
-    modalVisible: false
-
-  }
-
+class Track extends Component {
   render() {
     return (
-      <Modal >
-        <View style={styles.container}>
-          <Text>Settings</Text>
-        </View>
-      </Modal>
+      <View style={styles.container}>
+        <Text>Track</Text>
+      </View>
     );
   }
 }
@@ -32,4 +24,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default Settings;
+export default Track;

@@ -28,7 +28,7 @@ export default class AuthFormScreen extends React.Component {
     })
   }
 
-  handleSubmit(event){
+  handleSubmit(event) {
     event.preventDefault()
     const formType = this.props.name
     const email = this.state.email
@@ -90,7 +90,6 @@ const mapDispatch = dispatch => {
     auth: (email, password, formType) => dispatch(auth(email, password, formType))
   }
 }
-
 
 export const Login = connect(mapLogin, mapDispatch)(AuthFormScreen)
 export const Signup = connect(mapSignup, mapDispatch)(AuthFormScreen)

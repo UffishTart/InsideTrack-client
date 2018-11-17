@@ -1,22 +1,15 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Modal } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import HorseComponent from '../../components/HorseComponent';
 
 // create a component
-class Settings extends Component {
-  state = {
-
-    modalVisible: false
-
-  }
-
+class SingleRace extends Component {
   render() {
     return (
-      <Modal >
-        <View style={styles.container}>
-          <Text>Settings</Text>
-        </View>
-      </Modal>
+      <View style={styles.container}>
+        <HorseComponent />
+      </View>
     );
   }
 }
@@ -32,4 +25,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default Settings;
+export default SingleRace;

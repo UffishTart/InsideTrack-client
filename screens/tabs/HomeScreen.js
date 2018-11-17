@@ -2,35 +2,75 @@
 import React, { Component } from 'react';
 import { Constants, Ionicons } from 'expo'
 import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
-import AuthFormScreen, {Login, Signup} from '../pop-up-screens/AuthFormScreen'
+import AuthFormScreen, { Login, Signup } from '../pop-up-screens/AuthFormScreen'
 import { createStackNavigator } from 'react-navigation'
 import { Foundation } from '@expo/vector-icons'
 import Modal from 'react-native-modal'
+import Settings from '../pop-up-screens/Settings';
 
 // create a component
 export default class HomeScreen extends Component {
   state = {
     showLogin: false,
+    showSettings: false,
   }
 
-  toggleView = () => this.setState({ showLogin: !this.state.showLogin });
+  toggleAuthView = () => this.setState({ showLogin: !this.state.showLogin });
 
-  renderAuthForm() {
-    // return <AuthFormScreen onPress={this.toggleView.bind(this)} />;
-    return <Login />
-  }
+  toggleSettingsView = () => this.setState({ showSettings: !this.state.showSettings });
 
-
-  render() {
-    const content = this.state.showLogin ? this.renderAuthForm() : console.log('Nope!')
+  renderTouchAuth() {
+    const authTent = this.state.showLogin ? this.renderAuthForm() : console.log('No auth!')
     return (
       <View style={styles.container}>
         <TouchableOpacity
           style={styles.button}
-          onPress={this.toggleView}>
-          <View>{content}</View>
+          onPress={this.toggleAuthView}>
+          <View>{authTent}</View>
         </TouchableOpacity>
-      </View>)
+      </View>
+    )
+  }
+
+  renderTouchSettings() {
+    const settingsTent = this.state.showSettings ? this.renderSettings() : console.log('No settings!')
+    return (
+      <View style={styles.container}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={this.toggleSettingsView} >
+          <View>{settingsTent}</View>
+        </TouchableOpacity>
+      </View>
+    )
+
+  }
+
+  renderAuthForm() {
+    // return <AuthFormScreen onPress={this.toggleAuthView.bind(this)} />;
+    return (
+      <Login />
+    )
+  }
+  renderSettings() {
+    return <Settings onPress={this.toggleSettingsView.bind(this)} />;
+  }
+
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <View style={styles.container}>
+          {this.renderTouchAuth()}
+        </View>
+        <View style={styles.container}>
+          {this.renderTouchSettings()}
+        </View>
+        <View style={styles.container}>
+          <Text>uuhhhhh</Text>
+        </View>
+      </View>
+    )
   }
 }
 
