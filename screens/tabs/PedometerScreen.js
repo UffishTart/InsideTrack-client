@@ -5,6 +5,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { connect } from "react-redux";
 import { me } from "../../store/user";
 
+//Helper funtion that can check if user have 7 full days info to generate the average steps
 const ifHaveSevenDaysData = (createdDate, usingDate) => {
   if (
     createdDate.getFullYear() <= usingDate.getFullYear() &&
@@ -12,9 +13,7 @@ const ifHaveSevenDaysData = (createdDate, usingDate) => {
   ) {
     return true;
   } else {
-    const difference = Math.floor(
-      (usingDate.getDay() - createdDate.getDay()) / (1000 * 60 * 60 * 24)
-    );
+    const difference = usingDate.getDate() - createdDate.getDate();
     return difference >= 7;
   }
 };
@@ -59,19 +58,31 @@ class PedometerSensor extends React.Component {
     );
 
     const end = new Date();
-    const userCreatedDate = this.props.user.createdAt;
-    const start = new Date(userCreatedDate);
+    const createdDate = this.props.user.createdAt;
+    const userStartDate = new Date(createdDate);
+    let start;
+    //If user have 7 days data, set the start date to 7 days ago
+    if (ifHaveSevenDaysData(userStartDate, end)) {
+      start = new Date();
+      start.setDate(end.getDate() - 7);
+
+      //if not, set the date to the day user was created in the database
+    } else {
+      start = userStartDate;
+    }
 
     Pedometer.getStepCountAsync(start, end).then(
       result => {
-        if (ifHaveSevenDaysData) {
-          this.setState({
-            pastStepCount: result.steps,
-            days: end.getDate() - start.getDate(),
-            startMonth: start.getMonth(),
-            endMonth: end.getMonth()
-          });
-        }
+        let daysChecking = ifHaveSevenDaysData(start, end)
+          ? 7
+          : end.getDate() - start.getDate();
+        this.setState({
+          pastStepCount: result.steps,
+          days: daysChecking,
+          averageSteps: Math.round(result.steps / daysChecking),
+          startMonth: start.getMonth(),
+          endMonth: end.getMonth()
+        });
       },
       error => {
         this.setState({
@@ -94,8 +105,8 @@ class PedometerSensor extends React.Component {
         <Text>
           Pedometer.isAvailableAsync(): {this.state.isPedometerAvailable}
         </Text>
-
-        <Text>user info: {this.props.user.createdAt}</Text>
+        <Text>user info: {createdAt}</Text>
+        <Text>average steps: {this.state.averageSteps}</Text>
         <Text>days:{this.state.days}</Text>
         <Text>state month:{this.state.startMonth}</Text>
         <Text>end month:{this.state.endMonth}</Text>
