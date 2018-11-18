@@ -110,7 +110,6 @@ class PedometerSensor extends React.Component {
         <Text>days:{this.state.days}</Text>
         <Text>state month:{this.state.startMonth}</Text>
         <Text>end month:{this.state.endMonth}</Text>
-
         <Text>
           Steps taken in the last 24 hours: {this.state.pastStepCount}
         </Text>
