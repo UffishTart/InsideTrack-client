@@ -1,32 +1,32 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import RacesListItem from './RacesListItem'
-export default class RacesList extends Component {
-  render() {
-    const {races, inProgressBool} = this.props
+import RacesListItem from './RacesListItem';
 
-    return (
-      <View style={
-        this.props.inProgressBool ?
-        [styles.flexCont, { backgroundColor: 'red' }] :
-        [styles.flexCont, { backgroundColor: 'blue' }]
-      }>
-        <ScrollView>
-          {races && races.filter(race => {
-            return race.completedStatus !== inProgressBool
-            }
-          )
-            .map(race => {
-              return (
-                <RacesListItem key={race.name} race={race} />
-              )
+const RacesList = props => {
+  const { races, inProgressBool } = props;
+  return (
+    <View
+      style={
+        inProgressBool
+          ? [styles.flexCont, { backgroundColor: 'red' }]
+          : [styles.flexCont, { backgroundColor: 'blue' }]
+      }
+    >
+      <ScrollView>
+        {races &&
+          races
+            .filter(race => {
+              return race.raceInfo.completedStatus !== inProgressBool;
             })
-          }
-        </ScrollView>
-      </View>
-    )
-  }
-}
+            .map(race => {
+              return <RacesListItem key={race.raceInfo.name} race={race} />;
+            })}
+      </ScrollView>
+    </View>
+  );
+};
+
+export default RacesList;
 
 const styles = StyleSheet.create({
   container: {
@@ -36,6 +36,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   flexCont: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });

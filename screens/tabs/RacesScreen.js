@@ -1,10 +1,11 @@
 //import liraries
 import React, { Component } from 'react';
 import { Dimensions } from 'react-native';
-import RacesList from '../../components/RacesList'
+import RacesList from '../../components/RacesList';
 import { TabView, SceneMap } from 'react-native-tab-view';
-// import { fetchRacesDataFromServer, fetchSomeSortOfPedoData} from '../../store/races'
-// import { connect } from 'react-redux'
+import { fetchUserRacesByUser } from '../../store/userRaces';
+import { connect } from 'react-redux';
+import { me } from '../../store/user';
 
 // create a component
 class Races extends Component {
@@ -14,98 +15,54 @@ class Races extends Component {
       { key: 'first', title: 'Current Races' },
       { key: 'second', title: 'Past Races' },
     ],
-    races: [
-      {
-        name: 'first race',
-        length: 'day',
-        completedStatus: false
-      },
-      {
-        name: 'second race',
-        length: 'day',
-        completedStatus: false
-      },
-      {
-        name: 'third race',
-        length: 'day',
-        completedStatus: false
-      },
-      {
-        name: 'fourth race',
-        length: 'day',
-        completedStatus: false
-      },
-      {
-        name: 'fifth race',
-        length: 'day',
-        completedStatus: false
-      },
-      {
-        name: 'first past race',
-        length: 'day',
-        completedStatus: true
-      },
-      {
-        name: 'second past race',
-        length: 'day',
-        completedStatus: true
-      },
-      {
-        name: 'third past race',
-        length: 'day',
-        completedStatus: true
-      },
-      {
-        name: 'fourth past race',
-        length: 'day',
-        completedStatus: true
-      },
-      {
-        name: 'fifth past race',
-        length: 'day',
-        completedStatus: true
-      }
-    ]
-  }
+  };
 
-  componentDidMount() {
-    // this.props.fetchSomeSortOfPedoData()
-    // this.props.fetchRacesDataFromServer()
-
+  async componentDidMount() {
+    await this.props.getUser();
+    await this.props.getRaces(this.props.user.id, true);
   }
 
   render() {
-
     //the request will be for currRaces for this user
     //each of these races will have an id for a key
+
     return (
       <TabView
         navigationState={this.state}
         renderScene={SceneMap({
-          first: () => <RacesList races={this.state.races} inProgressBool={true} />,
-          second: () => <RacesList races={this.state.races} inProgressBool={false} />,
+          first: () => (
+            <RacesList races={this.props.races} inProgressBool={true} />
+          ),
+          second: () => (
+            <RacesList races={this.props.races} inProgressBool={false} />
+          ),
         })}
         onIndexChange={index => this.setState({ index })}
-        initialLayout={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }} />
+        initialLayout={{
+          width: Dimensions.get('window').width,
+          height: Dimensions.get('window').height,
+        }}
+      />
     );
   }
 }
 
 const mapState = state => {
   return {
-    races: state.races
-  }
-}
+    races: state.userRaces,
+    user: state.user,
+  };
+};
 
-const mapDispatch = state => {
+const mapDispatch = dispatch => {
   return {
-    getRaces: () => console.log('we dont have a get races thunk yet!')
-  }
-}
+    getUser: () => dispatch(me()),
+    getRaces: (userId, inviteIndicator) =>
+      dispatch(fetchUserRacesByUser(userId, inviteIndicator)),
+  };
+};
 
-
-//make this component available to the app
-// export default connect(mapState, mapDispatch)(Races)
-
-export default Races
-
+export default connect(
+  mapState,
+  mapDispatch
+)(Races);
