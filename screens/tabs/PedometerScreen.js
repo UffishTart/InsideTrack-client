@@ -4,7 +4,7 @@ import { Pedometer } from "expo";
 import { StyleSheet, Text, View } from "react-native";
 import { connect } from "react-redux";
 import { me } from "../../store/user";
-
+import {putUpdataedPedometerData, fetchRaceUserData, putUpdatedPedometerData} from '../../store/singleRaceUser'
 //Helper funtion that can check if user have 7 full days info to generate the average steps
 const ifHaveSevenDaysData = (createdDate, usingDate) => {
   if (
@@ -30,7 +30,8 @@ class PedometerSensor extends React.Component {
 
   async componentDidMount() {
     await this.props.getMe();
-    this._subscribe();
+    await this.props.fetchRaceUserData(1)
+    await this._subscribe();
   }
 
   componentWillUnmount() {
@@ -86,13 +87,14 @@ class PedometerSensor extends React.Component {
           startMonth: start.getMonth(),
           endMonth: end.getMonth()
         });
+        
       },
       error => {
         this.setState({
           pastStepCount: "Could not get stepCount: " + error
         });
       }
-    );
+    ).then(() => this.props.putUpdatedPedometerData(this.state.pastStepCount, this.props.user.id, 1));
   };
 
   _unsubscribe = () => {
@@ -117,6 +119,17 @@ class PedometerSensor extends React.Component {
           Steps taken in the last 24 hours: {this.state.pastStepCount}
         </Text>
         <Text>Walk! And watch this go up: {this.state.currentStepCount}</Text>
+        <Text>Users</Text>
+        <View>
+          {this.props.singleRaceUser.map(user => {
+            return ( 
+              <View key={user.userId}>
+                <Text>{user.place}</Text>
+              </View>
+            )
+          })}
+        </View>
+
       </View>
     );
   }
@@ -131,9 +144,11 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapState = ({ user }) => ({ user });
+const mapState = ({ user, singleRaceUser }) => ({ user, singleRaceUser });
 const mapDispatch = dispatch => ({
-  getMe: () => dispatch(me())
+  getMe: () => dispatch(me()),
+  fetchRaceUserData: (raceId) => dispatch(fetchRaceUserData(raceId)),
+  putUpdatedPedometerData: (dayPedoOutput, userId, raceId) => dispatch(putUpdatedPedometerData(dayPedoOutput, userId, raceId))
 });
 
 export default connect(
