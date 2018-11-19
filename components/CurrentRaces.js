@@ -1,8 +1,16 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet, Button } from 'react-native'
+import { createStackNavigator } from 'react-navigation'
+import SingleRace from '../screens/pop-up-screens/SingleRace';
 // import SingleRace from '../../screens/pop-up-screens'
 
 class CurrentRaces extends Component {
+
+  renderSingleRace() {
+    console.log('Somehow get to correct Single Race')
+    // < SingleRace />
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -10,6 +18,7 @@ class CurrentRaces extends Component {
           <Text>Name: {this.props.race.name}</Text>
           {/* click into here to load a pop-up-screen to SingleRace.js */}
           <Text>Length: {this.props.race.length}</Text>
+          <Button title='Race Details' onPress={() => this.renderSingleRace()}></Button>
         </View>
       </View>
     )
