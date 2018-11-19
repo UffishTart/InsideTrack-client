@@ -5,7 +5,7 @@ import HomeScreen from '../screens/tabs/HomeScreen'
 import ProfileScreen from '../screens/tabs/ProfileScreen'
 import RacesScreen from '../screens/tabs/RacesScreen'
 import PedometerScreen from '../screens/tabs/PedometerScreen'
-import {Login} from '../screens/pop-up-screens/AuthFormScreen'
+import { Login } from '../screens/pop-up-screens/AuthFormScreen'
 
 import { createStackNavigator, createSwitchNavigator, createBottomTabNavigator } from 'react-navigation'
 // import Icon from 'react-native-vector-icons/Ionicons' //Need to install
@@ -48,7 +48,6 @@ const SignedIn = createBottomTabNavigator({
 
 
 export const createRootNavigator = (signedIn = false) => {
-  console.log(signedIn)
   return createSwitchNavigator(
     {
       SignedIn: {

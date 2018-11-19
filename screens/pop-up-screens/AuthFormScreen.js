@@ -34,11 +34,10 @@ export default class AuthFormScreen extends React.Component {
     const formType = this.props.name
     const email = this.state.email
     const password = this.state.password
-    console.log('props', this.props)
     await this.props.auth(email, password, formType)
     const correctLogin = await isSignedIn()
     console.log('the call to isSignedIn in handleSubmit', correctLogin)
-    correctLogin ? 
+    correctLogin ?
       this.props.navigation.navigate('SignedIn') :
       this.props.navigation.navigate('SignedOut')
   }
