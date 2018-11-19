@@ -38,7 +38,6 @@ class HomeScreen extends Component {
               this.props.navigation.navigate("SignedOut")
             }}
           >
-            <Text>Sign Out</Text>
           </TouchableOpacity>
         </View>
       </View>
