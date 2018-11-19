@@ -1,13 +1,13 @@
 //import liraries
 import React, { Component } from 'react';
 import { Constants, Ionicons } from 'expo'
-import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import AuthFormScreen, { Login, Signup } from '../pop-up-screens/AuthFormScreen'
 import { createStackNavigator } from 'react-navigation'
 import { Foundation } from '@expo/vector-icons'
 import Modal from 'react-native-modal'
 import Settings from '../pop-up-screens/Settings';
-import {onSignOut} from '../../navigation/AsyncStorageAuth'
+import { onSignOut } from '../../navigation/AsyncStorageAuth'
 
 // create a component
 class HomeScreen extends Component {
@@ -18,13 +18,14 @@ class HomeScreen extends Component {
   toggleSettingsView = () => this.setState({ showSettings: !this.state.showSettings });
 
   renderTouchSettings() {
-    const settingsTent = this.state.showSettings ? this.renderSettings() : console.log('No settings!')
+    const settingsTent = this.state.showSettings ? this.renderSettings() : null
     return (
       <View>
-        <View style={styles.container}>
+        <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.button}
-            onPress={this.toggleSettingsView} >
+            onPress={this.toggleSettingsView}>
+            <Text>Settings</Text>
             <View>{settingsTent}</View>
           </TouchableOpacity>
         </View>
@@ -37,6 +38,7 @@ class HomeScreen extends Component {
               this.props.navigation.navigate("SignedOut")
             }}
           >
+            <Text>Sign Out</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -45,7 +47,7 @@ class HomeScreen extends Component {
   }
 
   renderSettings() {
-    return <Settings onPress={this.toggleSettingsView.bind(this)} />;
+    return <Settings toggleSettingsView={this.toggleSettingsView.bind(this)} />;
   }
 
 
@@ -68,16 +70,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    paddingHorizontal: 10
+    padding: 10
+  },
+  buttonContainer: {
+    flex: 1,
+    paddingTop: 200,
+    paddingBottom: 200
   },
   button: {
     alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    padding: 10
-  },
-  countContainer: {
-    alignItems: 'center',
-    padding: 10
+    backgroundColor: 'lime',
+    padding: 10,
+    height: 100,
+    marginHorizontal: 100
   },
   // container: {
   //   flex: 1,

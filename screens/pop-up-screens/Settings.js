@@ -1,20 +1,15 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Modal } from 'react-native';
+import { View, Text, Button, StyleSheet, Modal } from 'react-native';
 
 // create a component
 class Settings extends Component {
-  state = {
-
-    modalVisible: false
-
-  }
 
   render() {
     return (
-      <Modal >
+      <Modal backgroundColor='yellow'>
         <View style={styles.container}>
-          <Text>Settings</Text>
+          <Button title='hey' onPress={this.props.toggleSettingsView}>Settings</Button>
         </View>
       </Modal>
     );
