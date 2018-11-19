@@ -76,10 +76,13 @@ class PedometerSensor extends React.Component {
         let daysChecking = ifHaveSevenDaysData(start, end)
           ? 7
           : end.getDate() - start.getDate();
+        let average = ifHaveSevenDaysData(start, end)
+          ? Math.round(result.steps / daysChecking)
+          : this.props.user.estimatedAverage;
         this.setState({
           pastStepCount: result.steps,
           days: daysChecking,
-          averageSteps: Math.round(result.steps / daysChecking),
+          averageSteps: average,
           startMonth: start.getMonth(),
           endMonth: end.getMonth()
         });
