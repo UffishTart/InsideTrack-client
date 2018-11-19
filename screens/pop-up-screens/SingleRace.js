@@ -1,15 +1,19 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Button, Text, StyleSheet, Modal } from 'react-native';
 import HorseComponent from '../../components/HorseComponent';
 
 // create a component
 class SingleRace extends Component {
   render() {
+    console.log('SingleRace', 'hello')
     return (
-      <View style={styles.container}>
-        <HorseComponent />
-      </View>
+      <Modal>
+        <View style={styles.container}>
+          <HorseComponent />
+          <Button title='hey' onPress={this.props.toggleSingleRaceView}>SingleRace</Button>
+        </View>
+      </Modal>
     );
   }
 }
