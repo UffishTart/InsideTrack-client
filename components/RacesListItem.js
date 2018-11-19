@@ -1,13 +1,16 @@
-import React, { Component } from 'react'
-import { Text, View, StyleSheet, Button } from 'react-native'
-import { createStackNavigator } from 'react-navigation'
+import React, { Component } from 'react';
+import { Text, View, StyleSheet, Button } from 'react-native';
+import { createStackNavigator } from 'react-navigation';
 import SingleRace from '../screens/pop-up-screens/SingleRace';
 // import SingleRace from '../../screens/pop-up-screens'
 
 class RacesListItem extends Component {
+  constructor(props) {
+    super(props);
+  }
 
   renderSingleRace() {
-    console.log('Somehow get to correct Single Race')
+    console.log('Somehow get to correct Single Race');
     // < SingleRace />
   }
 
@@ -15,13 +18,16 @@ class RacesListItem extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.containerInfo}>
-          <Text>Name: {this.props.race.name}</Text>
+          <Text>Name: {this.props.race.raceInfo.name}</Text>
           {/* click into here to load a pop-up-screen to SingleRace.js */}
-          <Text>Length: {this.props.race.length}</Text>
-          <Button title='Race Details' onPress={() => this.renderSingleRace()}></Button>
+          <Text>Length: {this.props.race.raceInfo.length}</Text>
+          <Button
+            title="Race Details"
+            onPress={() => this.renderSingleRace()}
+          />
         </View>
       </View>
-    )
+    );
   }
 }
 

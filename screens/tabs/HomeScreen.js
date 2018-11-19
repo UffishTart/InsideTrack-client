@@ -1,30 +1,35 @@
 //import liraries
 import React, { Component } from 'react';
-import { Constants, Ionicons } from 'expo'
+import { Constants, Ionicons } from 'expo';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import AuthFormScreen, { Login, Signup } from '../pop-up-screens/AuthFormScreen'
-import { createStackNavigator } from 'react-navigation'
-import { Foundation } from '@expo/vector-icons'
-import Modal from 'react-native-modal'
+import AuthFormScreen, {
+  Login,
+  Signup,
+} from '../pop-up-screens/AuthFormScreen';
+import { createStackNavigator } from 'react-navigation';
+import { Foundation } from '@expo/vector-icons';
+import Modal from 'react-native-modal';
 import Settings from '../pop-up-screens/Settings';
-import { onSignOut } from '../../navigation/AsyncStorageAuth'
+import { onSignOut } from '../../navigation/AsyncStorageAuth';
 
 // create a component
 class HomeScreen extends Component {
   state = {
     showSettings: false,
-  }
+  };
 
-  toggleSettingsView = () => this.setState({ showSettings: !this.state.showSettings });
+  toggleSettingsView = () =>
+    this.setState({ showSettings: !this.state.showSettings });
 
   renderTouchSettings() {
-    const settingsTent = this.state.showSettings ? this.renderSettings() : null
+    const settingsTent = this.state.showSettings ? this.renderSettings() : null;
     return (
       <View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.button}
-            onPress={this.toggleSettingsView}>
+            onPress={this.toggleSettingsView}
+          >
             <Text>Settings</Text>
             <View>{settingsTent}</View>
           </TouchableOpacity>
@@ -35,32 +40,27 @@ class HomeScreen extends Component {
             style={styles.button}
             onPress={() => {
               // onSignOut
-              this.props.navigation.navigate("SignedOut")
+              this.props.navigation.navigate('SignedOut');
             }}
-          >
-          </TouchableOpacity>
+          />
         </View>
       </View>
-    )
-
+    );
   }
 
   renderSettings() {
     return <Settings toggleSettingsView={this.toggleSettingsView.bind(this)} />;
   }
 
-
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.container}>
-          {this.renderTouchSettings()}
-        </View>
+        <View style={styles.container}>{this.renderTouchSettings()}</View>
         <View style={styles.container}>
           <Text>uuhhhhh</Text>
         </View>
       </View>
-    )
+    );
   }
 }
 
@@ -69,19 +69,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: 10
+    padding: 10,
   },
   buttonContainer: {
     flex: 1,
     paddingTop: 200,
-    paddingBottom: 200
+    paddingBottom: 200,
   },
   button: {
     alignItems: 'center',
     backgroundColor: 'lime',
     padding: 10,
     height: 100,
-    marginHorizontal: 100
+    marginHorizontal: 100,
   },
   // container: {
   //   flex: 1,
@@ -109,4 +109,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default HomeScreen
+export default HomeScreen;
