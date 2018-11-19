@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, Button } from 'react-native'
+import { createStackNavigator } from 'react-navigation'
+import SingleRace from '../screens/pop-up-screens/SingleRace';
 // import SingleRace from '../../screens/pop-up-screens'
 
-class PastRaces extends Component {
-
+class RacesListItem extends Component {
 
   renderSingleRace() {
     console.log('Somehow get to correct Single Race')
@@ -40,11 +41,11 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderLeftWidth: 3,
     borderRightWidth: 3,
-    borderColor: 'red',
+    borderColor: 'blue',
     justifyContent: 'center',
     alignItems: 'center',
   },
 });
 
 //make this component available to the app
-export default PastRaces
+export default RacesListItem;
