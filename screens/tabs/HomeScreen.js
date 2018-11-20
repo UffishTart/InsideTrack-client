@@ -33,7 +33,7 @@ class HomeScreen extends Component {
       <View>
         <View style={styles.container}>
           <TouchableOpacity
-            style={styles.button}
+            style={styles.buttonSettings}
             onPress={this.toggleSettingsView}
           >
             <View>{settingsTent}</View>
@@ -42,7 +42,7 @@ class HomeScreen extends Component {
         <View>
           {/* makeshift logout button */}
           <TouchableOpacity
-            style={styles.button}
+            style={styles.buttonLogout}
             onPress={() => {
               // onSignOut
               this.props.navigation.navigate("SignedOut");
@@ -73,9 +73,6 @@ class HomeScreen extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.container}>{this.renderTouchSettings()}</View>
-        <View style={styles.container}>
-          <Text>uuhhhhh</Text>
-        </View>
       </View>
     );
   }
@@ -86,17 +83,40 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    paddingHorizontal: 10
+    paddingHorizontal: 5,
+    alignItems: 'center',
+    backgroundColor: '#fbff14'
   },
-  button: {
-    alignItems: "center",
-    backgroundColor: "#DDDDDD",
-    padding: 10
+  buttonSettings: {
+    shadowColor: 'rgba(0,0,0, .4)', // IOS
+    shadowOffset: { height: 1, width: 1 }, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 1, //IOS
+    backgroundColor: '#fff',
+    elevation: 2, // Android
+    height: 50,
+    width: 100,
+    marginLeft: 250,
+    marginBottom: 200,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
-  countContainer: {
-    alignItems: "center",
-    padding: 10
-  }
+  buttonLogout: {
+    shadowColor: 'rgba(0,0,0, .4)', // IOS
+    shadowOffset: { height: 1, width: 1 }, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 1, //IOS
+    backgroundColor: '#fff',
+    elevation: 2, // Android
+    height: 50,
+    width: 100,
+    marginTop: 40,
+    marginBottom: 80,
+    marginLeft: 135,
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
   // container: {
   //   flex: 1,
   //   justifyContent: 'center',
