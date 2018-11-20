@@ -40,7 +40,7 @@ class HomeScreen extends Component {
       : null
     return (
       <View>
-        <View style={styles.container}>
+        <View>
           <TouchableOpacity
             style={styles.buttonSettings}
             onPress={this.toggleSettingsView}
@@ -51,36 +51,38 @@ class HomeScreen extends Component {
             <View>{settingsTent}</View>
           </TouchableOpacity>
         </View>
-        <View>
-          <Image style={styles.logo} source={require('../../assets/InsideTrackLogo.png')}></Image>
-        </View>
-        {/* <View>
+        <View marginTop={-50}>
+          <View>
+            <Image style={styles.logo} source={require('../../assets/InsideTrackLogo.png')}></Image>
+          </View>
+          {/* <View>
           {this.state.fontLoaded ? (
             <Text style={styles.text}>Hello, {this.props.user.name}</Text>)
             : null}
         </View> */}
-        <View>
-          <TouchableOpacity
-            style={styles.buttonLogout}
-            onPress={() => {
-              // onSignOut
-              this.props.navigation.navigate("SignedOut");
-            }}>
-            {this.state.fontLoaded ? (
-              <Text style={styles.text}>Log Out</Text>)
-              : null}
-          </TouchableOpacity>
-        </View>
-        <View style={styles.container}>
-          <TouchableOpacity
-            style={styles.buttonNewRace}
-            onPress={this.toggleNewRaceView}
-          >
-            {this.state.fontLoaded ? (
-              <Text style={styles.text}>Add Race</Text>)
-              : null}
-            <View>{newRaceTent}</View>
-          </TouchableOpacity>
+          <View>
+            <TouchableOpacity
+              style={styles.buttonLogout}
+              onPress={() => {
+                // onSignOut
+                this.props.navigation.navigate("SignedOut");
+              }}>
+              {this.state.fontLoaded ? (
+                <Text style={styles.text}>Log Out</Text>)
+                : null}
+            </TouchableOpacity>
+          </View>
+          <View style={styles.container}>
+            <TouchableOpacity
+              style={styles.buttonNewRace}
+              onPress={this.toggleNewRaceView}
+            >
+              {this.state.fontLoaded ? (
+                <Text style={styles.text}>Add Race</Text>)
+                : null}
+              <View>{newRaceTent}</View>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
@@ -133,8 +135,9 @@ const styles = StyleSheet.create({
     elevation: 2, // Android
     height: 40,
     width: 40,
-    marginLeft: 280,
-    marginTop: 200,
+    marginLeft: 350,
+    marginTop: 300,
+    marginBottom: 50,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
@@ -149,8 +152,8 @@ const styles = StyleSheet.create({
     height: 50,
     width: 300,
     marginLeft: 1,
-    marginTop: -70,
-    marginBottom: 425,
+    marginTop: -600,
+    marginBottom: 500,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
@@ -164,7 +167,7 @@ const styles = StyleSheet.create({
     elevation: 2, // Android
     height: 50,
     width: 100,
-    marginTop: 40,
+    marginTop: -300,
     marginBottom: 80,
     marginLeft: 175,
     justifyContent: 'center',
@@ -177,9 +180,9 @@ const styles = StyleSheet.create({
     fontStyle: 'italic'
   },
   logo: {
-    marginTop: 100,
     height: 450,
-    width: 450
+    width: 450,
+    marginBottom: 250
   }
 });
 
