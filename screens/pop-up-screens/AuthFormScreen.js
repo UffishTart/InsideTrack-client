@@ -1,8 +1,9 @@
 import React from 'react'
-import { View, Text, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { auth } from '../../store/user'
 import { isSignedIn } from '../../navigation/AsyncStorageAuth'
+import { Font } from 'expo'
 // import {FormLabel, FormInput, FormValidationMessage} from 'react-native-elements'
 
 export default class AuthFormScreen extends React.Component {
@@ -10,12 +11,13 @@ export default class AuthFormScreen extends React.Component {
     super()
     this.state = {
       email: '',
-      password: ''
+      password: '',
     }
     this.emailHandleChange = this.emailHandleChange.bind(this)
     this.passwordHandleChange = this.passwordHandleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
+
 
   emailHandleChange(text) {
     this.setState({
@@ -44,21 +46,27 @@ export default class AuthFormScreen extends React.Component {
 
   render() {
     return (
-      <View>
-        <Text>Email</Text>
-        <TextInput
-          placeholder={'email'}
-          value={this.state.email}
-          onChangeText={this.emailHandleChange}
-          keyboardType="email-address"
-        />
-        <Text>Password</Text>
-        <TextInput
-          placeholder={'password'}
-          value={this.state.password}
-          onChangeText={this.passwordHandleChange}
-          keyboardType="default"
-        />
+      <View style={styles.container}>
+        <View>
+          <Text>EMAIL</Text>
+          <TextInput
+            placeholder={'email'}
+            value={this.state.email}
+            onChangeText={this.emailHandleChange}
+            keyboardType="email-address"
+          />
+        </View>
+        <View>
+          <Text>PASSWORD</Text>
+          <TextInput
+            secureTextEntry={true}
+            placeholder={'password'}
+            value={this.state.password}
+            onChangeText={this.passwordHandleChange}
+            keyboardType="default"
+          />
+        </View>
+
         <TouchableOpacity
           onPress={this.handleSubmit}
         // disabled={!this.state.email && !this.state.password}
@@ -74,6 +82,46 @@ export default class AuthFormScreen extends React.Component {
  * Container: Two different higher order components depending on if the 
  * form is for login or signup. 
  */
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    paddingHorizontal: 5,
+    alignItems: 'center',
+    borderColor: '#fff',
+    backgroundColor: '#fbff14'
+  },
+  emailContainer: {
+    shadowColor: 'rgba(0,0,0, .4)', // IOS
+    shadowOffset: { height: 1, width: 1 }, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 1, //IOS
+    backgroundColor: '#fff',
+    elevation: 2, // Android
+    height: 50,
+    width: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  passwordContainer: {
+    shadowColor: 'rgba(0,0,0, .4)', // IOS
+    shadowOffset: { height: 1, width: 1 }, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 1, //IOS
+    backgroundColor: '#fff',
+    elevation: 2, // Android
+    height: 50,
+    width: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  text: {
+    fontSize: 15,
+  },
+});
 
 const mapLogin = state => {
   return {

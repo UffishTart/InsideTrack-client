@@ -5,7 +5,6 @@ import RacesList from "../../components/RacesList";
 import { TabView, SceneMap } from "react-native-tab-view";
 import { fetchUserRacesByUser } from "../../store/userRaces";
 import { connect } from "react-redux";
-import store from "../../store";
 import { me } from "../../store/user";
 
 // create a component
