@@ -19,7 +19,9 @@ const reducer = combineReducers({
 });
 
 const middleware = composeWithDevTools(
-  applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))
+  applyMiddleware(thunkMiddleware)
+  //disabled redux logger because it is not helpful with react native
+  // , createLogger({ collapsed: true }))
 );
 const store = createStore(reducer, middleware);
 
