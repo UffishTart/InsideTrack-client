@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, Picker } from 'react-native';
 import { me } from '../store/user';
 import { fetchSingleRaceFromServer, postANewRace } from '../store/races';
 import { postAUserRaceEntry } from '../store/userRaces';
@@ -13,6 +13,7 @@ class StartNewRace extends Component {
       name: '',
       length: '',
       friendIdArr: [],
+      selectedFriend: {}
     };
   }
 
@@ -20,6 +21,19 @@ class StartNewRace extends Component {
     await this.props.getUser();
     this.props.getFriends(this.props.user.id);
   }
+
+  nameHandleChange(text) {
+    this.setState({
+      name: text
+    })
+  }
+
+  lengthHandleChange(text) {
+    this.setState({
+      length: text
+    })
+  }
+
 
   async handleSubmit() {
     const newRace = await this.props.postRace(
@@ -33,7 +47,31 @@ class StartNewRace extends Component {
   }
 
   render() {
-    return <View />;
+    return (
+      <View>
+        <Text>Start a Race!</Text>
+        <TextInput
+          placeholder={'Race Name'}
+          value={this.state.name}
+          onChangeText={this.nameHandleChange}
+        />
+        <TextInput
+          placeholder={'Race Lenght'}
+          value={this.state.length}
+          onChangeText={this.lengthHandleChange}
+        />
+        <Picker
+          selectedValue={this.state.selectedFriend}
+          onValueChange={(friendValue => this.setState({selectedFriend: friendValue}))}
+        >{this.props.friends && this.props.friends.map(friend => <Picker.Item label={friend.userName} value={friend.id} />)}
+        </Picker>
+        <TouchableOpacity
+          onPress={this.handleSubmit}
+        >
+          <Text>Submit</Text>
+        </TouchableOpacity>
+      </View>  
+    )
   }
 }
 
