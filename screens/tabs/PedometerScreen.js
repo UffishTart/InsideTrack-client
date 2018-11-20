@@ -138,6 +138,7 @@ class PedometerSensor extends React.Component {
       tableHead: ["Players", "Improvement", "Daily Average", "Place"],
       tableInfo: this.props.singleRaceUser
         .filter(el => el.acceptedInvitation)
+        .sort((user1, user2) => user1.place - user2.place)
         .map(el => arrayGenerater(el))
     };
 
