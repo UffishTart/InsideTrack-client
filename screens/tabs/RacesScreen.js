@@ -1,20 +1,21 @@
 //import liraries
-import React, { Component } from 'react';
-import { Dimensions } from 'react-native';
-import RacesList from '../../components/RacesList';
-import { TabView, SceneMap } from 'react-native-tab-view';
-import { fetchUserRacesByUser } from '../../store/userRaces';
-import { connect } from 'react-redux';
-import { me } from '../../store/user';
+import React, { Component } from "react";
+import { Dimensions } from "react-native";
+import RacesList from "../../components/RacesList";
+import { TabView, SceneMap } from "react-native-tab-view";
+import { fetchUserRacesByUser } from "../../store/userRaces";
+import { connect } from "react-redux";
+import store from "../../store";
+import { me } from "../../store/user";
 
 // create a component
 class Races extends Component {
   state = {
     index: 0,
     routes: [
-      { key: 'first', title: 'Current Races' },
-      { key: 'second', title: 'Past Races' },
-    ],
+      { key: "first", title: "Current Races" },
+      { key: "second", title: "Past Races" }
+    ]
   };
 
   async componentDidMount() {
@@ -43,12 +44,12 @@ class Races extends Component {
               races={this.props.races}
               inProgressBool={false}
             />
-          ),
+          )
         })}
         onIndexChange={index => this.setState({ index })}
         initialLayout={{
-          width: Dimensions.get('window').width,
-          height: Dimensions.get('window').height,
+          width: Dimensions.get("window").width,
+          height: Dimensions.get("window").height
         }}
       />
     );
@@ -58,7 +59,7 @@ class Races extends Component {
 const mapState = state => {
   return {
     races: state.userRaces,
-    user: state.user,
+    user: state.user
   };
 };
 
@@ -66,7 +67,7 @@ const mapDispatch = dispatch => {
   return {
     getUser: () => dispatch(me()),
     getRaces: (userId, inviteIndicator) =>
-      dispatch(fetchUserRacesByUser(userId, inviteIndicator)),
+      dispatch(fetchUserRacesByUser(userId, inviteIndicator))
   };
 };
 
