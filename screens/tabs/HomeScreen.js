@@ -1,16 +1,12 @@
 import React, { Component } from "react";
-import { Constants, Ionicons, Font } from "expo";
-import { View, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
-import AuthFormScreen, {
-  Login,
-  Signup
-} from "../pop-up-screens/AuthFormScreen";
-import { createStackNavigator } from "react-navigation";
-import { Foundation } from "@expo/vector-icons";
-import Modal from "react-native-modal";
+import { Font } from "expo";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import Settings from "../pop-up-screens/Settings";
-import { onSignOut } from "../../navigation/AsyncStorageAuth";
 import StartNewRace from '../../components/StartNewRace'
+import { me } from "../../store/user";
+import { connect } from "react-redux";
+
+
 // create a component
 class HomeScreen extends Component {
   state = {
@@ -20,14 +16,17 @@ class HomeScreen extends Component {
   };
 
   async componentDidMount() {
+    await this.props.getUser()
     await Font.loadAsync({
       'FasterOne-Regular': require('../../assets/FasterOne-Regular.ttf'),
     });
     this.setState({ fontLoaded: true });
   }
 
-  toggleSettingsView = () =>
-    this.setState({ showSettings: !this.state.showSettings });
+  toggleSettingsView = () => {
+    console.log('hery')
+    this.setState({ showSettings: !this.state.showSettings })
+  }
 
   toggleNewRaceView = () =>
     this.setState({ showNewRacePage: !this.state.showNewRacePage })
@@ -35,6 +34,9 @@ class HomeScreen extends Component {
   renderTouchSettings() {
     const settingsTent = this.state.showSettings
       ? this.renderSettings()
+      : null
+    const newRaceTent = this.state.showNewRacePage
+      ? this.renderNewRacePage()
       : null
     return (
       <View>
@@ -44,13 +46,20 @@ class HomeScreen extends Component {
             onPress={this.toggleSettingsView}
           >
             {this.state.fontLoaded ? (
-              <Text style={styles.text}>Settings</Text>)
+              <Text style={styles.text}>*</Text>)
               : null}
             <View>{settingsTent}</View>
           </TouchableOpacity>
         </View>
         <View>
-          {/* makeshift logout button */}
+          <Image style={styles.logo} source={require('../../assets/InsideTrackLogo.png')}></Image>
+        </View>
+        {/* <View>
+          {this.state.fontLoaded ? (
+            <Text style={styles.text}>Hello, {this.props.user.name}</Text>)
+            : null}
+        </View> */}
+        <View>
           <TouchableOpacity
             style={styles.buttonLogout}
             onPress={() => {
@@ -64,9 +73,12 @@ class HomeScreen extends Component {
         </View>
         <View style={styles.container}>
           <TouchableOpacity
-            style={styles.buttonSettings}
+            style={styles.buttonNewRace}
             onPress={this.toggleNewRaceView}
           >
+            {this.state.fontLoaded ? (
+              <Text style={styles.text}>Add Race</Text>)
+              : null}
             <View>{newRaceTent}</View>
           </TouchableOpacity>
         </View>
@@ -75,6 +87,8 @@ class HomeScreen extends Component {
   }
 
   renderSettings() {
+    console.log('hery')
+
     return <Settings onPress={this.toggleSettingsView.bind(this)} />;
   }
 
@@ -93,11 +107,21 @@ class HomeScreen extends Component {
 
 // define your styles
 const styles = StyleSheet.create({
+  border: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: 'center',
+    borderColor: '#fff',
+    borderTopWidth: 50,
+    borderRadius: 2,
+    backgroundColor: '#fff'
+  },
   container: {
     flex: 1,
     justifyContent: "center",
     paddingHorizontal: 5,
     alignItems: 'center',
+    borderColor: '#fff',
     backgroundColor: '#fbff14'
   },
   buttonSettings: {
@@ -107,10 +131,26 @@ const styles = StyleSheet.create({
     shadowRadius: 1, //IOS
     backgroundColor: '#fff',
     elevation: 2, // Android
+    height: 40,
+    width: 40,
+    marginLeft: 280,
+    marginTop: 200,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  buttonNewRace: {
+    shadowColor: 'rgba(0,0,0, .4)', // IOS
+    shadowOffset: { height: 1, width: 1 }, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 1, //IOS
+    backgroundColor: '#fff',
+    elevation: 2, // Android
     height: 50,
-    width: 100,
-    marginLeft: 250,
-    marginBottom: 200,
+    width: 300,
+    marginLeft: 1,
+    marginTop: -70,
+    marginBottom: 425,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
@@ -126,7 +166,7 @@ const styles = StyleSheet.create({
     width: 100,
     marginTop: 40,
     marginBottom: 80,
-    marginLeft: 135,
+    marginLeft: 175,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
@@ -136,30 +176,26 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontStyle: 'italic'
   },
-  // container: {
-  //   flex: 1,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   backgroundColor: '#2c3e50',
-  // },
-  // topBar: {
-  //   flex: 1,
-  //   // backgroundColor: 'transparent',
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-around',
-  //   // paddingTop: Constants.statusBarHeight / 2,
-  // },
-  // toggleButton: {
-  //   flex: 0.25,
-  //   height: 40,
-  //   marginHorizontal: 2,
-  //   marginBottom: 10,
-  //   marginTop: 20,
-  //   padding: 5,
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  // }
+  logo: {
+    marginTop: 100,
+    height: 450,
+    width: 450
+  }
 });
 
 //make this component available to the app
-export default HomeScreen;
+
+const mapState = state => {
+  return {
+    user: state.user
+  };
+};
+
+const mapDispatch = dispatch => {
+  return {
+    getUser: () => dispatch(me()),
+  };
+};
+
+
+export default connect(mapState, mapDispatch)(HomeScreen)
