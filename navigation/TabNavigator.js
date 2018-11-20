@@ -38,12 +38,6 @@ const SignedIn = createBottomTabNavigator({
       tabBarLabel: 'My Steed',
     }
   },
-  PedometerTest: {
-    screen: PedometerScreen,
-    navigationOptions: {
-      tabBarLabel: 'Pedometer Test'
-    }
-  }
 })
 
 
