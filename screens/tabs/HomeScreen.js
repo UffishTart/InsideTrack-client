@@ -51,7 +51,7 @@ class HomeScreen extends Component {
         </View>
         <View style={styles.container}>
           <TouchableOpacity
-            style={styles.button}
+            style={styles.buttonSettings}
             onPress={this.toggleNewRaceView}
           >
             <View>{newRaceTent}</View>

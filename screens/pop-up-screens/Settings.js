@@ -9,7 +9,7 @@ class Settings extends Component {
     return (
       <Modal backgroundColor='yellow'>
         <View style={styles.container}>
-          <Button title='hey' onPress={this.props.toggleSettingsView}>Settings</Button>
+          <Button title='hey' onPress={this.props.onPress}>Settings</Button>
         </View>
       </Modal>
     );
