@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Constants, Ionicons } from "expo";
+import { Constants, Ionicons, Font } from "expo";
 import { View, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
 import AuthFormScreen, {
   Login,
@@ -14,8 +14,16 @@ import { onSignOut } from "../../navigation/AsyncStorageAuth";
 // create a component
 class HomeScreen extends Component {
   state = {
-    showSettings: false
+    showSettings: false,
+    fontLoaded: false
   };
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      'FasterOne-Regular': require('../../assets/FasterOne-Regular.ttf'),
+    });
+    this.setState({ fontLoaded: true });
+  }
 
   toggleSettingsView = () =>
     this.setState({ showSettings: !this.state.showSettings });
@@ -23,7 +31,7 @@ class HomeScreen extends Component {
   renderTouchSettings() {
     const settingsTent = this.state.showSettings
       ? this.renderSettings()
-      : console.log("No settings!");
+      : null
     return (
       <View>
         <View style={styles.container}>
@@ -31,6 +39,9 @@ class HomeScreen extends Component {
             style={styles.buttonSettings}
             onPress={this.toggleSettingsView}
           >
+            {this.state.fontLoaded ? (
+              <Text style={styles.text}>Settings</Text>)
+              : null}
             <View>{settingsTent}</View>
           </TouchableOpacity>
         </View>
@@ -41,8 +52,11 @@ class HomeScreen extends Component {
             onPress={() => {
               // onSignOut
               this.props.navigation.navigate("SignedOut");
-            }}
-          />
+            }}>
+            {this.state.fontLoaded ? (
+              <Text style={styles.text}>Log Out</Text>)
+              : null}
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -97,8 +111,14 @@ const styles = StyleSheet.create({
     marginTop: 40,
     marginBottom: 80,
     marginLeft: 135,
+    justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
+  },
+  text: {
+    fontFamily: 'FasterOne-Regular',
+    fontSize: 15,
+    fontStyle: 'italic'
   },
   // container: {
   //   flex: 1,
