@@ -1,17 +1,17 @@
-import axios from 'axios';
-const server = 'https://inside-track-server-boil.herokuapp.com';
+import axios from "axios";
+const server = "https://inside-track-server-boil.herokuapp.com";
 
-const GET_ALL_FRIENDS_OF_USER = 'GET_ALL_FRIENDS_OF_USER';
-const ADD_NEW_FRIEND = 'ADD_NEW_FRIEND';
+const GET_ALL_FRIENDS_OF_USER = "GET_ALL_FRIENDS_OF_USER";
+const ADD_NEW_FRIEND = "ADD_NEW_FRIEND";
 
 const getAllFriends = friends => ({
   type: GET_ALL_FRIENDS_OF_USER,
-  friends,
+  friends
 });
 
 const addANewFriend = friend => ({
   type: ADD_NEW_FRIEND,
-  friend,
+  friend
 });
 
 export const fetchAllFriendsFromServer = () => async dispatch => {
@@ -28,7 +28,7 @@ export const getFriendsOfUser = userId => async dispatch => {
   try {
     const { data } = await axios.get(`${server}/api/userFriends/${userId}`);
     const friends = data;
-    console.log('friends arr', friends);
+    console.log("friends arr", friends);
     dispatch(getAllFriends(friends));
   } catch (err) {
     console.log(err);
@@ -37,13 +37,17 @@ export const getFriendsOfUser = userId => async dispatch => {
 
 export const addNewFriend = (userId, friendId) => async dispatch => {
   try {
-    const { data } = await axios.post(`${server}/api/userFriend/${userId}`, {
+    const { data } = await axios.post(`${server}/api/userFriends/`, {
       friendId,
+      userId
     });
     const friend = data;
-    await axios.post(`${server}/api/userFriend/${friendId}`, {
-      userId,
+    console.log("!!!!!add friend store first call", friend);
+    await axios.post(`${server}/api/userFriends/`, {
+      userId: friendId,
+      friendId: userId
     });
+    console.log("!!!!!add friend store second call", friend);
     dispatch(addANewFriend(friend));
   } catch (err) {
     console.log(err);
@@ -53,7 +57,7 @@ export const addNewFriend = (userId, friendId) => async dispatch => {
 const reducer = (state = [], action) => {
   switch (action.type) {
     case GET_ALL_FRIENDS_OF_USER:
-      console.log('friends in reducer', action.friends);
+      console.log("friends in reducer", action.friends);
       return action.friends;
     case ADD_NEW_FRIEND:
       return [...state, action.friend];
