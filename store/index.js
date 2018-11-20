@@ -1,12 +1,13 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-import { createLogger } from 'redux-logger';
-import thunkMiddleware from 'redux-thunk';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import user from './user';
-import races from './races';
-import userRaces from './userRaces';
-import singleRaceUser from './singleRaceUser';
-import userFriend from './userFriend';
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import { createLogger } from "redux-logger";
+import thunkMiddleware from "redux-thunk";
+import { composeWithDevTools } from "redux-devtools-extension";
+import user from "./user";
+import races from "./races";
+import userRaces from "./userRaces";
+import singleRaceUser from "./singleRaceUser";
+import userFriend from "./userFriend";
+import allUsers from "./allUsers";
 
 const reducer = combineReducers({
   user,
@@ -14,6 +15,7 @@ const reducer = combineReducers({
   userRaces,
   singleRaceUser,
   userFriend,
+  allUsers
 });
 
 const middleware = composeWithDevTools(
@@ -24,8 +26,8 @@ const middleware = composeWithDevTools(
 const store = createStore(reducer, middleware);
 
 export default store;
-export * from './user';
-export * from './races';
-export * from './userRaces';
-export * from './singleRaceUser';
-export * from './userFriend';
+export * from "./user";
+export * from "./races";
+export * from "./userRaces";
+export * from "./singleRaceUser";
+export * from "./userFriend";
