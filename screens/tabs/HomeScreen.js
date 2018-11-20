@@ -10,7 +10,7 @@ import { Foundation } from "@expo/vector-icons";
 import Modal from "react-native-modal";
 import Settings from "../pop-up-screens/Settings";
 import { onSignOut } from "../../navigation/AsyncStorageAuth";
-
+import StartNewRace from '../../components/StartNewRace'
 // create a component
 class HomeScreen extends Component {
   state = {
@@ -51,7 +51,7 @@ class HomeScreen extends Component {
         </View>
         <View style={styles.container}>
           <TouchableOpacity
-            style={styles.button}
+            style={styles.buttonSettings}
             onPress={this.toggleNewRaceView}
           >
             <View>{newRaceTent}</View>
