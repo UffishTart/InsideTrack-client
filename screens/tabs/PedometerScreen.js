@@ -16,8 +16,7 @@ import {
   Col
 } from "react-native-table-component";
 
-//import ExampleTwo from "../../components/PastRaceInfo";
-
+//Helper function to generate the table row array;
 const arrayGenerater = userRaceInstance => {
   const instanceArr = [];
   // [ "Players", "Improvement", "Past Steps", "Place"]
@@ -144,7 +143,10 @@ class PedometerSensor extends React.Component {
 
     return (
       <View style={styles.tableContainer}>
-        <Table>
+        <Text style={styles.text}>
+          Steps taken in the last 24 hours: {this.state.pastStepCount}{" "}
+        </Text>
+        <Table borderStyle={{ borderColor: "#017EC2" }}>
           <Row
             data={tableData.tableHead}
             flexArr={[2, 2, 2, 1]}
@@ -177,14 +179,12 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 10,
     width: "100%",
-    height: "auto",
-    borderColor: "transparent",
-    backgroundColor: "#9AE0FF",
-    paddingTop: 10
+    height: "50%",
+    paddingTop: 20
   },
   head: { height: 40, backgroundColor: "#014D7F" },
   wrapper: { flexDirection: "row" },
-  row: { height: 28 },
+  row: { height: 28, backgroundColor: "#9AE0FF" },
   text: { textAlign: "center" }
 });
 
