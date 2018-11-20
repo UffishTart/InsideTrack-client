@@ -8,8 +8,8 @@ const RacesList = props => {
     <View
       style={
         inProgressBool
-          ? [styles.flexCont, { backgroundColor: 'red' }]
-          : [styles.flexCont, { backgroundColor: 'blue' }]
+          ? [styles.flexCont, { backgroundColor: '#D9AFAF' }]
+          : [styles.flexCont, { backgroundColor: '#A3DDFA' }]
       }
     >
       <ScrollView>
