@@ -28,6 +28,7 @@ export const getFriendsOfUser = userId => async dispatch => {
   try {
     const { data } = await axios.get(`${server}/api/userFriends/${userId}`);
     const friends = data;
+    console.log('friends arr', friends)
     dispatch(getAllFriends(friends));
   } catch (err) {
     console.log(err);
@@ -47,8 +48,9 @@ export const addNewFriend = (userId, friendId) => async dispatch => {
 };
 
 const reducer = (state = [], action) => {
-  switch (action) {
+  switch (action.type) {
     case GET_ALL_FRIENDS_OF_USER:
+      console.log('friends in reducer', action.friends)
       return action.friends;
     case ADD_NEW_FRIEND:
       return [...state, action.friend];
