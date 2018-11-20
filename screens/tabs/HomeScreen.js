@@ -15,7 +15,8 @@ import { onSignOut } from "../../navigation/AsyncStorageAuth";
 class HomeScreen extends Component {
   state = {
     showSettings: false,
-    fontLoaded: false
+    fontLoaded: false,
+    showNewRacePage: false
   };
 
   async componentDidMount() {
@@ -27,6 +28,9 @@ class HomeScreen extends Component {
 
   toggleSettingsView = () =>
     this.setState({ showSettings: !this.state.showSettings });
+
+  toggleNewRaceView = () =>
+    this.setState({ showNewRacePage: !this.state.showNewRacePage })
 
   renderTouchSettings() {
     const settingsTent = this.state.showSettings
@@ -58,12 +62,24 @@ class HomeScreen extends Component {
               : null}
           </TouchableOpacity>
         </View>
+        <View style={styles.container}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={this.toggleNewRaceView}
+          >
+            <View>{newRaceTent}</View>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
 
   renderSettings() {
     return <Settings onPress={this.toggleSettingsView.bind(this)} />;
+  }
+
+  renderNewRacePage() {
+    return <StartNewRace onPress={this.toggleNewRaceView.bind(this)} />
   }
 
   render() {
