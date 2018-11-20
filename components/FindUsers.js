@@ -1,38 +1,32 @@
 import Autocomplete from "react-native-autocomplete-input";
 import React, { Component } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import axios from "axios";
-const server = "https://inside-track-server-boil.herokuapp.com";
+import { connect } from "react-redux";
+import { fetchAllUsers } from "../store/allUsers";
+import store from "../store";
 
+const renderUser = user => {
+  const { userName } = user;
+
+  return (
+    <View>
+      <Text style={styles.titleText}>{userName}</Text>
+    </View>
+  );
+};
 class FindUsers extends Component {
-  //   static renderFilm(film) {
-  //     const { title, director, opening_crawl, episode_id } = film;
-  //     const roman = episode_id < ROMAN.length ? ROMAN[episode_id] : episode_id;
-
-  //     return (
-  //       <View>
-  //         <Text style={styles.titleText}>{roman}. {title}</Text>
-  //         <Text style={styles.directorText}>({director})</Text>
-  //         <Text style={styles.openingText}>{opening_crawl}</Text>
-  //       </View>
-  //     );
-  //   }
-
   constructor(props) {
     super(props);
     this.state = {
-      users: [],
       query: ""
     };
+    this.findUser = this.findUser.bind(this);
   }
 
-  componentDidMount() {
-    // fetch(`${API}/films/`)
-    //   .then(res => res.json())
-    //   .then(json => {
-    //     const { results: films } = json;
-    //     this.setState({ films });
-    //   });
+  async componentDidMount() {
+    console.log("!!!CDM called");
+    await this.props.getUsers();
+    console.log("!!!After CDM", this.props.allUsers);
   }
 
   findUser(query) {
@@ -40,15 +34,15 @@ class FindUsers extends Component {
       return [];
     }
 
-    const { users } = this.state;
-    const regex = new RegExp(`${query.trim()}`, "i");
-    return films.filter(film => film.title.search(regex) >= 0);
+    const { allUsers } = this.props;
+    // const regex = new RegExp(`${query.trim()}`, "i");
+    return allUsers.filter(user => user.userName.search(query) >= 0);
   }
 
   render() {
     const { query } = this.state;
-    const films = this.findFilm(query);
-    const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim();
+    const usersToFind = this.findUser(query);
+    const comp = (a, b) => a.toLowerCase() === b.toLowerCase();
 
     return (
       <View style={styles.container}>
@@ -56,25 +50,27 @@ class FindUsers extends Component {
           autoCapitalize="none"
           autoCorrect={false}
           containerStyle={styles.autocompleteContainer}
-          data={films.length === 1 && comp(query, films[0].title) ? [] : films}
+          data={
+            usersToFind.length === 1 && comp(query, usersToFind[0].userName)
+              ? []
+              : usersToFind
+          }
           defaultValue={query}
           onChangeText={text => this.setState({ query: text })}
-          placeholder="Enter Star Wars film title"
-          renderItem={({ title, release_date }) => (
-            <TouchableOpacity onPress={() => this.setState({ query: title })}>
-              <Text style={styles.itemText}>
-                {title} ({release_date.split("-")[0]})
-              </Text>
+          placeholder="Enter Friend Name Here"
+          renderItem={({ userName }) => (
+            <TouchableOpacity
+              onPress={() => this.setState({ query: userName })}
+            >
+              <Text style={styles.itemText}>{userName}</Text>
             </TouchableOpacity>
           )}
         />
         <View style={styles.descriptionContainer}>
-          {films.length > 0 ? (
-            AutocompleteExample.renderFilm(films[0])
+          {usersToFind.length > 0 ? (
+            renderUser(usersToFind[0])
           ) : (
-            <Text style={styles.infoText}>
-              Enter Title of a Star Wars movie
-            </Text>
+            <Text style={styles.infoText}>Enter Name of a Friend</Text>
           )}
         </View>
       </View>
@@ -85,7 +81,7 @@ class FindUsers extends Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#F5FCFF",
-    flex: 1,
+    width: "80%",
     paddingTop: 25
   },
   autocompleteContainer: {
@@ -123,4 +119,11 @@ const styles = StyleSheet.create({
   }
 });
 
-export default FindUsers;
+const mapState = ({ allUsers }) => ({ allUsers });
+const mapProps = dispatch => ({
+  getUsers: () => dispatch(fetchAllUsers())
+});
+export default connect(
+  mapState,
+  mapProps
+)(FindUsers);
