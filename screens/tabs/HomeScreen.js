@@ -20,7 +20,7 @@ class HomeScreen extends Component {
 
   toggleSettingsView = () => {
     this.setState({ showSettings: !this.state.showSettings });
-  }
+  };
 
   renderTouchSettings() {
     const settingsTent = this.state.showSettings ? this.renderSettings() : null;

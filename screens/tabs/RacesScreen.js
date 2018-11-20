@@ -31,10 +31,18 @@ class Races extends Component {
         navigationState={this.state}
         renderScene={SceneMap({
           first: () => (
-            <RacesList races={this.props.races} inProgressBool={true} />
+            <RacesList
+              user={this.props.user}
+              races={this.props.races}
+              inProgressBool={true}
+            />
           ),
           second: () => (
-            <RacesList races={this.props.races} inProgressBool={false} />
+            <RacesList
+              user={this.props.user}
+              races={this.props.races}
+              inProgressBool={false}
+            />
           ),
         })}
         onIndexChange={index => this.setState({ index })}
