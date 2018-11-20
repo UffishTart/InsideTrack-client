@@ -8,42 +8,46 @@ class RacesListItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showSingleRace: false
-    }
+      showSingleRace: false,
+    };
   }
 
   toggleSingleRaceView = () => {
     this.setState({ showSingleRace: !this.state.showSingleRace });
-  }
+  };
 
   renderTouchSingleRace() {
-    const singleRaceContent = this.state.showSingleRace ? this.renderSingleRace() : null;
+    const singleRaceContent = this.state.showSingleRace
+      ? this.renderSingleRace()
+      : null;
     return (
       <View>
         <View>
-          <TouchableOpacity
-            onPress={this.toggleSingleRaceView}
-          ><Text>Name: {this.props.race.raceInfo.name}</Text>
+          <TouchableOpacity onPress={this.toggleSingleRaceView}>
+            <Text>Name: {this.props.race.raceInfo.name}</Text>
             {/* click into here to load a pop-up-screen to SingleRace.js */}
             <Text>Length: {this.props.race.raceInfo.length}</Text>
             <View>{singleRaceContent}</View>
           </TouchableOpacity>
         </View>
-        <View>
-        </View>
+        <View />
       </View>
     );
   }
 
-
   renderSingleRace() {
-    return < SingleRace toggleSingleRaceView={this.toggleSingleRaceView.bind(this)} />
+    return (
+      <SingleRace
+        toggleSingleRaceView={this.toggleSingleRaceView.bind(this)}
+        raceId={this.props.race.raceId}
+        user={this.props.user}
+      />
+    );
   }
 
   render() {
     return (
-      <TouchableOpacity onPress={this.toggleSingleRace}
-      >
+      <TouchableOpacity onPress={this.toggleSingleRace}>
         <View style={styles.container}>
           <View style={styles.containerInfo}>
             <View style={styles.container}>{this.renderTouchSingleRace()}</View>

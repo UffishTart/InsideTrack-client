@@ -2,16 +2,23 @@
 import React, { Component } from 'react';
 import { View, Button, Text, StyleSheet, Modal } from 'react-native';
 import HorseComponent from '../../components/HorseComponent';
+import PedometerSensor from '../tabs/PedometerScreen';
 
 // create a component
 class SingleRace extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
-    console.log('SingleRace', 'hello')
     return (
       <Modal>
         <View style={styles.container}>
           <HorseComponent />
-          <Button title='hey' onPress={this.props.toggleSingleRaceView}>SingleRace</Button>
+          <PedometerSensor user={this.props.user} raceId={this.props.raceId} />
+          <Button title="Back" onPress={this.props.toggleSingleRaceView}>
+            SingleRace
+          </Button>
         </View>
       </Modal>
     );

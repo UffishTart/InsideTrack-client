@@ -1,10 +1,13 @@
-import Expo from "expo";
-import React from "react";
-import { Pedometer } from "expo";
-import { StyleSheet, Text, View } from "react-native";
-import { connect } from "react-redux";
-import { me } from "../../store/user";
-import {putUpdataedPedometerData, fetchRaceUserData, putUpdatedPedometerData} from '../../store/singleRaceUser'
+import Expo from 'expo';
+import React from 'react';
+import { Pedometer } from 'expo';
+import { StyleSheet, Text, View } from 'react-native';
+import { connect } from 'react-redux';
+import { me } from '../../store/user';
+import {
+  putUpdatedPedometerData,
+  fetchRaceUserData,
+} from '../../store/singleRaceUser';
 //Helper funtion that can check if user have 7 full days info to generate the average steps
 const ifHaveSevenDaysData = (createdDate, usingDate) => {
   if (
@@ -18,19 +21,21 @@ const ifHaveSevenDaysData = (createdDate, usingDate) => {
   }
 };
 class PedometerSensor extends React.Component {
-  state = {
-    isPedometerAvailable: "checking",
-    pastStepCount: 0,
-    averageSteps: 0,
-    currentStepCount: 0,
-    days: 0,
-    startMonth: 0,
-    endMonth: 0
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      isPedometerAvailable: 'checking',
+      pastStepCount: 0,
+      averageSteps: 0,
+      currentStepCount: 0,
+      days: 0,
+      startMonth: 0,
+      endMonth: 0,
+    };
+  }
 
   async componentDidMount() {
-    await this.props.getMe();
-    await this.props.fetchRaceUserData(1)
+    await this.props.fetchRaceUserData(this.props.raceId);
     await this._subscribe();
   }
 
@@ -41,19 +46,19 @@ class PedometerSensor extends React.Component {
   _subscribe = () => {
     this._subscription = Pedometer.watchStepCount(result => {
       this.setState({
-        currentStepCount: result.steps
+        currentStepCount: result.steps,
       });
     });
 
     Pedometer.isAvailableAsync().then(
       result => {
         this.setState({
-          isPedometerAvailable: String(result)
+          isPedometerAvailable: String(result),
         });
       },
       error => {
         this.setState({
-          isPedometerAvailable: "Could not get isPedometerAvailable: " + error
+          isPedometerAvailable: 'Could not get isPedometerAvailable: ' + error,
         });
       }
     );
@@ -72,29 +77,36 @@ class PedometerSensor extends React.Component {
       start = userStartDate;
     }
 
-    Pedometer.getStepCountAsync(start, end).then(
-      result => {
-        let daysChecking = ifHaveSevenDaysData(start, end)
-          ? 7
-          : end.getDate() - start.getDate();
-        let average = ifHaveSevenDaysData(start, end)
-          ? Math.round(result.steps / daysChecking)
-          : this.props.user.estimatedAverage;
-        this.setState({
-          pastStepCount: result.steps,
-          days: daysChecking,
-          averageSteps: average,
-          startMonth: start.getMonth(),
-          endMonth: end.getMonth()
-        });
-        
-      },
-      error => {
-        this.setState({
-          pastStepCount: "Could not get stepCount: " + error
-        });
-      }
-    ).then(() => this.props.putUpdatedPedometerData(this.state.pastStepCount, this.props.user.id, 1));
+    Pedometer.getStepCountAsync(start, end)
+      .then(
+        result => {
+          let daysChecking = ifHaveSevenDaysData(start, end)
+            ? 7
+            : end.getDate() - start.getDate();
+          let average = ifHaveSevenDaysData(start, end)
+            ? Math.round(result.steps / daysChecking)
+            : this.props.user.estimatedAverage;
+          this.setState({
+            pastStepCount: result.steps,
+            days: daysChecking,
+            averageSteps: average,
+            startMonth: start.getMonth(),
+            endMonth: end.getMonth(),
+          });
+        },
+        error => {
+          this.setState({
+            pastStepCount: 'Could not get stepCount: ' + error,
+          });
+        }
+      )
+      .then(() =>
+        this.props.putUpdatedPedometerData(
+          this.state.pastStepCount,
+          this.props.user.id,
+          1
+        )
+      );
   };
 
   _unsubscribe = () => {
@@ -122,14 +134,13 @@ class PedometerSensor extends React.Component {
         <Text>Users</Text>
         <View>
           {this.props.singleRaceUser.map(user => {
-            return ( 
+            return (
               <View key={user.userId}>
                 <Text>{user.place}</Text>
               </View>
-            )
+            );
           })}
         </View>
-
       </View>
     );
   }
@@ -139,16 +150,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 15,
-    alignItems: "center",
-    justifyContent: "center"
-  }
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
-const mapState = ({ user, singleRaceUser }) => ({ user, singleRaceUser });
+const mapState = ({ singleRaceUser }) => ({ singleRaceUser });
 const mapDispatch = dispatch => ({
-  getMe: () => dispatch(me()),
-  fetchRaceUserData: (raceId) => dispatch(fetchRaceUserData(raceId)),
-  putUpdatedPedometerData: (dayPedoOutput, userId, raceId) => dispatch(putUpdatedPedometerData(dayPedoOutput, userId, raceId))
+  fetchRaceUserData: raceId => dispatch(fetchRaceUserData(raceId)),
+  putUpdatedPedometerData: (dayPedoOutput, userId, raceId) =>
+    dispatch(putUpdatedPedometerData(dayPedoOutput, userId, raceId)),
 });
 
 export default connect(

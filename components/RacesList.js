@@ -3,7 +3,7 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import RacesListItem from './RacesListItem';
 
 const RacesList = props => {
-  const { races, inProgressBool } = props;
+  const { user, races, inProgressBool } = props;
   return (
     <View
       style={
@@ -19,7 +19,13 @@ const RacesList = props => {
               return race.raceInfo.completedStatus !== inProgressBool;
             })
             .map(race => {
-              return <RacesListItem key={race.raceInfo.name} race={race} />;
+              return (
+                <RacesListItem
+                  key={race.raceInfo.name}
+                  user={user}
+                  race={race}
+                />
+              );
             })}
       </ScrollView>
     </View>
