@@ -14,16 +14,21 @@ import { onSignOut } from "../../navigation/AsyncStorageAuth";
 // create a component
 class HomeScreen extends Component {
   state = {
-    showSettings: false
+    showSettings: false,
+    showNewRacePage: false
   };
 
   toggleSettingsView = () =>
     this.setState({ showSettings: !this.state.showSettings });
 
+  toggleNewRaceView = () => 
+    this.setState({ showNewRacePage: !this.state.showNewRacePage})
+
   renderTouchSettings() {
     const settingsTent = this.state.showSettings
       ? this.renderSettings()
       : console.log("No settings!");
+    const newRaceTent = this.state.showNewRacePage ? this.renderNewRacePage() : null
     return (
       <View>
         <View style={styles.container}>
@@ -44,12 +49,24 @@ class HomeScreen extends Component {
             }}
           />
         </View>
+        <View style={styles.container}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={this.toggleNewRaceView}
+          >
+            <View>{newRaceTent}</View>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
 
   renderSettings() {
     return <Settings onPress={this.toggleSettingsView.bind(this)} />;
+  }
+
+  renderNewRacePage() {
+    return <StartNewRace onPress={this.toggleNewRaceView.bind(this)} />
   }
 
   render() {
