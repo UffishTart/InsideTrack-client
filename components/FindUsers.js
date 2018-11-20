@@ -27,9 +27,7 @@ class FindUsers extends Component {
   }
 
   async componentDidMount() {
-    console.log("!!!CDM called");
     await this.props.getUsers();
-    console.log("!!!After CDM", this.props.allUsers);
   }
 
   findUser(query) {
@@ -38,7 +36,6 @@ class FindUsers extends Component {
     }
 
     const { allUsers } = this.props;
-    // const regex = new RegExp(`${query.trim()}`, "i");
     return allUsers.filter(user => user.userName.search(query) >= 0);
   }
 
