@@ -1,8 +1,10 @@
 import Autocomplete from "react-native-autocomplete-input";
 import React, { Component } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Button } from "react-native-elements";
 import { connect } from "react-redux";
 import { fetchAllUsers } from "../store/allUsers";
+import { addNewFriend } from "../store/userFriend";
 import store from "../store";
 
 const renderUser = user => {
@@ -21,6 +23,7 @@ class FindUsers extends Component {
       query: ""
     };
     this.findUser = this.findUser.bind(this);
+    this.addAsFriend = this.addAsFriend.bind(this);
   }
 
   async componentDidMount() {
@@ -39,8 +42,13 @@ class FindUsers extends Component {
     return allUsers.filter(user => user.userName.search(query) >= 0);
   }
 
+  async addAsFriend(userId, friendId) {
+    await this.props.addFriend(userId, friendId);
+  }
+
   render() {
     const { query } = this.state;
+    const { user } = this.props;
     const usersToFind = this.findUser(query);
     const comp = (a, b) => a.toLowerCase() === b.toLowerCase();
 
@@ -68,7 +76,13 @@ class FindUsers extends Component {
         />
         <View style={styles.descriptionContainer}>
           {usersToFind.length > 0 ? (
-            renderUser(usersToFind[0])
+            <View>
+              {renderUser(usersToFind[0])}
+              <Button
+                onPress={() => this.addAsFriend(user.id, usersToFind[0].id)}
+                title="Add"
+              />
+            </View>
           ) : (
             <Text style={styles.infoText}>Enter Name of a Friend</Text>
           )}
@@ -116,12 +130,18 @@ const styles = StyleSheet.create({
   },
   openingText: {
     textAlign: "center"
+  },
+  buttonStyle: {
+    borderRadius: 0.5,
+    backgroundColor: "#2c3e50",
+    color: "white"
   }
 });
 
-const mapState = ({ allUsers }) => ({ allUsers });
+const mapState = ({ allUsers, user }) => ({ allUsers, user });
 const mapProps = dispatch => ({
-  getUsers: () => dispatch(fetchAllUsers())
+  getUsers: () => dispatch(fetchAllUsers()),
+  addFriend: (userId, friendId) => dispatch(addNewFriend(userId, friendId))
 });
 export default connect(
   mapState,
