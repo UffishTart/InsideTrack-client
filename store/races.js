@@ -43,6 +43,7 @@ export const postANewRace = (name, length) => async dispatch => {
     const race = data;
     dispatch(createNewRace(race));
   } catch (err) {
+    console.log('this is the request that failed')
     console.log(err);
   }
 };
