@@ -48,6 +48,7 @@ class FindUsers extends Component {
     const { user } = this.props;
     const usersToFind = this.findUser(query);
     const comp = (a, b) => a.toLowerCase() === b.toLowerCase();
+    console.log(query);
 
     return (
       <View style={styles.container}>
