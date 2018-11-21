@@ -1,14 +1,13 @@
-import axios from 'axios';
-const server = 'https://inside-track-server-boil.herokuapp.com';
+import axios from "axios";
+const server = "https://inside-track-server-boil.herokuapp.com";
 
-const GET_RACE_USERS = 'GET_RACE_USERS';
-const UPDATE_PEDO_DATA = 'UPDATE_PEDO_DATA';
+const GET_RACE_USERS = "GET_RACE_USERS";
+const UPDATE_PEDO_DATA = "UPDATE_PEDO_DATA";
 
 const getRaceUsers = raceUsers => ({
   type: GET_RACE_USERS,
-  raceUsers,
+  raceUsers
 });
-// const updatePedoData =
 
 export const fetchRaceUserData = raceId => async dispatch => {
   try {
@@ -19,6 +18,20 @@ export const fetchRaceUserData = raceId => async dispatch => {
     console.log(err);
   }
 };
+
+export const putDailyAverage = (steps, userId, raceId) => async dispatch => {
+  try {
+    const { data } = await axios.put(
+      `${server}/api/userRaces/${raceId}/${userId}`,
+      { dailyAverage: steps }
+    );
+
+    dispatch(fetchRaceUserData(raceId));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const putUpdatedPedometerData = (
   dayPedoOutput,
   userId,
@@ -36,11 +49,11 @@ export const putUpdatedPedometerData = (
 
     const res = await axios.put(`${server}/api/userRaces/${raceId}/${userId}`, {
       differenceFromAverage: newDifferenceFromAverage,
-      percentImprovement: newPercentageImprovement,
+      percentImprovement: newPercentageImprovement
     });
 
     const allUsersInRace = await axios.get(`${server}/api/userRaces/${raceId}`);
-    const updatedUsers = [];
+
     const sortedUsersArray = allUsersInRace.data
       .sort(
         (user1, user2) => user2.percentImprovement - user1.percentImprovement
@@ -50,7 +63,7 @@ export const putUpdatedPedometerData = (
           return await axios.put(
             `${server}/api/userRaces/${raceId}/${sortedUser.userId}`,
             {
-              place: index + 1,
+              place: index + 1
             }
           );
         } catch (err) {
