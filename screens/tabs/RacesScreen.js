@@ -18,14 +18,15 @@ class Races extends Component {
   };
 
   async componentDidMount() {
+    // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!RACE SCREEN: mounted')
     await this.props.getUser();
     await this.props.getRaces(this.props.user.id, 'acceptedInvitation', true);
+    // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!RACEESCRENpropsraces', this.props.races)
   }
 
   render() {
-    //the request will be for currRaces for this user
-    //each of these races will have an id for a key
-
+    const filteredRaces = this.props.races.filter(race => !!race.raceInfo.hasStarted)
+    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', this.props.races)
     return (
       <TabView
         navigationState={this.state}
@@ -33,6 +34,7 @@ class Races extends Component {
           first: () => (
             <RacesList
               user={this.props.user}
+              // races={filteredRaces}
               races={this.props.races}
               isCompleted={false}
             />
@@ -40,6 +42,7 @@ class Races extends Component {
           second: () => (
             <RacesList
               user={this.props.user}
+              // races={filteredRaces}
               races={this.props.races}
               isCompleted={true}
             />

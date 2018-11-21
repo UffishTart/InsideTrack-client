@@ -47,6 +47,16 @@ export const postANewRace = (name, length) => async dispatch => {
     console.log(err);
   }
 };
+
+export const putARace = (raceId, updateObj) => async dispatch => {
+  try {
+    const res = await axios.put(`${server}/api/races/${raceId}/`, updateObj);
+    dispatch(fetchSingleRaceFromServer(raceId));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const reducer = (state = [], action) => {
   switch (action) {
     case GET_ALL_RACES:
