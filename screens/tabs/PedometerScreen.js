@@ -10,13 +10,7 @@ import {
   putDailyAverage
 } from "../../store/singleRaceUser";
 import { fetchSingleRaceFromServer } from "../../store/races";
-import {
-  Table,
-  TableWrapper,
-  Row,
-  Rows,
-  Col
-} from "react-native-table-component";
+import { Table, TableWrapper, Row, Rows } from "react-native-table-component";
 
 //Helper function to generate the table row array;
 const arrayGenerater = userRaceInstance => {
@@ -100,6 +94,7 @@ class PedometerSensor extends React.Component {
       const newDate = new Date(gameStartTime);
       startForAverage = newDate;
       startForAverage.setDate(newDate.getDate() - 7);
+
       //if not, set the date to the day user was created in the database
     } else {
       startForAverage = userStartDate;
