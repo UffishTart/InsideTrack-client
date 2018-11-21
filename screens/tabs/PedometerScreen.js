@@ -8,7 +8,7 @@ import {
   putUpdatedPedometerData,
   fetchRaceUserData
 } from "../../store/singleRaceUser";
-
+import { fetchSingleRaceFromServer } from "../../store/races";
 import {
   Table,
   TableWrapper,
@@ -44,8 +44,10 @@ const endDateSetUp = (start, end) => {
   console.log("!!!!! start", start);
   console.log("!!!!! end", end);
 
-  if (end.getTime() - start.getTime() > 24 * 60 * 60 * 1000)
+  if (end.getTime() - start.getTime() > 24 * 60 * 60 * 1000) {
     end.setDate(start.getDate() + 1);
+  }
+  console.log("!!!! after end", end);
   return end;
 };
 
@@ -63,7 +65,7 @@ class PedometerSensor extends React.Component {
 
   async componentDidMount() {
     await this.props.fetchRaceUserData(this.props.raceId);
-
+    await this.props.getSingleRace(this.props.raceId);
     await this._subscribe();
   }
 
@@ -91,27 +93,27 @@ class PedometerSensor extends React.Component {
       }
     );
 
-    const end = new Date();
     const createdDate = this.props.user.createdAt;
     const userStartDate = new Date(createdDate);
+    const gameStartTime = new Date(this.props.races[0].startTime);
     let startForAverage;
     //If user have 7 days data, set the start date to 7 days ago
-    if (ifHaveSevenDaysData(userStartDate, end)) {
+    if (ifHaveSevenDaysData(userStartDate, gameStartTime)) {
       startForAverage = new Date();
-      startForAverage.setDate(end.getDate() - 7);
+      startForAverage.setDate(gameStartTime.getDate() - 7);
 
       //if not, set the date to the day user was created in the database
     } else {
       startForAverage = userStartDate;
     }
 
-    Pedometer.getStepCountAsync(startForAverage, end)
+    Pedometer.getStepCountAsync(startForAverage, gameStartTime)
       .then(
         result => {
-          let daysChecking = ifHaveSevenDaysData(startForAverage, end)
+          let daysChecking = ifHaveSevenDaysData(startForAverage, gameStartTime)
             ? 7
-            : end.getDate() - startForAverage.getDate();
-          let average = ifHaveSevenDaysData(startForAverage, end)
+            : gameStartTime.getDate() - startForAverage.getDate();
+          let average = ifHaveSevenDaysData(startForAverage, gameStartTime)
             ? Math.round(result.steps / daysChecking)
             : this.props.user.estimatedAverage;
           this.setState({
@@ -134,18 +136,20 @@ class PedometerSensor extends React.Component {
         )
       );
 
-    // const startTimeOfRace = new Date(this.props.singleRaceInfo.startTime);
-    // const endTimeForStopGame = endDateSetUp(startTimeOfRace, end);
-    // Pedometer.getStepCountAsync(startTimeOfRace, endTimeForStopGame).then(
-    //   result => {
-    //     this.setState({ stepCountDuringGame: result.steps });
-    //   },
-    //   error => {
-    //     this.setState({
-    //       stepCountDuringGame: "Could not get stepCount: " + error
-    //     });
-    //   }
-    // );
+    const timeOpenApp = new Date();
+    console.log("!!! gameStart", gameStartTime);
+    const endTimeForStopGame = endDateSetUp(gameStartTime, timeOpenApp);
+    console.log("!!!! endTime", endTimeForStopGame);
+    Pedometer.getStepCountAsync(gameStartTime, endTimeForStopGame).then(
+      result => {
+        this.setState({ stepCountDuringGame: result.steps });
+      },
+      error => {
+        this.setState({
+          stepCountDuringGame: "Could not get stepCount: " + error
+        });
+      }
+    );
     // .then(() =>
     //   this.props.putUpdatedPedometerData(
     //     this.state.pastStepCount,
@@ -172,7 +176,7 @@ class PedometerSensor extends React.Component {
     return (
       <View style={styles.tableContainer}>
         <Text style={styles.text}>
-          Steps taken during the game: {this.state.pastStepCount}{" "}
+          Steps taken during the game: {this.state.stepCountDuringGame}{" "}
         </Text>
         <Table borderStyle={{ borderColor: "#017EC2" }}>
           <Row
@@ -216,13 +220,15 @@ const styles = StyleSheet.create({
   text: { textAlign: "center" }
 });
 
-const mapState = ({ singleRaceUser }) => ({
-  singleRaceUser
+const mapState = ({ singleRaceUser, races }) => ({
+  singleRaceUser,
+  races
 });
 const mapDispatch = dispatch => ({
   fetchRaceUserData: raceId => dispatch(fetchRaceUserData(raceId)),
   putUpdatedPedometerData: (dayPedoOutput, userId, raceId) =>
-    dispatch(putUpdatedPedometerData(dayPedoOutput, userId, raceId))
+    dispatch(putUpdatedPedometerData(dayPedoOutput, userId, raceId)),
+  getSingleRace: raceId => dispatch(fetchSingleRaceFromServer(raceId))
 });
 
 export default connect(
