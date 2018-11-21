@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import RacesListItem from './RacesListItem';
+import PendingRacesListItem from './PendingRacesListItem';
 
-const RacesList = props => {
-  const { user, races, inProgressBool } = props;
+const PendingRacesList = props => {
+  const { user, races, isOwnerBool } = props;
+  console.log(props)
   return (
     <View
       style={
-        inProgressBool
+        isOwnerBool
           ? [styles.flexCont, { backgroundColor: '#D9AFAF' }]
           : [styles.flexCont, { backgroundColor: '#A3DDFA' }]
       }
@@ -16,12 +17,11 @@ const RacesList = props => {
         {!!races.length &&
           races
             .filter(race => {
-              console.log('!!!!!!!!!!!!!!!BITCH!!!!!!', race)
-              return race.raceInfo.completedStatus ? race.raceInfo.completedStatus !== inProgressBool : 'null';
+              return race.isOwner ? race.isOwner !== isOwnerBool : 'null';
             })
             .map(race => {
               return (
-                <RacesListItem
+                <PendingRacesListItem
                   key={race.raceId}
                   user={user}
                   race={race}
@@ -33,7 +33,7 @@ const RacesList = props => {
   );
 };
 
-export default RacesList;
+export default PendingRacesList;
 
 const styles = StyleSheet.create({
   container: {
