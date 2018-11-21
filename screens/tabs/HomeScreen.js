@@ -89,7 +89,6 @@ class HomeScreen extends Component {
   }
 
   renderSettings() {
-    console.log('hery')
 
     return <Settings onPress={this.toggleSettingsView.bind(this)} />;
   }

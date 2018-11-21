@@ -34,14 +34,14 @@ class Races extends Component {
             <RacesList
               user={this.props.user}
               races={this.props.races}
-              inProgressBool={true}
+              isCompleted={false}
             />
           ),
           second: () => (
             <RacesList
               user={this.props.user}
               races={this.props.races}
-              inProgressBool={false}
+              isCompleted={true}
             />
           )
         })}
