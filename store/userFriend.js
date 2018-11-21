@@ -42,12 +42,10 @@ export const addNewFriend = (userId, friendId) => async dispatch => {
       userId
     });
     const friend = data;
-    console.log("!!!!!add friend store first call", friend);
     await axios.post(`${server}/api/userFriends/`, {
       userId: friendId,
       friendId: userId
     });
-    console.log("!!!!!add friend store second call", friend);
     dispatch(addANewFriend(friend));
   } catch (err) {
     console.log(err);
@@ -57,7 +55,6 @@ export const addNewFriend = (userId, friendId) => async dispatch => {
 const reducer = (state = [], action) => {
   switch (action.type) {
     case GET_ALL_FRIENDS_OF_USER:
-      console.log("friends in reducer", action.friends);
       return action.friends;
     case ADD_NEW_FRIEND:
       return [...state, action.friend];

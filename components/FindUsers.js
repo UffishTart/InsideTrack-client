@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { fetchAllUsers } from "../store/allUsers";
 import { addNewFriend } from "../store/userFriend";
 import store from "../store";
+import AwesomeAlert from "react-native-awesome-alerts";
 
 const renderUser = user => {
   const { userName } = user;
@@ -20,14 +21,20 @@ class FindUsers extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      query: ""
+      query: "",
+      showAlert: false
     };
     this.findUser = this.findUser.bind(this);
     this.addAsFriend = this.addAsFriend.bind(this);
+    this.toggleAlert = this.toggleAlert.bind(this);
   }
 
   async componentDidMount() {
     await this.props.getUsers();
+  }
+
+  toggleAlert() {
+    this.setState({ showAlert: !this.state.showAlert });
   }
 
   findUser(query) {
@@ -44,11 +51,10 @@ class FindUsers extends Component {
   }
 
   render() {
-    const { query } = this.state;
+    const { query, showAlert } = this.state;
     const { user } = this.props;
     const usersToFind = this.findUser(query);
     const comp = (a, b) => a.toLowerCase() === b.toLowerCase();
-    console.log(query);
 
     return (
       <View style={styles.container}>
@@ -65,11 +71,32 @@ class FindUsers extends Component {
           onChangeText={text => this.setState({ query: text })}
           placeholder="Enter Friend Name Here"
           renderItem={({ userName }) => (
-            <TouchableOpacity
-              onPress={() => this.setState({ query: userName })}
-            >
-              <Text style={styles.itemText}>{userName}</Text>
-            </TouchableOpacity>
+            <View>
+              <TouchableOpacity
+                onPress={() => {
+                  this.setState({ query: userName });
+                  {
+                    /*this.toggleAlert();*/
+                  }
+                }}
+              >
+                <Text style={styles.itemText}>{userName}</Text>
+              </TouchableOpacity>
+              {/*<AwesomeAlert
+                show={showAlert}
+                showProgress={false}
+                title="Add Friend"
+                message="Succeeded!"
+                closeOnTouchOutside={true}
+                closeOnHardwareBackPress={false}
+                showConfirmButton={true}
+                confirmText="Got it!"
+                confirmButtonColor="#DD6B55"
+                onConfirmPressed={() => {
+                  this.toggleAlert();
+                }}
+            />*/}
+            </View>
           )}
         />
         <View style={styles.descriptionContainer}>
