@@ -27,6 +27,8 @@ class Races extends Component {
   render() {
     const filteredRaces = this.props.races.filter(race => !!race.raceInfo.hasStarted)
     console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', this.props.races)
+    console.log('HELLOHELLOHELLOHELLOHELLO', filteredRaces)
+
     return (
       <TabView
         navigationState={this.state}
@@ -34,16 +36,16 @@ class Races extends Component {
           first: () => (
             <RacesList
               user={this.props.user}
-              // races={filteredRaces}
-              races={this.props.races}
+              races={filteredRaces}
+              // races={this.props.races}
               isCompleted={false}
             />
           ),
           second: () => (
             <RacesList
               user={this.props.user}
-              // races={filteredRaces}
-              races={this.props.races}
+              races={filteredRaces}
+              // races={this.props.races}
               isCompleted={true}
             />
           )
