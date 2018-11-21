@@ -24,7 +24,6 @@ class HomeScreen extends Component {
   }
 
   toggleSettingsView = () => {
-    console.log('hery')
     this.setState({ showSettings: !this.state.showSettings })
   }
 

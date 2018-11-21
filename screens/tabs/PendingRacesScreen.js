@@ -18,13 +18,15 @@ class PendingRacesScreen extends Component {
   };
 
   async componentDidMount() {
+    // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!PENDING mounted')
     await this.props.getUser();
     await this.props.getRaces(this.props.user.id, 'hasStarted', false);
+    // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!PENDING propsraces', this.props.races)
+
   }
 
   render() {
-    //the request will be for currRaces for this user
-    //each of these races will have an id for a key
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', this.props.races)
 
     return (
       <TabView
