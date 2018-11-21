@@ -27,7 +27,7 @@ export const fetchRacesDataFromServer = () => async dispatch => {
 export const fetchSingleRaceFromServer = raceId => async dispatch => {
   try {
     const { data } = await axios.get(`${server}/api/races/${raceId}`)
-    const races = data;
+    const races = [data];
     dispatch(getAllRaces(races))
   } catch (err) {
     console.log(err)
@@ -42,8 +42,8 @@ export const postANewRace = (name, length) => async dispatch => {
     });
     const race = data;
     dispatch(createNewRace(race));
+    return race.id
   } catch (err) {
-    console.log('this is the request that failed')
     console.log(err);
   }
 };

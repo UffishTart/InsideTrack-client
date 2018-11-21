@@ -10,8 +10,8 @@ class StartNewRace extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      length: '',
+      name: 'test',
+      length: 'day',
       friendIdArr: [],
       selectedFriendId: 0,
     };
@@ -45,20 +45,17 @@ class StartNewRace extends Component {
   }
 
   async handleSubmit() {
-    const newRace = await this.props.postRace(
+    const newRaceId = await this.props.postRace(
       this.state.name,
       this.state.length
     );
-    await this.props.getAllRaces()
-    console.log('reference the race', this.props.race)
-    this.props.postUserToRace(this.props.user.id, this.props.race.id, true, true);
-    this.state.friendIdArr.map(friendId =>
-      this.props.postUserToRace(friendId, this.props.race.id, false, false)
+    await this.props.postUserToRace(this.props.user.id, newRaceId, true, true);
+    this.state.friendIdArr.map(async friendId =>
+      await this.props.postUserToRace(friendId, newRaceId, false, false)
     );
   }
 
   render() {
-    console.log(this.props.friends)
     return (
       <Modal backgroundColor='blue'>
       <View style={styles.container}>
@@ -80,7 +77,7 @@ class StartNewRace extends Component {
           >
             <Picker.Item label='Please Select A Friend' value={null} />
           {this.props.friends && this.props.friends.map(friend => 
-            <Picker.Item key={friend.friendId.toString()} label={friend.friendId.toString()} value={friend.friendId} />
+            <Picker.Item key={friend.friendId} label={friend.friendInfo.userName} value={friend.friendId} />
           )}
           </Picker>
           <TouchableOpacity onPress={this.addFriend}><Text>Add Friend</Text></TouchableOpacity>
@@ -91,6 +88,9 @@ class StartNewRace extends Component {
           </TouchableOpacity>
         </View>  
         <Button title='go back' onPress={this.props.onPress} />
+        {this.props.friends && this.props.friends
+          .filter(friend => this.state.friendIdArr.includes(friend.friendId))
+          .map(friend => <Text key={friend.friendId}>{friend.friendInfo.userName}</Text>)}
       </View>
       </Modal>
     )
@@ -127,7 +127,7 @@ const mapDispatch = dispatch => {
     getRace: raceId => dispatch(fetchSingleRaceFromServer(raceId)),
     postRace: (name, length) => dispatch(postANewRace(name, length)),
     postUserToRace: (userId, raceId, isOwner, acceptedInvitation) =>
-      postAUserRaceEntry(userId, raceId, isOwner, acceptedInvitation),
+      dispatch(postAUserRaceEntry(userId, raceId, isOwner, acceptedInvitation))
   };
 };
 
