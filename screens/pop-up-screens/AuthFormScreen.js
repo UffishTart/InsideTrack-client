@@ -12,9 +12,11 @@ export default class AuthFormScreen extends React.Component {
     this.state = {
       email: '',
       password: '',
+      username: ''
     }
     this.emailHandleChange = this.emailHandleChange.bind(this)
     this.passwordHandleChange = this.passwordHandleChange.bind(this)
+    this.usernameHandleChange = this.usernameHandleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
@@ -31,12 +33,19 @@ export default class AuthFormScreen extends React.Component {
     })
   }
 
+  usernameHandleChange(text) {
+    this.setState({
+      username: text
+    })
+  }
+
   async handleSubmit(event) {
     event.preventDefault()
     const formType = this.props.name
     const email = this.state.email
     const password = this.state.password
-    await this.props.auth(email, password, formType)
+    const username = this.state.username
+    await this.props.auth(email, password, formType, username)
     const correctLogin = await isSignedIn()
     console.log('the call to isSignedIn in handleSubmit', correctLogin)
     correctLogin ?
@@ -65,6 +74,17 @@ export default class AuthFormScreen extends React.Component {
             onChangeText={this.passwordHandleChange}
             keyboardType="default"
           />
+          {this.props.name === 'signup' && 
+          <View>
+            <Text>USERNAME</Text>
+            <TextInput
+              placeholder={'username'}
+              value={this.state.username}
+              onChangeText={this.usernameHandleChange}
+              keyboardType="default"
+            />
+          </View>
+          }
         </View>
 
         <TouchableOpacity
@@ -141,7 +161,7 @@ const mapSignup = state => {
 
 const mapDispatch = dispatch => {
   return {
-    auth: (email, password, formType) => dispatch(auth(email, password, formType))
+    auth: (email, password, formType, username) => dispatch(auth(email, password, formType, username))
   }
 }
 

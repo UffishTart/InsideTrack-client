@@ -4,16 +4,28 @@ import HomeScreen from '../screens/tabs/HomeScreen'
 import ProfileScreen from '../screens/tabs/ProfileScreen'
 import RacesScreen from '../screens/tabs/RacesScreen'
 import PendingRacesScreen from '../screens/tabs/PendingRacesScreen'
-import { Login } from '../screens/pop-up-screens/AuthFormScreen'
-
+import { Login, Signup} from '../screens/pop-up-screens/AuthFormScreen'
+import AuthFormSelect from '../components/AuthFormSelect'
 import { createStackNavigator, createSwitchNavigator, createBottomTabNavigator } from 'react-navigation'
 // import Icon from 'react-native-vector-icons/Ionicons' //Need to install
 
-export const SignedOut = createStackNavigator({
+const SignedOut = createStackNavigator({
+  AuthFormSelect: {
+    screen: AuthFormSelect,
+    navigationOptions: {
+      title: 'Welcome'
+    }
+  },
   Login: {
     screen: Login,
     navigationOptions: {
       title: "Login",
+    }
+  },
+  Signup: {
+    screen: Signup,
+    navigationOptions: {
+      title: "Sign Up"
     }
   }
 })
