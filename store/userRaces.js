@@ -16,11 +16,12 @@ const postNewUserRace = entry => ({
 
 export const fetchUserRacesByUser = (
   userId,
-  inviteIndicator
+  queryType,
+  queryBoolean
 ) => async dispatch => {
   try {
     const { data } = await axios.get(
-      `${server}/api/userRaces/races/${userId}?acceptedInvitation=${inviteIndicator}`
+      `${server}/api/userRaces/races/${userId}?${queryType}=${queryBoolean}`
     );
     const races = data;
     dispatch(getAllUserRaces(races));
@@ -39,7 +40,7 @@ export const postAUserRaceEntry = (
     const reqBody = { userId, raceId, isOwner, acceptedInvitation };
     const { data } = await axios.post(`${server}/api/userRaces/`, reqBody);
     const raceEntry = data;
-    dispatch(postNewUserRace(raceEntry[0]));
+    dispatch(postNewUserRace(raceEntry));
   } catch (err) {
     console.log(err);
   }
