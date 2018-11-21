@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import RacesListItem from './RacesListItem';
 
@@ -16,6 +16,7 @@ const RacesList = props => {
         {!!races.length &&
           races
             .filter(race => {
+              console.log('!!!!!!!!!!!!!!!BITCH!!!!!!', race)
               return race.raceInfo.completedStatus ? race.raceInfo.completedStatus !== inProgressBool : 'null';
             })
             .map(race => {

@@ -4,6 +4,7 @@ import PendingRacesListItem from './PendingRacesListItem';
 
 const PendingRacesList = props => {
   const { user, races, isOwnerBool } = props;
+  console.log(props)
   return (
     <View
       style={

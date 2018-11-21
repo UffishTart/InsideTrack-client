@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Button } from 'react-native';
 import { Font } from 'expo';
+import { connect } from 'react-redux'
 import { updateRaceUserData } from '../store/singleRaceUser'
 
 class PendingRacesListItem extends Component {

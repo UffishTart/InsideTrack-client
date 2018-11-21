@@ -65,8 +65,8 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     getUser: () => dispatch(me()),
-    getRaces: (userId, inviteIndicator) =>
-      dispatch(fetchUserRacesByUser(userId, inviteIndicator))
+    getRaces: (userId, queryType, queryIndicator) =>
+      dispatch(fetchUserRacesByUser(userId, queryType, queryIndicator))
   };
 };
 
