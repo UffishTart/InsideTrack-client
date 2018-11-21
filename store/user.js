@@ -20,7 +20,6 @@ const removeUser = () => ({ type: REMOVE_USER });
 export const me = () => async dispatch => {
   try {
     const res = await axios.get(`${server}/auth/me`);
-    console.log(res.data);
     dispatch(getUser(res.data || defaultUser));
   } catch (err) {
     console.error(err);
@@ -29,7 +28,6 @@ export const me = () => async dispatch => {
 
 export const auth = (email, password, method) => async dispatch => {
   let res;
-  console.log("should say login", method);
   try {
     res = await axios.post(`${server}/auth/${method}`, { email, password });
   } catch (authError) {

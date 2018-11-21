@@ -39,7 +39,7 @@ export const postAUserRaceEntry = (
     const reqBody = { userId, raceId, isOwner, acceptedInvitation };
     const { data } = await axios.post(`${server}/api/userRaces/`, reqBody);
     const raceEntry = data;
-    dispatch(postNewUserRace(raceEntry));
+    dispatch(postNewUserRace(raceEntry[0]));
   } catch (err) {
     console.log(err);
   }
