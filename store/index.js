@@ -5,6 +5,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import user from "./user";
 import races from "./races";
 import userRaces from "./userRaces";
+import userRacesPending from "./userRacesPending";
 import singleRaceUser from "./singleRaceUser";
 import userFriend from "./userFriend";
 import allUsers from "./allUsers";
@@ -15,7 +16,8 @@ const reducer = combineReducers({
   userRaces,
   singleRaceUser,
   userFriend,
-  allUsers
+  allUsers,
+  userRacesPending
 });
 
 const middleware = composeWithDevTools(

@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { Dimensions } from "react-native";
 import PendingRacesList from "../../components/PendingRacesList";
 import { TabView, SceneMap } from "react-native-tab-view";
-import { fetchUserRacesByUser } from "../../store/userRaces";
+import { fetchUserRacesByUser } from "../../store/userRacesPending";
 import { connect } from "react-redux";
 import { me } from "../../store/user";
 
@@ -59,7 +59,7 @@ class PendingRacesScreen extends Component {
 
 const mapState = state => {
   return {
-    races: state.userRaces,
+    races: state.userRacesPending,
     user: state.user
   };
 };
