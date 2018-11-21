@@ -8,6 +8,7 @@ import {
   putUpdatedPedometerData,
   fetchRaceUserData
 } from "../../store/singleRaceUser";
+
 import {
   Table,
   TableWrapper,
@@ -19,7 +20,6 @@ import {
 //Helper function to generate the table row array;
 const arrayGenerater = userRaceInstance => {
   const instanceArr = [];
-  // [ "Players", "Improvement", "Past Steps", "Place"]
   instanceArr.push(userRaceInstance.userInfo.userName);
   instanceArr.push(userRaceInstance.percentImprovement);
   instanceArr.push(userRaceInstance.dailyAverage);
@@ -39,6 +39,16 @@ const ifHaveSevenDaysData = (createdDate, usingDate) => {
     return difference >= 7;
   }
 };
+
+const endDateSetUp = (start, end) => {
+  console.log("!!!!! start", start);
+  console.log("!!!!! end", end);
+
+  if (end.getTime() - start.getTime() > 24 * 60 * 60 * 1000)
+    end.setDate(start.getDate() + 1);
+  return end;
+};
+
 class PedometerSensor extends React.Component {
   constructor(props) {
     super(props);
@@ -46,15 +56,14 @@ class PedometerSensor extends React.Component {
       isPedometerAvailable: "checking",
       pastStepCount: 0,
       averageSteps: 0,
-      currentStepCount: 0,
-      days: 0,
-      startMonth: 0,
-      endMonth: 0
+      stepCountDuringGame: 0,
+      days: 0
     };
   }
 
   async componentDidMount() {
     await this.props.fetchRaceUserData(this.props.raceId);
+
     await this._subscribe();
   }
 
@@ -85,32 +94,30 @@ class PedometerSensor extends React.Component {
     const end = new Date();
     const createdDate = this.props.user.createdAt;
     const userStartDate = new Date(createdDate);
-    let start;
+    let startForAverage;
     //If user have 7 days data, set the start date to 7 days ago
     if (ifHaveSevenDaysData(userStartDate, end)) {
-      start = new Date();
-      start.setDate(end.getDate() - 7);
+      startForAverage = new Date();
+      startForAverage.setDate(end.getDate() - 7);
 
       //if not, set the date to the day user was created in the database
     } else {
-      start = userStartDate;
+      startForAverage = userStartDate;
     }
 
-    Pedometer.getStepCountAsync(start, end)
+    Pedometer.getStepCountAsync(startForAverage, end)
       .then(
         result => {
-          let daysChecking = ifHaveSevenDaysData(start, end)
+          let daysChecking = ifHaveSevenDaysData(startForAverage, end)
             ? 7
-            : end.getDate() - start.getDate();
-          let average = ifHaveSevenDaysData(start, end)
+            : end.getDate() - startForAverage.getDate();
+          let average = ifHaveSevenDaysData(startForAverage, end)
             ? Math.round(result.steps / daysChecking)
             : this.props.user.estimatedAverage;
           this.setState({
             pastStepCount: result.steps,
             days: daysChecking,
-            averageSteps: average,
-            startMonth: start.getMonth(),
-            endMonth: end.getMonth()
+            averageSteps: average
           });
         },
         error => {
@@ -126,6 +133,26 @@ class PedometerSensor extends React.Component {
           1
         )
       );
+
+    // const startTimeOfRace = new Date(this.props.singleRaceInfo.startTime);
+    // const endTimeForStopGame = endDateSetUp(startTimeOfRace, end);
+    // Pedometer.getStepCountAsync(startTimeOfRace, endTimeForStopGame).then(
+    //   result => {
+    //     this.setState({ stepCountDuringGame: result.steps });
+    //   },
+    //   error => {
+    //     this.setState({
+    //       stepCountDuringGame: "Could not get stepCount: " + error
+    //     });
+    //   }
+    // );
+    // .then(() =>
+    //   this.props.putUpdatedPedometerData(
+    //     this.state.pastStepCount,
+    //     this.props.user.id,
+    //     1
+    //   )
+    // );
   };
 
   _unsubscribe = () => {
@@ -145,7 +172,7 @@ class PedometerSensor extends React.Component {
     return (
       <View style={styles.tableContainer}>
         <Text style={styles.text}>
-          Steps taken in the last 24 hours: {this.state.pastStepCount}{" "}
+          Steps taken during the game: {this.state.pastStepCount}{" "}
         </Text>
         <Table borderStyle={{ borderColor: "#017EC2" }}>
           <Row
@@ -189,7 +216,9 @@ const styles = StyleSheet.create({
   text: { textAlign: "center" }
 });
 
-const mapState = ({ singleRaceUser }) => ({ singleRaceUser });
+const mapState = ({ singleRaceUser }) => ({
+  singleRaceUser
+});
 const mapDispatch = dispatch => ({
   fetchRaceUserData: raceId => dispatch(fetchRaceUserData(raceId)),
   putUpdatedPedometerData: (dayPedoOutput, userId, raceId) =>
@@ -200,32 +229,3 @@ export default connect(
   mapState,
   mapDispatch
 )(PedometerSensor);
-
-// <View style={styles.container}>
-//             <View>
-//               <Text>
-//                 Pedometer.isAvailableAsync(): {this.state.isPedometerAvailable}
-//               </Text>
-//               <Text>user info: {this.props.user.email}</Text>
-//               <Text>average steps: {this.state.averageSteps}</Text>
-//               <Text>days:{this.state.days}</Text>
-//               <Text>state month:{this.state.startMonth}</Text>
-//               <Text>end month:{this.state.endMonth}</Text>
-//               <Text>
-//                 Steps taken in the last 24 hours: {this.state.pastStepCount}
-//               </Text>
-//               <Text>
-//                 Walk! And watch this go up: {this.state.currentStepCount}
-//               </Text>
-//               <Text>Users</Text>
-//               <View>
-//                 {this.props.singleRaceUser.map(user => {
-//                   return (
-//                     <View key={user.userId}>
-//                       <Text>{user.place}</Text>
-//                     </View>
-//                   );
-//                 })}
-//               </View>
-//             </View>
-//           </View>

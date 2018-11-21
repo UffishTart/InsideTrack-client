@@ -47,7 +47,7 @@ export const addNewFriend = (userId, friendId) => async dispatch => {
       userId: friendId,
       friendId: userId
     });
-
+    console.log(friend);
     dispatch(addANewFriend(friend));
   } catch (err) {
     console.log(err);
