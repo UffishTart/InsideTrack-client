@@ -1,25 +1,25 @@
 //import liraries
 import React, { Component } from "react";
 import { Dimensions } from "react-native";
-import RacesList from "../../components/RacesList";
+import PendingRacesList from "../../components/PendingRacesList";
 import { TabView, SceneMap } from "react-native-tab-view";
 import { fetchUserRacesByUser } from "../../store/userRaces";
 import { connect } from "react-redux";
 import { me } from "../../store/user";
 
 // create a component
-class Races extends Component {
+class PendingRacesScreen extends Component {
   state = {
     index: 0,
     routes: [
-      { key: "first", title: "Current Races" },
-      { key: "second", title: "Past Races" }
+      { key: "first", title: "Created Races" },
+      { key: "second", title: "Invitations" }
     ]
   };
 
   async componentDidMount() {
     await this.props.getUser();
-    await this.props.getRaces(this.props.user.id, 'acceptedInvitation', true);
+    await this.props.getRaces(this.props.user.id, 'hasStarted', false);
   }
 
   render() {
@@ -31,17 +31,17 @@ class Races extends Component {
         navigationState={this.state}
         renderScene={SceneMap({
           first: () => (
-            <RacesList
+            <PendingRacesList
               user={this.props.user}
               races={this.props.races}
-              inProgressBool={true}
+              isOwnerBool={true}
             />
           ),
           second: () => (
-            <RacesList
+            <PendingRacesList
               user={this.props.user}
               races={this.props.races}
-              inProgressBool={false}
+              isOwnerBool={false}
             />
           )
         })}
@@ -73,4 +73,4 @@ const mapDispatch = dispatch => {
 export default connect(
   mapState,
   mapDispatch
-)(Races);
+)(PendingRacesScreen);

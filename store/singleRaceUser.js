@@ -31,6 +31,7 @@ export const putDailyAverage = (steps, userId, raceId) => async dispatch => {
     console.log(err);
   }
 };
+
 export const putUpdatedPedometerData = (
   dayPedoOutput,
   userId,
@@ -70,6 +71,19 @@ export const putUpdatedPedometerData = (
         }
       });
     const resolved = await Promise.all(sortedUsersArray);
+    dispatch(fetchRaceUserData(raceId));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const updateRaceUserData = (
+  userId,
+  raceId,
+  updateObj
+) => async dispatch => {
+  try {
+    await axios.put(`${server}/api/userRaces/${raceId}/${userId}`, updateObj);
     dispatch(fetchRaceUserData(raceId));
   } catch (err) {
     console.log(err);

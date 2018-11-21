@@ -1,10 +1,9 @@
 
-import React, { Component } from 'react';
-import { StyleSheet, Text, View, } from 'react-native';
+import { StyleSheet } from 'react-native';
 import HomeScreen from '../screens/tabs/HomeScreen'
 import ProfileScreen from '../screens/tabs/ProfileScreen'
 import RacesScreen from '../screens/tabs/RacesScreen'
-import PedometerScreen from '../screens/tabs/PedometerScreen'
+import PendingRacesScreen from '../screens/tabs/PendingRacesScreen'
 import { Login } from '../screens/pop-up-screens/AuthFormScreen'
 
 import { createStackNavigator, createSwitchNavigator, createBottomTabNavigator } from 'react-navigation'
@@ -36,6 +35,12 @@ const SignedIn = createBottomTabNavigator({
     screen: ProfileScreen,
     navigationOptions: {
       tabBarLabel: 'My Steed',
+    }
+  },
+  PendingRaces: {
+    screen: PendingRacesScreen,
+    navigationOptions: {
+      tabBarLabel: 'Pending Races',
     }
   },
 })
