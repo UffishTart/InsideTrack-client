@@ -3,11 +3,11 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import RacesListItem from './RacesListItem';
 
 const RacesList = props => {
-  const { user, races, inProgressBool } = props;
+  const { user, races, isCompleted } = props;
   return (
     <View
       style={
-        inProgressBool
+        isCompleted
           ? [styles.flexCont, { backgroundColor: '#D9AFAF' }]
           : [styles.flexCont, { backgroundColor: '#A3DDFA' }]
       }
@@ -16,8 +16,7 @@ const RacesList = props => {
         {!!races.length &&
           races
             .filter(race => {
-              console.log('!!!!!!!!!!!!!!!BITCH!!!!!!', race)
-              return race.raceInfo.completedStatus ? race.raceInfo.completedStatus !== inProgressBool : 'null';
+              return (race.raceInfo.completedStatus === isCompleted);
             })
             .map(race => {
               return (

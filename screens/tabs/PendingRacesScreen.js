@@ -12,8 +12,8 @@ class PendingRacesScreen extends Component {
   state = {
     index: 0,
     routes: [
-      { key: "first", title: "Created Races" },
-      { key: "second", title: "Invitations" }
+      { key: "third", title: "Created Races" },
+      { key: "fourth", title: "Invitations" }
     ]
   };
 
@@ -30,14 +30,14 @@ class PendingRacesScreen extends Component {
       <TabView
         navigationState={this.state}
         renderScene={SceneMap({
-          first: () => (
+          third: () => (
             <PendingRacesList
               user={this.props.user}
               races={this.props.races}
               isOwnerBool={true}
             />
           ),
-          second: () => (
+          fourth: () => (
             <PendingRacesList
               user={this.props.user}
               races={this.props.races}
