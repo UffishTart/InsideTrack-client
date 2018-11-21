@@ -42,10 +42,12 @@ export const addNewFriend = (userId, friendId) => async dispatch => {
       userId
     });
     const friend = data;
+
     await axios.post(`${server}/api/userFriends/`, {
       userId: friendId,
       friendId: userId
     });
+
     dispatch(addANewFriend(friend));
   } catch (err) {
     console.log(err);
