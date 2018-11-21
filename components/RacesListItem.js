@@ -37,17 +37,17 @@ class RacesListItem extends Component {
             <Text style={styles.raceTitle}>
               Name:
             <Text style={styles.raceInfo}>
-                {'  '}
-                {this.props.race.raceInfo.name}
+                <Text>{'  '}</Text>
+                <Text>{this.props.race.raceInfo.name}</Text>
               </Text>
             </Text>
           ) : null}
           {this.state.fontLoaded ? (
             <Text style={styles.raceTitle}>
               Length:
-            <Text style={styles.raceInfo}>
-                {'  '}
-                {this.props.race.raceInfo.length}
+              <Text style={styles.raceInfo}>
+                <Text>{'  '}</Text>
+                <Text>{this.props.race.raceInfo.length}</Text>
               </Text>
             </Text>
           ) : null}

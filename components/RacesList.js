@@ -13,15 +13,15 @@ const RacesList = props => {
       }
     >
       <ScrollView>
-        {races &&
+        {!!races.length &&
           races
             .filter(race => {
-              return race.raceInfo.completedStatus !== inProgressBool;
+              return race.raceInfo.completedStatus ? race.raceInfo.completedStatus !== inProgressBool : 'null';
             })
             .map(race => {
               return (
                 <RacesListItem
-                  key={race.raceInfo.name}
+                  key={race.raceId}
                   user={user}
                   race={race}
                 />
