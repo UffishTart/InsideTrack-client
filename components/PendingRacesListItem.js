@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Button } from 'react-native';
 import { Font } from 'expo';
 import { connect } from 'react-redux'
-import { putARace } from '../store/races'
 import { updateRaceUserData } from '../store/singleRaceUser'
 
 class PendingRacesListItem extends Component {
@@ -24,13 +23,6 @@ class PendingRacesListItem extends Component {
   togglePendingRaceView = () => {
     this.setState({ showPending: !this.state.showPending });
     this.props.joinRace(this.props.race.userId, this.props.race.raceId, { acceptedInvitation: this.state.showPending })
-  };
-
-
-  toggleStart = () => {
-    const startTime = new Date()
-    const hasStarted = true
-    this.props.startRace(this.props.race.raceId, { hasStarted, startTime })
   };
 
   renderListItem() {
@@ -64,7 +56,7 @@ class PendingRacesListItem extends Component {
     return (
       <View>
         <Button
-          onPress={this.toggleStart}
+          onPress={() => this.props.toggleStart(this.props.race.raceId)}
           title='Start'
         />
       </View>
@@ -152,8 +144,6 @@ const mapDispatch = dispatch => {
   return {
     joinRace: (userId, raceId, updateObj) =>
       dispatch(updateRaceUserData(userId, raceId, updateObj)),
-    startRace: (raceId, updateObj) =>
-      dispatch(putARace(raceId, updateObj))
   };
 };
 

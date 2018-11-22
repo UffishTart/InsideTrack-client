@@ -3,31 +3,42 @@ import React, { Component } from "react";
 import { Dimensions } from "react-native";
 import PendingRacesList from "../../components/PendingRacesList";
 import { TabView, SceneMap } from "react-native-tab-view";
-import { fetchUserRacesByUser } from "../../store/userRacesPending";
+import { putARace } from '../../store/races'
+import { fetchPendingUserRacesByUser } from "../../store/userRacesPending";
+import { fetchUserRacesByUser } from "../../store/userRaces";
 import { connect } from "react-redux";
 import { me } from "../../store/user";
 
 // create a component
 class PendingRacesScreen extends Component {
-  state = {
-    index: 0,
-    routes: [
-      { key: "third", title: "Created Races" },
-      { key: "fourth", title: "Invitations" }
-    ]
-  };
+  constructor(props) {
+    super(props)
 
-  async componentDidMount() {
-    // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!PENDING mounted')
-    await this.props.getUser();
-    await this.props.getRaces(this.props.user.id, 'hasStarted', false);
-    // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!PENDING propsraces', this.props.races)
-
+    this.state = {
+      index: 0,
+      routes: [
+        { key: "third", title: "Created Races" },
+        { key: "fourth", title: "Invitations" }
+      ]
+    }
+    this.toggleStart = this.toggleStart.bind(this)
   }
 
-  render() {
-    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', this.props.races)
+  async componentDidMount() {
+    await this.props.getUser();
+    await this.props.getPendingRaces(this.props.user.id, 'hasStarted', false);
+  }
 
+  toggleStart = async (raceId) => {
+    const startTime = new Date()
+    const hasStarted = true
+    await this.props.startRace(raceId, { hasStarted, startTime })
+    await this.props.getPendingRaces(this.props.user.id, 'hasStarted', false);
+    await this.props.getRaces(this.props.user.id, 'acceptedInvitation', true);
+
+  };
+
+  render() {
     return (
       <TabView
         navigationState={this.state}
@@ -37,6 +48,7 @@ class PendingRacesScreen extends Component {
               user={this.props.user}
               races={this.props.races}
               isOwnerBool={true}
+              toggleStart={this.toggleStart}
             />
           ),
           fourth: () => (
@@ -44,6 +56,7 @@ class PendingRacesScreen extends Component {
               user={this.props.user}
               races={this.props.races}
               isOwnerBool={false}
+              toggleStart={this.toggleStart}
             />
           )
         })}
@@ -67,8 +80,12 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     getUser: () => dispatch(me()),
+    getPendingRaces: (userId, queryType, queryIndicator) =>
+      dispatch(fetchPendingUserRacesByUser(userId, queryType, queryIndicator)),
     getRaces: (userId, queryType, queryIndicator) =>
-      dispatch(fetchUserRacesByUser(userId, queryType, queryIndicator))
+      dispatch(fetchUserRacesByUser(userId, queryType, queryIndicator)),
+    startRace: (raceId, updateObj) =>
+      dispatch(putARace(raceId, updateObj))
   };
 };
 
