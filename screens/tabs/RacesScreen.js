@@ -18,16 +18,14 @@ class Races extends Component {
   };
 
   async componentDidMount() {
-    // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!RACE SCREEN: mounted')
     await this.props.getUser();
-    await this.props.getRaces(this.props.user.id, 'acceptedInvitation', true);
-    // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!RACEESCRENpropsraces', this.props.races)
+    await this.props.getRaces(this.props.user.id, "acceptedInvitation", true);
   }
 
   render() {
-    const filteredRaces = this.props.races.filter(race => !!race.raceInfo.hasStarted)
-    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', this.props.races)
-    console.log('HELLOHELLOHELLOHELLOHELLO', filteredRaces)
+    const filteredRaces = this.props.races.filter(
+      race => !!race.raceInfo.hasStarted
+    );
 
     return (
       <TabView
