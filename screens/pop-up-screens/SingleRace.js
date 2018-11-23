@@ -1,8 +1,8 @@
 //import liraries
-import React, { Component } from 'react';
-import { View, Button, Text, StyleSheet, Modal } from 'react-native';
-import HorseComponent from '../../components/HorseComponent';
-import PedometerSensor from '../tabs/PedometerScreen';
+import React, { Component } from "react";
+import { View, Button, Text, StyleSheet, Modal } from "react-native";
+
+import PedometerSensor from "../tabs/PedometerScreen";
 
 // create a component
 class SingleRace extends Component {
@@ -14,7 +14,6 @@ class SingleRace extends Component {
     return (
       <Modal>
         <View style={styles.container}>
-          <HorseComponent />
           <PedometerSensor user={this.props.user} raceId={this.props.raceId} />
           <Button title="Back" onPress={this.props.toggleSingleRaceView}>
             SingleRace
@@ -29,10 +28,10 @@ class SingleRace extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#2c3e50',
-  },
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#2c3e50"
+  }
 });
 
 //make this component available to the app

@@ -4,6 +4,7 @@ import { Pedometer } from "expo";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { connect } from "react-redux";
 import { me } from "../../store/user";
+import Track from "../../components/Track";
 import {
   putUpdatedPedometerData,
   fetchRaceUserData,
@@ -20,6 +21,16 @@ const arrayGenerater = userRaceInstance => {
   instanceArr.push(userRaceInstance.dailyAverage);
   instanceArr.push(userRaceInstance.place);
   return instanceArr;
+};
+
+const trimedObjGenerater = userRaceInstance => {
+  return {
+    userName: userRaceInstance.userInfo.userName,
+    userId: Number(userRaceInstance.userInfo.id),
+    Improvement: Number(userRaceInstance.percentImprovement),
+    dailyAverage: Number(userRaceInstance.dailyAverage),
+    place: Number(userRaceInstance.place)
+  };
 };
 
 //Helper funtion that can check if user have 7 full days info to generate the average steps
@@ -167,9 +178,19 @@ class PedometerSensor extends React.Component {
         .sort((user1, user2) => user1.place - user2.place)
         .map(el => arrayGenerater(el))
     };
-
+    const racingUserData = this.props.singleRaceUser
+      .filter(el => el.acceptedInvitation)
+      .map(el => trimedObjGenerater(el))
+      .sort((user1, user2) => user1.place - user2.place);
     return (
       <View style={styles.tableContainer}>
+        <Track
+          data={racingUserData}
+          selectX={datum => datum.Improvement}
+          selectY={datum => datum.userId}
+          width={360}
+          height={300}
+        />
         <Text style={styles.text}>
           Steps taken during the game: {this.state.stepCountDuringGame}{" "}
         </Text>
