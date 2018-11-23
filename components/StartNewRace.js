@@ -1,24 +1,37 @@
-import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, TextInput, Picker, Button, StyleSheet, Modal } from 'react-native';
-import { me } from '../store/user';
-import { fetchRacesDataFromServer, fetchSingleRaceFromServer, postANewRace } from '../store/races';
-import { postAUserRaceEntry } from '../store/userRacesPending';
-import { getFriendsOfUser } from '../store/userFriend';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  Picker,
+  Button,
+  StyleSheet,
+  Modal
+} from "react-native";
+import { me } from "../store/user";
+import {
+  fetchRacesDataFromServer,
+  fetchSingleRaceFromServer,
+  postANewRace
+} from "../store/races";
+import { postAUserRaceEntry } from "../store/userRacesPending";
+import { getFriendsOfUser } from "../store/userFriend";
+import { connect } from "react-redux";
 
 class StartNewRace extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: 'test',
-      length: 'day',
+      name: "test",
+      length: "day",
       friendIdArr: [],
-      selectedFriendId: 0,
+      selectedFriendId: 0
     };
-    this.nameHandleChange = this.nameHandleChange.bind(this)
-    this.lengthHandleChange = this.lengthHandleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.addFriend = this.addFriend.bind(this)
+    this.nameHandleChange = this.nameHandleChange.bind(this);
+    this.lengthHandleChange = this.lengthHandleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.addFriend = this.addFriend.bind(this);
   }
 
   async componentDidMount() {
@@ -29,19 +42,19 @@ class StartNewRace extends Component {
   nameHandleChange(text) {
     this.setState({
       name: text
-    })
+    });
   }
 
   lengthHandleChange(text) {
     this.setState({
       length: text
-    })
+    });
   }
 
   addFriend() {
     this.setState({
       friendIdArr: [...this.state.friendIdArr, this.state.selectedFriend]
-    })
+    });
   }
 
   async handleSubmit() {
@@ -50,72 +63,88 @@ class StartNewRace extends Component {
       this.state.length
     );
     await this.props.postUserToRace(this.props.user.id, newRaceId, true, true);
-    this.state.friendIdArr.map(async friendId =>
-      await this.props.postUserToRace(friendId, newRaceId, false, false)
+    this.state.friendIdArr.map(
+      async friendId =>
+        await this.props.postUserToRace(friendId, newRaceId, false, false)
     );
   }
 
   render() {
     return (
-      <Modal backgroundColor='blue'>
+      <Modal backgroundColor="blue">
         <View style={styles.container}>
           <View>
             <Text>Start a Race!</Text>
             <TextInput
-              placeholder={'Race Name'}
+              placeholder={"Race Name"}
               value={this.state.name}
               onChangeText={this.nameHandleChange}
             />
             <TextInput
-              placeholder={'Race Length'}
+              placeholder={"Race Length"}
               value={this.state.length}
               onChangeText={this.lengthHandleChange}
             />
             <Picker
               selectedValue={this.state.selectedFriend}
-              onValueChange={(friendValue => this.setState({ selectedFriend: friendValue }))}
+              onValueChange={friendValue =>
+                this.setState({ selectedFriend: friendValue })
+              }
             >
-              <Picker.Item label='Please Select A Friend' value={null} />
-              {this.props.friends && this.props.friends.map(friend =>
-                <Picker.Item key={friend.friendId} label={friend.friendInfo.userName} value={friend.friendId} />
-              )}
+              <Picker.Item label="Please Select A Friend" value={null} />
+              {this.props.friends &&
+                this.props.friends.map(friend => {
+                  console.log("@@@@@Friend", friend);
+                  return (
+                    <Picker.Item
+                      key={friend.friendId}
+                      label={friend.friendInfo.userName}
+                      value={friend.friendId}
+                    />
+                  );
+                })}
             </Picker>
-            <TouchableOpacity onPress={this.addFriend}><Text>Add Friend</Text></TouchableOpacity>
-            <TouchableOpacity
-              onPress={this.handleSubmit}
-            >
+            <TouchableOpacity onPress={this.addFriend}>
+              <Text>Add Friend</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this.handleSubmit}>
               <Text>Submit</Text>
             </TouchableOpacity>
           </View>
-          <Button title='go back' onPress={this.props.onPress} />
-          {this.props.friends && this.props.friends
-            .filter(friend => this.state.friendIdArr.includes(friend.friendId))
-            .map(friend => <Text key={friend.friendId}>{friend.friendInfo.userName}</Text>)}
+          <Button title="go back" onPress={this.props.onPress} />
+          {this.props.friends &&
+            this.props.friends
+              .filter(friend =>
+                this.state.friendIdArr.includes(friend.friendId)
+              )
+              .map(friend => (
+                <Text key={friend.friendId}>{friend.friendInfo.userName}</Text>
+              ))}
         </View>
       </Modal>
-    )
+    );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center"
   },
   picker: {
     paddingTop: 220,
-    color: 'blue',
+    color: "blue",
     height: 50,
     width: 100
   }
-})
+});
 
 const mapState = state => {
   return {
     race: state.races,
     user: state.user,
-    friends: state.userFriend,
+    friends: state.userFriend
   };
 };
 
@@ -135,4 +164,3 @@ export default connect(
   mapState,
   mapDispatch
 )(StartNewRace);
-
