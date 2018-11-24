@@ -1,7 +1,13 @@
 import Expo from "expo";
 import React from "react";
 import { Pedometer } from "expo";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ImageBackground,
+  ScrollView
+} from "react-native";
 import { connect } from "react-redux";
 import { me } from "../../store/user";
 
@@ -183,7 +189,7 @@ class PedometerSensor extends React.Component {
       .filter(el => el.acceptedInvitation)
       .map(el => trimedObjGenerater(el))
       .sort((user1, user2) => user1.place - user2.place);
-    console.log("!!!!! race", racingUserData);
+
     return (
       !!racingUserData.length && (
         <View style={styles.tableContainer}>
@@ -211,13 +217,19 @@ class PedometerSensor extends React.Component {
               />
             </TableWrapper>
           </Table>
-          <Track
-            data={racingUserData}
-            selectX={datum => datum.Improvement}
-            selectY={datum => datum.userId}
-            width={300}
-            height={350}
-          />
+          <ImageBackground
+            style={styles.photo}
+            source={require("../../assets/trackPhoto.jpg")}
+          >
+            <Track
+              data={racingUserData}
+              selectX={datum => datum.Improvement}
+              selectY={datum => datum.userId}
+              steps={this.state.pastStepCount}
+              width={300}
+              height={350}
+            />
+          </ImageBackground>
           {/*<TrackWithCircle
             data={racingUserData}
             selectX={datum => datum.Improvement}
@@ -248,7 +260,8 @@ const styles = StyleSheet.create({
   head: { height: 40, backgroundColor: "#014D7F" },
   wrapper: { flexDirection: "row" },
   row: { height: 28, backgroundColor: "#9AE0FF" },
-  text: { textAlign: "center" }
+  text: { textAlign: "center" },
+  photo: { width: "100%", height: "80%", paddingTop: 10 }
 });
 
 const mapState = ({ singleRaceUser, races }) => ({
