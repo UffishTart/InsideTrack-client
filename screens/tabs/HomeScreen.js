@@ -16,6 +16,7 @@ class HomeScreen extends Component {
   };
 
   async componentDidMount() {
+    console.log('homescreen mounted')
     await this.props.getUser()
     await Font.loadAsync({
       'FasterOne-Regular': require('../../assets/FasterOne-Regular.ttf'),
