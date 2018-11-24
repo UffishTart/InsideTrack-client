@@ -1,33 +1,32 @@
 //import liraries
-import React, { Component } from "react";
-import { Dimensions } from "react-native";
-import RacesList from "../../components/RacesList";
-import { TabView, SceneMap } from "react-native-tab-view";
-import { fetchUserRacesByUser } from "../../store/userRaces";
-import { connect } from "react-redux";
-import { me } from "../../store/user";
+import React, { Component } from 'react';
+import { Dimensions } from 'react-native';
+import RacesList from '../../components/RacesList';
+import { TabView, SceneMap } from 'react-native-tab-view';
+import { fetchUserRacesByUser } from '../../store/userRaces';
+import { connect } from 'react-redux';
+import { me } from '../../store/user';
+import { putARace } from '../../store';
 
 // create a component
 class Races extends Component {
   state = {
     index: 0,
     routes: [
-      { key: "first", title: "Current Races" },
-      { key: "second", title: "Past Races" }
-    ]
+      { key: 'first', title: 'Current Races' },
+      { key: 'second', title: 'Past Races' },
+    ],
   };
 
   async componentDidMount() {
-    // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!RACE SCREEN: mounted')
     await this.props.getUser();
     await this.props.getRaces(this.props.user.id, 'acceptedInvitation', true);
-    // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!RACEESCRENpropsraces', this.props.races)
   }
 
   render() {
-    const filteredRaces = this.props.races.filter(race => !!race.raceInfo.hasStarted)
-    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', this.props.races)
-    console.log('HELLOHELLOHELLOHELLOHELLO', filteredRaces)
+    const filteredRaces = this.props.races.filter(
+      race => !!race.raceInfo.hasStarted
+    );
 
     return (
       <TabView
@@ -37,23 +36,23 @@ class Races extends Component {
             <RacesList
               user={this.props.user}
               races={filteredRaces}
-              // races={this.props.races}
               isCompleted={false}
+              updateRaceAsComplete={this.props.updateRaceAsComplete}
             />
           ),
           second: () => (
             <RacesList
               user={this.props.user}
               races={filteredRaces}
-              // races={this.props.races}
               isCompleted={true}
+              updateRaceAsComplete={this.props.updateRaceAsComplete}
             />
-          )
+          ),
         })}
         onIndexChange={index => this.setState({ index })}
         initialLayout={{
-          width: Dimensions.get("window").width,
-          height: Dimensions.get("window").height
+          width: Dimensions.get('window').width,
+          height: Dimensions.get('window').height,
         }}
       />
     );
@@ -63,7 +62,7 @@ class Races extends Component {
 const mapState = state => {
   return {
     races: state.userRaces,
-    user: state.user
+    user: state.user,
   };
 };
 
@@ -71,7 +70,9 @@ const mapDispatch = dispatch => {
   return {
     getUser: () => dispatch(me()),
     getRaces: (userId, queryType, queryIndicator) =>
-      dispatch(fetchUserRacesByUser(userId, queryType, queryIndicator))
+      dispatch(fetchUserRacesByUser(userId, queryType, queryIndicator)),
+    updateRaceAsComplete: (raceId, updateObj) =>
+      dispatch(putARace(raceId, updateObj)),
   };
 };
 

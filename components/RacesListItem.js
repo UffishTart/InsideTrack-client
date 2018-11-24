@@ -21,7 +21,6 @@ class RacesListItem extends Component {
     this.setState({ fontLoaded: true });
   }
 
-
   toggleSingleRaceView = () => {
     this.setState({ showSingleRace: !this.state.showSingleRace });
   };
@@ -36,7 +35,7 @@ class RacesListItem extends Component {
           {this.state.fontLoaded ? (
             <Text style={styles.raceTitle}>
               Name:
-            <Text style={styles.raceInfo}>
+              <Text style={styles.raceInfo}>
                 <Text>{'  '}</Text>
                 <Text>{this.props.race.raceInfo.name}</Text>
               </Text>
@@ -61,8 +60,9 @@ class RacesListItem extends Component {
     return (
       <SingleRace
         toggleSingleRaceView={this.toggleSingleRaceView.bind(this)}
-        raceId={this.props.race.raceId}
+        race={this.props.race}
         user={this.props.user}
+        updateRaceAsComplete={this.props.updateRaceAsComplete}
       />
     );
   }
@@ -86,17 +86,17 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingBottom: 20,
     paddingTop: 20,
-    paddingHorizontal: 30
+    paddingHorizontal: 30,
   },
   raceTitle: {
     fontFamily: 'FasterOne-Regular',
     fontSize: 30,
-    fontStyle: 'italic'
+    fontStyle: 'italic',
   },
   raceInfo: {
     fontFamily: 'FasterOne-Regular',
     fontSize: 19,
-    fontStyle: 'italic'
+    fontStyle: 'italic',
   },
   containerInfo: {
     flex: 1,

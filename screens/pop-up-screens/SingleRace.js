@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { View, Button, Text, StyleSheet, Modal } from 'react-native';
 import HorseComponent from '../../components/HorseComponent';
 import PedometerSensor from '../tabs/PedometerScreen';
+import CompletedRaceScreen from '../tabs/CompletedRaceScreen';
 
 // create a component
 class SingleRace extends Component {
@@ -15,7 +16,18 @@ class SingleRace extends Component {
       <Modal>
         <View style={styles.container}>
           <HorseComponent />
-          <PedometerSensor user={this.props.user} raceId={this.props.raceId} />
+          {!!this.props.race.raceInfo.completedStatus ? (
+            <CompletedRaceScreen
+              user={this.props.user}
+              raceId={this.props.race.raceId}
+            />
+          ) : (
+            <PedometerSensor
+              user={this.props.user}
+              raceId={this.props.race.raceId}
+              updateRaceAsComplete={this.props.updateRaceAsComplete}
+            />
+          )}
           <Button title="Back" onPress={this.props.toggleSingleRaceView}>
             SingleRace
           </Button>

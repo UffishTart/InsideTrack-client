@@ -1,7 +1,20 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, TextInput, Picker, Button, StyleSheet, Modal } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  Picker,
+  Button,
+  StyleSheet,
+  Modal,
+} from 'react-native';
 import { me } from '../store/user';
-import { fetchRacesDataFromServer, fetchSingleRaceFromServer, postANewRace } from '../store/races';
+import {
+  fetchRacesDataFromServer,
+  fetchSingleRaceFromServer,
+  postANewRace,
+} from '../store/races';
 import { postAUserRaceEntry } from '../store/userRacesPending';
 import { getFriendsOfUser } from '../store/userFriend';
 import { connect } from 'react-redux';
@@ -11,14 +24,14 @@ class StartNewRace extends Component {
     super(props);
     this.state = {
       name: 'test',
-      length: 'day',
+      length: 1,
       friendIdArr: [],
       selectedFriendId: 0,
     };
-    this.nameHandleChange = this.nameHandleChange.bind(this)
-    this.lengthHandleChange = this.lengthHandleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.addFriend = this.addFriend.bind(this)
+    this.nameHandleChange = this.nameHandleChange.bind(this);
+    this.lengthHandleChange = this.lengthHandleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.addFriend = this.addFriend.bind(this);
   }
 
   async componentDidMount() {
@@ -28,20 +41,20 @@ class StartNewRace extends Component {
 
   nameHandleChange(text) {
     this.setState({
-      name: text
-    })
+      name: text,
+    });
   }
 
   lengthHandleChange(text) {
     this.setState({
-      length: text
-    })
+      length: 1,
+    });
   }
 
   addFriend() {
     this.setState({
-      friendIdArr: [...this.state.friendIdArr, this.state.selectedFriend]
-    })
+      friendIdArr: [...this.state.friendIdArr, this.state.selectedFriend],
+    });
   }
 
   async handleSubmit() {
@@ -50,14 +63,15 @@ class StartNewRace extends Component {
       this.state.length
     );
     await this.props.postUserToRace(this.props.user.id, newRaceId, true, true);
-    this.state.friendIdArr.map(async friendId =>
-      await this.props.postUserToRace(friendId, newRaceId, false, false)
+    this.state.friendIdArr.map(
+      async friendId =>
+        await this.props.postUserToRace(friendId, newRaceId, false, false)
     );
   }
 
   render() {
     return (
-      <Modal backgroundColor='blue'>
+      <Modal backgroundColor="blue">
         <View style={styles.container}>
           <View>
             <Text>Start a Race!</Text>
@@ -73,27 +87,39 @@ class StartNewRace extends Component {
             />
             <Picker
               selectedValue={this.state.selectedFriend}
-              onValueChange={(friendValue => this.setState({ selectedFriend: friendValue }))}
+              onValueChange={friendValue =>
+                this.setState({ selectedFriend: friendValue })
+              }
             >
-              <Picker.Item label='Please Select A Friend' value={null} />
-              {this.props.friends && this.props.friends.map(friend =>
-                <Picker.Item key={friend.friendId} label={friend.friendInfo.userName} value={friend.friendId} />
-              )}
+              <Picker.Item label="Please Select A Friend" value={null} />
+              {this.props.friends &&
+                this.props.friends.map(friend => (
+                  <Picker.Item
+                    key={friend.friendId}
+                    label={friend.friendInfo.userName}
+                    value={friend.friendId}
+                  />
+                ))}
             </Picker>
-            <TouchableOpacity onPress={this.addFriend}><Text>Add Friend</Text></TouchableOpacity>
-            <TouchableOpacity
-              onPress={this.handleSubmit}
-            >
+            <TouchableOpacity onPress={this.addFriend}>
+              <Text>Add Friend</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this.handleSubmit}>
               <Text>Submit</Text>
             </TouchableOpacity>
           </View>
-          <Button title='go back' onPress={this.props.onPress} />
-          {this.props.friends && this.props.friends
-            .filter(friend => this.state.friendIdArr.includes(friend.friendId))
-            .map(friend => <Text key={friend.friendId}>{friend.friendInfo.userName}</Text>)}
+          <Button title="go back" onPress={this.props.onPress} />
+          {this.props.friends &&
+            this.props.friends
+              .filter(friend =>
+                this.state.friendIdArr.includes(friend.friendId)
+              )
+              .map(friend => (
+                <Text key={friend.friendId}>{friend.friendInfo.userName}</Text>
+              ))}
         </View>
       </Modal>
-    )
+    );
   }
 }
 
@@ -107,9 +133,9 @@ const styles = StyleSheet.create({
     paddingTop: 220,
     color: 'blue',
     height: 50,
-    width: 100
-  }
-})
+    width: 100,
+  },
+});
 
 const mapState = state => {
   return {
@@ -127,7 +153,7 @@ const mapDispatch = dispatch => {
     getRace: raceId => dispatch(fetchSingleRaceFromServer(raceId)),
     postRace: (name, length) => dispatch(postANewRace(name, length)),
     postUserToRace: (userId, raceId, isOwner, acceptedInvitation) =>
-      dispatch(postAUserRaceEntry(userId, raceId, isOwner, acceptedInvitation))
+      dispatch(postAUserRaceEntry(userId, raceId, isOwner, acceptedInvitation)),
   };
 };
 
@@ -135,4 +161,3 @@ export default connect(
   mapState,
   mapDispatch
 )(StartNewRace);
-

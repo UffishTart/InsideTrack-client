@@ -1,16 +1,16 @@
-import Expo from "expo";
-import React from "react";
-import { Pedometer } from "expo";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
-import { connect } from "react-redux";
-import { me } from "../../store/user";
+import Expo from 'expo';
+import React from 'react';
+import { Pedometer } from 'expo';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { connect } from 'react-redux';
+import { me } from '../../store/user';
 import {
   putUpdatedPedometerData,
   fetchRaceUserData,
-  putDailyAverage
-} from "../../store/singleRaceUser";
-import { fetchSingleRaceFromServer } from "../../store/races";
-import { Table, TableWrapper, Row, Rows } from "react-native-table-component";
+  putDailyAverage,
+} from '../../store/singleRaceUser';
+import { fetchSingleRaceFromServer } from '../../store/races';
+import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
 
 //Helper function to generate the table row array;
 const arrayGenerater = userRaceInstance => {
@@ -35,29 +35,47 @@ const ifHaveSevenDaysData = (createdDate, usingDate) => {
   }
 };
 
-const endDateSetUp = (start, end) => {
-  if (end.getTime() - start.getTime() > 24 * 60 * 60 * 1000) {
-    end.setDate(start.getDate() + 1);
+const endDateSetUp = (start, end, raceLength) => {
+  if (end.getTime() - start.getTime() > raceLength * 24 * 60 * 60 * 1000) {
+    end.setDate(start.getDate() + raceLength);
   }
   return end;
+};
+
+const endGameDate = (start, raceLength) => {
+  const end = new Date();
+  end.setDate(start.getDate() + raceLength + 1);
 };
 
 class PedometerSensor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isPedometerAvailable: "checking",
+      isPedometerAvailable: 'checking',
       pastStepCount: 0,
       averageSteps: 0,
       stepCountDuringGame: 0,
-      days: 0
+      days: 0,
     };
   }
 
   async componentDidMount() {
     await this.props.fetchRaceUserData(this.props.raceId);
     await this.props.getSingleRace(this.props.raceId);
-    await this._subscribe();
+    const gameStartTime = new Date(this.props.races[0].startTime);
+    const timeOpenApp = new Date();
+    const endTimeOfGame = endGameDate(
+      gameStartTime,
+      this.props.races[0].length + 1
+    );
+    if (timeOpenApp < endTimeOfGame) {
+      await this._subscribe();
+    } else {
+      await this.props.updateRaceAsComplete(this.props.raceId, {
+        completedStatus: true,
+      });
+      this.props.navigation.navigate('SingleRace');
+    }
   }
 
   componentWillUnmount() {
@@ -67,19 +85,19 @@ class PedometerSensor extends React.Component {
   _subscribe = () => {
     this._subscription = Pedometer.watchStepCount(result => {
       this.setState({
-        currentStepCount: result.steps
+        currentStepCount: result.steps,
       });
     });
 
     Pedometer.isAvailableAsync().then(
       result => {
         this.setState({
-          isPedometerAvailable: String(result)
+          isPedometerAvailable: String(result),
         });
       },
       error => {
         this.setState({
-          isPedometerAvailable: "Could not get isPedometerAvailable: " + error
+          isPedometerAvailable: 'Could not get isPedometerAvailable: ' + error,
         });
       }
     );
@@ -113,12 +131,12 @@ class PedometerSensor extends React.Component {
           this.setState({
             pastStepCount: result.steps,
             days: daysChecking,
-            averageSteps: average
+            averageSteps: average,
           });
         },
         error => {
           this.setState({
-            pastStepCount: "Could not get stepCount: " + error
+            pastStepCount: 'Could not get stepCount: ' + error,
           });
         }
       )
@@ -132,7 +150,11 @@ class PedometerSensor extends React.Component {
 
     const timeOpenApp = new Date();
 
-    const endTimeForStopGame = endDateSetUp(gameStartTime, timeOpenApp);
+    const endTimeForStopGame = endDateSetUp(
+      gameStartTime,
+      timeOpenApp,
+      this.props.races[0].length
+    );
 
     Pedometer.getStepCountAsync(gameStartTime, endTimeForStopGame)
       .then(
@@ -141,7 +163,7 @@ class PedometerSensor extends React.Component {
         },
         error => {
           this.setState({
-            stepCountDuringGame: "Could not get stepCount: " + error
+            stepCountDuringGame: 'Could not get stepCount: ' + error,
           });
         }
       )
@@ -161,23 +183,23 @@ class PedometerSensor extends React.Component {
 
   render() {
     const tableData = {
-      tableHead: ["Players", "Improvement", "Daily Average", "Place"],
+      tableHead: ['Players', 'Improvement', 'Daily Average', 'Place'],
       tableInfo: this.props.singleRaceUser
         .filter(el => el.acceptedInvitation)
         .sort((user1, user2) => user1.place - user2.place)
-        .map(el => arrayGenerater(el))
+        .map(el => arrayGenerater(el)),
     };
 
     return (
       <View style={styles.tableContainer}>
         <Text style={styles.text}>
-          Steps taken during the game: {this.state.stepCountDuringGame}{" "}
+          Steps taken during the game: {this.state.stepCountDuringGame}{' '}
         </Text>
         <Text style={styles.text}>
-          Average steps: {this.state.averageSteps}{" "}
+          Average steps: {this.state.averageSteps}{' '}
         </Text>
 
-        <Table borderStyle={{ borderColor: "#017EC2" }}>
+        <Table borderStyle={{ borderColor: '#017EC2' }}>
           <Row
             data={tableData.tableHead}
             flexArr={[2, 2, 2, 1]}
@@ -203,25 +225,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 15,
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   tableContainer: {
     flex: 1,
     fontSize: 10,
-    width: "100%",
-    height: "50%",
-    paddingTop: 20
+    width: '100%',
+    height: '50%',
+    paddingTop: 20,
   },
-  head: { height: 40, backgroundColor: "#014D7F" },
-  wrapper: { flexDirection: "row" },
-  row: { height: 28, backgroundColor: "#9AE0FF" },
-  text: { textAlign: "center" }
+  head: { height: 40, backgroundColor: '#014D7F' },
+  wrapper: { flexDirection: 'row' },
+  row: { height: 28, backgroundColor: '#9AE0FF' },
+  text: { textAlign: 'center' },
 });
 
 const mapState = ({ singleRaceUser, races }) => ({
   singleRaceUser,
-  races
+  races,
 });
 const mapDispatch = dispatch => ({
   fetchRaceUserData: raceId => dispatch(fetchRaceUserData(raceId)),
@@ -229,7 +251,7 @@ const mapDispatch = dispatch => ({
     dispatch(putUpdatedPedometerData(dayPedoOutput, userId, raceId)),
   getSingleRace: raceId => dispatch(fetchSingleRaceFromServer(raceId)),
   updateAverage: (steps, userId, raceId) =>
-    dispatch(putDailyAverage(steps, userId, raceId))
+    dispatch(putDailyAverage(steps, userId, raceId)),
 });
 
 export default connect(
