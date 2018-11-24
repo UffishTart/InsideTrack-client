@@ -4,7 +4,7 @@ import { Pedometer } from "expo";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { connect } from "react-redux";
 import { me } from "../../store/user";
-import Track from "../../components/Track";
+
 import {
   putUpdatedPedometerData,
   fetchRaceUserData,
@@ -12,6 +12,7 @@ import {
 } from "../../store/singleRaceUser";
 import { fetchSingleRaceFromServer } from "../../store/races";
 import { Table, TableWrapper, Row, Rows } from "react-native-table-component";
+import Track from "../../components/Track";
 
 //Helper function to generate the table row array;
 const arrayGenerater = userRaceInstance => {
@@ -182,40 +183,50 @@ class PedometerSensor extends React.Component {
       .filter(el => el.acceptedInvitation)
       .map(el => trimedObjGenerater(el))
       .sort((user1, user2) => user1.place - user2.place);
+    console.log("!!!!! race", racingUserData);
     return (
-      <View style={styles.tableContainer}>
-        <Track
-          data={racingUserData}
-          selectX={datum => datum.Improvement}
-          selectY={datum => datum.userId}
-          width={360}
-          height={300}
-        />
-        <Text style={styles.text}>
-          Steps taken during the game: {this.state.stepCountDuringGame}{" "}
-        </Text>
-        <Text style={styles.text}>
-          Average steps: {this.state.averageSteps}{" "}
-        </Text>
+      !!racingUserData.length && (
+        <View style={styles.tableContainer}>
+          <Text style={styles.text}>
+            Steps taken during the game: {this.state.stepCountDuringGame}{" "}
+          </Text>
+          <Text style={styles.text}>
+            Average steps: {this.state.averageSteps}{" "}
+          </Text>
 
-        <Table borderStyle={{ borderColor: "#017EC2" }}>
-          <Row
-            data={tableData.tableHead}
-            flexArr={[2, 2, 2, 1]}
-            style={styles.head}
-            textStyle={styles.text}
-          />
-          <TableWrapper style={styles.wrapper}>
-            <Rows
-              data={tableData.tableInfo}
-              style={styles.row}
+          <Table borderStyle={{ borderColor: "#017EC2" }}>
+            <Row
+              data={tableData.tableHead}
               flexArr={[2, 2, 2, 1]}
-              heightArr={[28, 28]}
+              style={styles.head}
               textStyle={styles.text}
             />
-          </TableWrapper>
-        </Table>
-      </View>
+            <TableWrapper style={styles.wrapper}>
+              <Rows
+                data={tableData.tableInfo}
+                style={styles.row}
+                flexArr={[2, 2, 2, 1]}
+                heightArr={[28, 28]}
+                textStyle={styles.text}
+              />
+            </TableWrapper>
+          </Table>
+          <Track
+            data={racingUserData}
+            selectX={datum => datum.Improvement}
+            selectY={datum => datum.userId}
+            width={300}
+            height={350}
+          />
+          {/*<TrackWithCircle
+            data={racingUserData}
+            selectX={datum => datum.Improvement}
+            selectY={datum => datum.userId}
+            width={360}
+            height={300}
+          />*/}
+        </View>
+      )
     );
   }
 }
