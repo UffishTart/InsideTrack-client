@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from "react";
-import { View, Text, Image, StyleSheet, ART } from "react-native";
+import { View, Text, StyleSheet, ART } from "react-native";
 import { extent as d3ArrayExtent } from "d3-array";
 import {
   scaleLinear as d3ScaleLinear,
@@ -13,7 +13,7 @@ import { Svg } from "expo";
 
 class Track extends Component {
   render() {
-    const { Circle } = Svg;
+    const { Circle, Image } = Svg;
     //const { Group, Shape, Surface } = ART;
     const { data, selectX, selectY, width, height } = this.props;
 
@@ -50,12 +50,13 @@ class Track extends Component {
           console.log("!!!!! selectedY", selectScaledY(o));
           console.log("-----------------------------------");
           return (
-            <Circle
+            <Image
               key={i}
-              cx={selectScaledX(o)}
-              cy={selectScaledY(o)}
-              r={Math.sqrt(50)}
-              style={{ fill: "white" }}
+              x={selectScaledX(o)}
+              y={selectScaledY(o)}
+              width="10%"
+              height="10%"
+              href={require("../assets/Standard_Horse.jpg")}
             />
           );
         })}
@@ -81,10 +82,10 @@ const styles = StyleSheet.create({
 //make this component available to the app
 export default Track;
 
-// {/*<View>
-//   <Surface width={340} height={300}>
-//     <Group x={100} y={0}>
-//       <Shape d={linePath} stroke="#000" strokeWidth={1} />
-//     </Group>
-//   </Surface>
-// </View>*/}
+// <Circle
+//               key={i}
+//               cx={selectScaledX(o)}
+//               cy={selectScaledY(o)}
+//               r={Math.sqrt(50)}
+//               style={{ fill: "white" }}
+//             />
