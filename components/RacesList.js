@@ -1,35 +1,33 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, ImageBackground } from 'react-native';
 import RacesListItem from './RacesListItem';
 
 const RacesList = props => {
   const { user, races, isCompleted, updateRaceAsComplete } = props;
   return (
-    <View
-      style={
-        isCompleted
-          ? [styles.flexCont, { backgroundColor: '#D9AFAF' }]
-          : [styles.flexCont, { backgroundColor: '#A3DDFA' }]
-      }
-    >
-      <ScrollView>
-        {!!races.length &&
-          races
-            .filter(race => {
-              return race.raceInfo.completedStatus === isCompleted;
-            })
-            .map(race => {
-              return (
-                <RacesListItem
-                  key={race.raceId}
-                  user={user}
-                  race={race}
-                  updateRaceAsComplete={updateRaceAsComplete}
-                />
-              );
-            })}
-      </ScrollView>
-    </View>
+    <ImageBackground source={require('../assets/checkered-flag.png')} style={styles.backgroundImage} >
+      <View
+        style={[styles.backgroundImage]}
+      >
+        <ScrollView>
+          {!!races.length &&
+            races
+              .filter(race => {
+                return race.raceInfo.completedStatus === isCompleted;
+              })
+              .map(race => {
+                return (
+                  <RacesListItem
+                    key={race.raceId}
+                    user={user}
+                    race={race}
+                    updateRaceAsComplete={updateRaceAsComplete}
+                  />
+                );
+              })}
+        </ScrollView>
+      </View>
+    </ImageBackground>
   );
 };
 
@@ -45,4 +43,10 @@ const styles = StyleSheet.create({
   flexCont: {
     flex: 1,
   },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover', // or 'stretch'
+    width: null,
+    height: null
+  }
 });
