@@ -9,44 +9,48 @@ import {
 import { line as d3Line } from "d3-shape";
 import { Svg } from "expo";
 
-// create a component
-
+// create range that can space users out
+const xScaleRangeGenerator = datum => {
+  const improvement = datum.map(el => el.Improvement).sort((a, b) => a - b);
+  const range = [];
+  range[0] = improvement[0] - 0.2;
+  range[1] = improvement[improvement.length - 1] + 1;
+  return range;
+};
 class Track extends Component {
   render() {
     const { Image } = Svg;
     const { data, selectX, selectY, width, height, steps } = this.props;
+    console.log("!!! data lenght", data.length);
     const xScale = d3ScaleLinear()
-      .domain([-1.0, 5.0])
-      .range([100, width]);
+      .domain(xScaleRangeGenerator(data))
+      .range([20, width]);
 
-    const yScale = d3ScalePoint()
-      .domain(d3ArrayExtent(data, selectY))
-      .range([280, height]);
+    const yScale = d3ScaleLinear()
+      .domain([1, data.length])
+      .range([250, height]);
 
     const selectScaledX = datum => {
-      console.log("XXXXXXX", xScale(datum.Improvement));
       return xScale(selectX(datum));
     };
-    const selectScaledY = datum => {
-      console.log("!!! datum.userId", datum.userId);
-      console.log("YYYYYY", yScale(datum.userId));
-      return yScale(selectY(datum));
+    const selectScaledY = idx => {
+      return yScale(selectY(idx));
     };
 
     return (
       <Svg width="340" height="400">
         {data.map((o, i) => {
-          console.log("!!!!! o", o);
           console.log("!!!!! userId", o.userId);
+          console.log("!!!!! Improvement", o.Improvement);
           console.log("!!!!! selectedX", selectScaledX(o));
-          console.log("!!!!! selectedY", selectScaledY(o));
+          console.log("!!!!! selectedY", selectScaledY(i + 1));
           console.log("-----------------------------------");
 
           return (
             <Image
               key={i}
               x={selectScaledX(o)}
-              y={selectScaledY(o)}
+              y={selectScaledY(i + 1)}
               width="18%"
               height="18%"
               href={require("../assets/CoolClips_peop1281.png")}

@@ -15,7 +15,6 @@ class SingleRace extends Component {
     return (
       <Modal>
         <View style={styles.container}>
-          <HorseComponent />
           {!!this.props.race.raceInfo.completedStatus ? (
             <CompletedRaceScreen
               user={this.props.user}

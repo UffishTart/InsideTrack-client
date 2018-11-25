@@ -246,10 +246,10 @@ class PedometerSensor extends React.Component {
             <Track
               data={racingUserData}
               selectX={datum => datum.Improvement}
-              selectY={datum => datum.userId}
+              selectY={idx => idx}
               steps={this.state.pastStepCount}
-              width={300}
-              height={350}
+              width={350}
+              height={300}
             />
           </ImageBackground>
         </View>
