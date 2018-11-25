@@ -56,37 +56,36 @@ const SignedIn = createMaterialBottomTabNavigator({
   Home: {
     screen: HomeScreen,
     navigationOptions: {
-      tabBarColor: '#6200ee',
+      tabBarColor: '#fff',
       tabBarIcon: tabBarIcon('home'),
     },
   },
   Races: {
     screen: RacesScreen,
     navigationOptions: {
-      tabBarColor: '#6200ee',
+      tabBarColor: '#fff',
       tabBarIcon: tabBarIcon('directions-run'),
     },
   },
   Profile: {
     screen: ProfileScreen,
     navigationOptions: {
-      tabBarColor: '#6200ee',
+      tabBarColor: '#fff',
       tabBarIcon: tabBarIcon('person'),
     },
   },
   PendingRaces: {
     screen: PendingRacesScreen,
     navigationOptions: {
-      tabBarColor: '#6200ee',
+      tabBarColor: '#fff',
       tabBarIcon: tabBarIcon('mail'),
     }
   }
 }, {
     initialRouteName: 'Home',
-    activeColor: '#f0edf6',
-    inactiveColor: '#3e2465',
-    barStyle: { backgroundColor: '#694fad' },
-    tabBarColor: '#fff'
+    activeColor: '#ef1717',
+    inactiveColor: 'black',
+    barStyle: { backgroundColor: '#fff' },
   });
 
 export const createRootNavigator = (signedIn = false) => {
