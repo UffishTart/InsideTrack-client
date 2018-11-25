@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   },
   buttonSettings: {
     shadowColor: 'rgba(0,0,0, .4)', // IOS
-    shadowOffset: { height: 1, width: 1 }, // IOS
+    shadowOffset: { height: 3, width: 3 }, // IOS
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
     backgroundColor: '#fff',
@@ -136,6 +136,9 @@ const styles = StyleSheet.create({
     width: 40,
     marginLeft: 350,
     marginTop: 300,
+    borderColor: '#fbff14',
+    borderRadius: 10,
+    borderWidth: 1,
     marginBottom: 50,
     justifyContent: 'center',
     alignItems: 'center',
@@ -143,23 +146,26 @@ const styles = StyleSheet.create({
   },
   buttonNewRace: {
     shadowColor: 'rgba(0,0,0, .4)', // IOS
-    shadowOffset: { height: 1, width: 1 }, // IOS
+    shadowOffset: { height: 5, width: 5 }, // IOS
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
     backgroundColor: '#fff',
     elevation: 2, // Android
     height: 50,
-    width: 300,
+    width: 200,
     marginLeft: 1,
     marginTop: -600,
     marginBottom: 500,
+    borderColor: '#fbff14',
+    borderRadius: 10,
+    borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
   },
   buttonLogout: {
     shadowColor: 'rgba(0,0,0, .4)', // IOS
-    shadowOffset: { height: 1, width: 1 }, // IOS
+    shadowOffset: { height: 3, width: 3 }, // IOS
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
     backgroundColor: '#fff',
@@ -169,6 +175,9 @@ const styles = StyleSheet.create({
     marginTop: -300,
     marginBottom: 80,
     marginLeft: 175,
+    borderColor: '#fbff14',
+    borderRadius: 10,
+    borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
@@ -179,10 +188,11 @@ const styles = StyleSheet.create({
     fontStyle: 'italic'
   },
   logo: {
+    shadowOffset: { height: 4, width: 4 }, // IOS
     height: 450,
     width: 450,
     marginBottom: 250
-  }
+  },
 });
 
 //make this component available to the app
