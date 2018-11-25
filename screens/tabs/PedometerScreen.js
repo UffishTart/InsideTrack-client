@@ -11,6 +11,8 @@ import {
 } from '../../store/singleRaceUser';
 import { fetchSingleRaceFromServer } from '../../store/races';
 import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
+import CompletedRaceScreen from '../tabs/CompletedRaceScreen';
+import { fetchUserRacesByUser } from '../../store/userRaces';
 
 //Helper function to generate the table row array;
 const arrayGenerater = userRaceInstance => {
@@ -45,6 +47,7 @@ const endDateSetUp = (start, end, raceLength) => {
 const endGameDate = (start, raceLength) => {
   const end = new Date();
   end.setDate(start.getDate() + raceLength + 1);
+  return end;
 };
 
 class PedometerSensor extends React.Component {
@@ -56,6 +59,7 @@ class PedometerSensor extends React.Component {
       averageSteps: 0,
       stepCountDuringGame: 0,
       days: 0,
+      hasCompleted: false,
     };
   }
 
@@ -71,15 +75,29 @@ class PedometerSensor extends React.Component {
     if (timeOpenApp < endTimeOfGame) {
       await this._subscribe();
     } else {
-      await this.props.updateRaceAsComplete(this.props.raceId, {
-        completedStatus: true,
-      });
-      this.props.navigation.navigate('SingleRace');
+      this.setState({ hasCompleted: true });
     }
   }
 
-  componentWillUnmount() {
-    this._unsubscribe();
+  async componentWillUnmount() {
+    const gameStartTime = new Date(this.props.races[0].startTime);
+    const timeOpenApp = new Date();
+    const endTimeOfGame = endGameDate(
+      gameStartTime,
+      this.props.races[0].length + 1
+    );
+    if (timeOpenApp < endTimeOfGame) {
+      this._unsubscribe();
+    } else {
+      await this.props.updateRaceAsComplete(this.props.raceId, {
+        completedStatus: true,
+      });
+      await this.props.getUserRaces(
+        this.props.user.id,
+        'acceptedInvitation',
+        true
+      );
+    }
   }
 
   _subscribe = () => {
@@ -191,31 +209,34 @@ class PedometerSensor extends React.Component {
     };
 
     return (
-      <View style={styles.tableContainer}>
-        <Text style={styles.text}>
-          Steps taken during the game: {this.state.stepCountDuringGame}{' '}
-        </Text>
-        <Text style={styles.text}>
-          Average steps: {this.state.averageSteps}{' '}
-        </Text>
+      <View>
+        {this.state.hasCompleted ? <Text>This race is over!</Text> : null}
+        <View style={styles.tableContainer}>
+          <Text style={styles.text}>
+            Steps taken during the game: {this.state.stepCountDuringGame}{' '}
+          </Text>
+          <Text style={styles.text}>
+            Average steps: {this.state.averageSteps}{' '}
+          </Text>
 
-        <Table borderStyle={{ borderColor: '#017EC2' }}>
-          <Row
-            data={tableData.tableHead}
-            flexArr={[2, 2, 2, 1]}
-            style={styles.head}
-            textStyle={styles.text}
-          />
-          <TableWrapper style={styles.wrapper}>
-            <Rows
-              data={tableData.tableInfo}
-              style={styles.row}
+          <Table borderStyle={{ borderColor: '#017EC2' }}>
+            <Row
+              data={tableData.tableHead}
               flexArr={[2, 2, 2, 1]}
-              heightArr={[28, 28]}
+              style={styles.head}
               textStyle={styles.text}
             />
-          </TableWrapper>
-        </Table>
+            <TableWrapper style={styles.wrapper}>
+              <Rows
+                data={tableData.tableInfo}
+                style={styles.row}
+                flexArr={[2, 2, 2, 1]}
+                heightArr={[28, 28]}
+                textStyle={styles.text}
+              />
+            </TableWrapper>
+          </Table>
+        </View>
       </View>
     );
   }
@@ -241,9 +262,10 @@ const styles = StyleSheet.create({
   text: { textAlign: 'center' },
 });
 
-const mapState = ({ singleRaceUser, races }) => ({
+const mapState = ({ singleRaceUser, races, userRaces }) => ({
   singleRaceUser,
   races,
+  userRaces,
 });
 const mapDispatch = dispatch => ({
   fetchRaceUserData: raceId => dispatch(fetchRaceUserData(raceId)),
@@ -252,6 +274,8 @@ const mapDispatch = dispatch => ({
   getSingleRace: raceId => dispatch(fetchSingleRaceFromServer(raceId)),
   updateAverage: (steps, userId, raceId) =>
     dispatch(putDailyAverage(steps, userId, raceId)),
+  getUserRaces: (userId, queryType, queryIndicator) =>
+    dispatch(fetchUserRacesByUser(userId, queryType, queryIndicator)),
 });
 
 export default connect(

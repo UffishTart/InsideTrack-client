@@ -1,4 +1,6 @@
 import axios from 'axios';
+import fetchUserRacesByUser from './userRaces';
+
 const server = 'https://inside-track-server-boil.herokuapp.com';
 
 const GET_ALL_RACES = 'GET_ALL_RACES';
@@ -52,6 +54,15 @@ export const putARace = (raceId, updateObj) => async dispatch => {
   try {
     const res = await axios.put(`${server}/api/races/${raceId}/`, updateObj);
     dispatch(fetchSingleRaceFromServer(raceId));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const completeARace = (userId, raceId, updateObj) => async dispatch => {
+  try {
+    const res = await axios.put(`${server}/api/races/${raceId}/`, updateObj);
+    dispatch(fetchUserRacesByUser(userId, 'acceptedInvitation', true));
   } catch (err) {
     console.log(err);
   }
