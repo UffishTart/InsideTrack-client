@@ -1,7 +1,13 @@
 import Expo from "expo";
 import React from "react";
 import { Pedometer } from "expo";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  ImageBackground
+} from "react-native";
 import { connect } from "react-redux";
 import { me } from "../../store/user";
 import {
@@ -56,6 +62,7 @@ const endDateSetUp = (start, end, raceLength) => {
 const endGameDate = (start, raceLength) => {
   const end = new Date();
   end.setDate(start.getDate() + raceLength + 1);
+  return end;
 };
 
 class PedometerSensor extends React.Component {
@@ -164,7 +171,7 @@ class PedometerSensor extends React.Component {
     const endTimeForStopGame = endDateSetUp(
       gameStartTime,
       timeOpenApp,
-      this.props.races[0].length
+      Number(this.props.races[0].length)
     );
 
     Pedometer.getStepCountAsync(gameStartTime, endTimeForStopGame)
@@ -245,13 +252,6 @@ class PedometerSensor extends React.Component {
               height={350}
             />
           </ImageBackground>
-          {/*<TrackWithCircle
-            data={racingUserData}
-            selectX={datum => datum.Improvement}
-            selectY={datum => datum.userId}
-            width={360}
-            height={300}
-          />*/}
         </View>
       )
     );
