@@ -79,6 +79,7 @@ const SignedIn = createMaterialBottomTabNavigator({
     navigationOptions: {
       tabBarColor: '#fff',
       tabBarIcon: tabBarIcon('mail'),
+      title: 'Pending Races'
     }
   }
 }, {
