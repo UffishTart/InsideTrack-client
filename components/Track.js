@@ -13,22 +13,28 @@ import { Svg } from "expo";
 const xScaleRangeGenerator = datum => {
   const improvement = datum.map(el => el.Improvement).sort((a, b) => a - b);
   const range = [];
-  range[0] = improvement[0] - 0.2;
-  range[1] = improvement[improvement.length - 1] + 1;
+  range[0] = improvement[0];
+  range[1] = improvement[improvement.length - 1] + 0.7;
   return range;
 };
+
+const pathPhoto = [
+  require("../assets/CoolClips_peop1281.png"),
+  require("../assets/rcLnXB56i.png"),
+  require("../assets/horse3.png")
+];
+
 class Track extends Component {
   render() {
     const { Image } = Svg;
     const { data, selectX, selectY, width, height, steps } = this.props;
-    console.log("!!! data lenght", data.length);
     const xScale = d3ScaleLinear()
       .domain(xScaleRangeGenerator(data))
-      .range([20, width]);
+      .range([0, width - 2]);
 
     const yScale = d3ScaleLinear()
       .domain([1, data.length])
-      .range([250, height]);
+      .range([-20, height - 540]);
 
     const selectScaledX = datum => {
       return xScale(selectX(datum));
@@ -51,9 +57,9 @@ class Track extends Component {
               key={i}
               x={selectScaledX(o)}
               y={selectScaledY(i + 1)}
-              width="18%"
-              height="18%"
-              href={require("../assets/CoolClips_peop1281.png")}
+              width="40%"
+              height="40%"
+              href={pathPhoto[i]}
             />
           );
         })}

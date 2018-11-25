@@ -6,7 +6,8 @@ import {
   Text,
   View,
   ScrollView,
-  ImageBackground
+  ImageBackground,
+  Dimensions
 } from "react-native";
 import { connect } from "react-redux";
 import { me } from "../../store/user";
@@ -241,15 +242,15 @@ class PedometerSensor extends React.Component {
           </Table>
           <ImageBackground
             style={styles.photo}
-            source={require("../../assets/trackPhoto.jpg")}
+            source={require("../../assets/horse-race-track-1.jpg")}
           >
             <Track
               data={racingUserData}
               selectX={datum => datum.Improvement}
               selectY={idx => idx}
               steps={this.state.pastStepCount}
-              width={350}
-              height={300}
+              width={Dimensions.get("window").width}
+              height={Dimensions.get("window").height}
             />
           </ImageBackground>
         </View>
