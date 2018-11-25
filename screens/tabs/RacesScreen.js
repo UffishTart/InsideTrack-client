@@ -6,6 +6,7 @@ import { TabView, SceneMap } from "react-native-tab-view";
 import { fetchUserRacesByUser } from "../../store/userRaces";
 import { connect } from "react-redux";
 import { me } from "../../store/user";
+import { putARace } from "../../store";
 
 // create a component
 class Races extends Component {
@@ -35,16 +36,16 @@ class Races extends Component {
             <RacesList
               user={this.props.user}
               races={filteredRaces}
-              // races={this.props.races}
               isCompleted={false}
+              updateRaceAsComplete={this.props.updateRaceAsComplete}
             />
           ),
           second: () => (
             <RacesList
               user={this.props.user}
               races={filteredRaces}
-              // races={this.props.races}
               isCompleted={true}
+              updateRaceAsComplete={this.props.updateRaceAsComplete}
             />
           )
         })}
@@ -69,7 +70,9 @@ const mapDispatch = dispatch => {
   return {
     getUser: () => dispatch(me()),
     getRaces: (userId, queryType, queryIndicator) =>
-      dispatch(fetchUserRacesByUser(userId, queryType, queryIndicator))
+      dispatch(fetchUserRacesByUser(userId, queryType, queryIndicator)),
+    updateRaceAsComplete: (raceId, updateObj) =>
+      dispatch(putARace(raceId, updateObj))
   };
 };
 

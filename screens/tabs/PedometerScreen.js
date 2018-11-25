@@ -1,16 +1,9 @@
 import Expo from "expo";
 import React from "react";
 import { Pedometer } from "expo";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ImageBackground,
-  ScrollView
-} from "react-native";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { connect } from "react-redux";
 import { me } from "../../store/user";
-
 import {
   putUpdatedPedometerData,
   fetchRaceUserData,
@@ -53,11 +46,16 @@ const ifHaveSevenDaysData = (createdDate, usingDate) => {
   }
 };
 
-const endDateSetUp = (start, end) => {
-  if (end.getTime() - start.getTime() > 24 * 60 * 60 * 1000) {
-    end.setDate(start.getDate() + 1);
+const endDateSetUp = (start, end, raceLength) => {
+  if (end.getTime() - start.getTime() > raceLength * 24 * 60 * 60 * 1000) {
+    end.setDate(start.getDate() + raceLength);
   }
   return end;
+};
+
+const endGameDate = (start, raceLength) => {
+  const end = new Date();
+  end.setDate(start.getDate() + raceLength + 1);
 };
 
 class PedometerSensor extends React.Component {
@@ -75,7 +73,20 @@ class PedometerSensor extends React.Component {
   async componentDidMount() {
     await this.props.fetchRaceUserData(this.props.raceId);
     await this.props.getSingleRace(this.props.raceId);
-    await this._subscribe();
+    const gameStartTime = new Date(this.props.races[0].startTime);
+    const timeOpenApp = new Date();
+    const endTimeOfGame = endGameDate(
+      gameStartTime,
+      this.props.races[0].length + 1
+    );
+    if (timeOpenApp < endTimeOfGame) {
+      await this._subscribe();
+    } else {
+      await this.props.updateRaceAsComplete(this.props.raceId, {
+        completedStatus: true
+      });
+      this.props.navigation.navigate("SingleRace");
+    }
   }
 
   componentWillUnmount() {
@@ -150,7 +161,11 @@ class PedometerSensor extends React.Component {
 
     const timeOpenApp = new Date();
 
-    const endTimeForStopGame = endDateSetUp(gameStartTime, timeOpenApp);
+    const endTimeForStopGame = endDateSetUp(
+      gameStartTime,
+      timeOpenApp,
+      this.props.races[0].length
+    );
 
     Pedometer.getStepCountAsync(gameStartTime, endTimeForStopGame)
       .then(

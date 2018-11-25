@@ -24,7 +24,7 @@ class StartNewRace extends Component {
     super(props);
     this.state = {
       name: "test",
-      length: "day",
+      length: 1,
       friendIdArr: [],
       selectedFriendId: 0
     };
@@ -47,7 +47,7 @@ class StartNewRace extends Component {
 
   lengthHandleChange(text) {
     this.setState({
-      length: text
+      length: 1
     });
   }
 
@@ -93,16 +93,13 @@ class StartNewRace extends Component {
             >
               <Picker.Item label="Please Select A Friend" value={null} />
               {this.props.friends &&
-                this.props.friends.map(friend => {
-                  console.log("@@@@@Friend", friend);
-                  return (
-                    <Picker.Item
-                      key={friend.friendId}
-                      label={friend.friendInfo.userName}
-                      value={friend.friendId}
-                    />
-                  );
-                })}
+                this.props.friends.map(friend => (
+                  <Picker.Item
+                    key={friend.friendId}
+                    label={friend.friendInfo.userName}
+                    value={friend.friendId}
+                  />
+                ))}
             </Picker>
             <TouchableOpacity onPress={this.addFriend}>
               <Text>Add Friend</Text>

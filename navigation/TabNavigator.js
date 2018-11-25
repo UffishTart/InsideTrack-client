@@ -1,79 +1,87 @@
-
 import { StyleSheet } from 'react-native';
-import HomeScreen from '../screens/tabs/HomeScreen'
-import ProfileScreen from '../screens/tabs/ProfileScreen'
-import RacesScreen from '../screens/tabs/RacesScreen'
-import PendingRacesScreen from '../screens/tabs/PendingRacesScreen'
-import { Login, Signup} from '../screens/pop-up-screens/AuthFormScreen'
-import AuthFormSelect from '../components/AuthFormSelect'
-import { createStackNavigator, createSwitchNavigator, createBottomTabNavigator } from 'react-navigation'
+import HomeScreen from '../screens/tabs/HomeScreen';
+import ProfileScreen from '../screens/tabs/ProfileScreen';
+import RacesScreen from '../screens/tabs/RacesScreen';
+import PendingRacesScreen from '../screens/tabs/PendingRacesScreen';
+import SingleRace from '../screens/pop-up-screens/SingleRace';
+import { Login, Signup } from '../screens/pop-up-screens/AuthFormScreen';
+import AuthFormSelect from '../components/AuthFormSelect';
+import {
+  createStackNavigator,
+  createSwitchNavigator,
+  createBottomTabNavigator,
+} from 'react-navigation';
 // import Icon from 'react-native-vector-icons/Ionicons' //Need to install
 
 const SignedOut = createStackNavigator({
   AuthFormSelect: {
     screen: AuthFormSelect,
     navigationOptions: {
-      title: 'Welcome'
-    }
+      title: 'Welcome',
+    },
   },
   Login: {
     screen: Login,
     navigationOptions: {
-      title: "Login",
-    }
+      title: 'Login',
+    },
   },
   Signup: {
     screen: Signup,
     navigationOptions: {
-      title: "Sign Up"
-    }
-  }
-})
+      title: 'Sign Up',
+    },
+  },
+  SingleRace: {
+    screen: SingleRace,
+    navigationOptions: {
+      title: 'Single Race',
+    },
+  },
+});
 
 const SignedIn = createBottomTabNavigator({
   Home: {
     screen: HomeScreen,
     navigationOptions: {
       tabBarLabel: 'Home',
-    }
+    },
   },
   Races: {
     screen: RacesScreen,
     navigationOptions: {
       tabBarLabel: 'My Races',
-    }
+    },
   },
   Profile: {
     screen: ProfileScreen,
     navigationOptions: {
       tabBarLabel: 'My Steed',
-    }
+    },
   },
   PendingRaces: {
     screen: PendingRacesScreen,
     navigationOptions: {
       tabBarLabel: 'Pending Races',
-    }
+    },
   },
-})
-
+});
 
 export const createRootNavigator = (signedIn = false) => {
   return createSwitchNavigator(
     {
       SignedIn: {
-        screen: SignedIn
+        screen: SignedIn,
       },
       SignedOut: {
-        screen: SignedOut
-      }
+        screen: SignedOut,
+      },
     },
     {
-      initialRouteName: signedIn ? "SignedIn" : "SignedOut"
+      initialRouteName: signedIn ? 'SignedIn' : 'SignedOut',
     }
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -83,4 +91,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
