@@ -2,6 +2,14 @@ import React from 'react';
 import { View, StyleSheet, ScrollView, ImageBackground } from 'react-native';
 import RacesListItem from './RacesListItem';
 
+{/* <View</View></View>
+      style={
+        isCompleted
+          ? [styles.flexCont, { backgroundColor: '#D9AFAF' }]
+          : [styles.flexCont, { backgroundColor: '#A3DDFA' }]
+      }
+    > */}
+
 const RacesList = props => {
   const { user, races, isCompleted, updateRaceAsComplete } = props;
   return (

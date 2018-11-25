@@ -5,7 +5,6 @@ import { Button } from "react-native-elements";
 import { connect } from "react-redux";
 import { fetchAllUsers } from "../store/allUsers";
 import { addNewFriend } from "../store/userFriend";
-import store from "../store";
 
 const renderUser = user => {
   const { userName } = user;
@@ -81,8 +80,8 @@ class FindUsers extends Component {
               />
             </View>
           ) : (
-            <Text style={styles.infoText}>Enter Name of a Friend</Text>
-          )}
+              <Text style={styles.infoText}>Enter Name of a Friend</Text>
+            )}
         </View>
       </View>
     );
@@ -93,7 +92,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#F5FCFF",
     width: "80%",
-    paddingTop: 25
+    paddingTop: 25,
   },
   autocompleteContainer: {
     marginLeft: 10,
@@ -107,7 +106,7 @@ const styles = StyleSheet.create({
     // `backgroundColor` needs to be set otherwise the
     // autocomplete input will disappear on text input.
     backgroundColor: "#F5FCFF",
-    marginTop: 8
+    marginTop: 8,
   },
   infoText: {
     textAlign: "center"
@@ -132,7 +131,7 @@ const styles = StyleSheet.create({
     borderRadius: 0.5,
     backgroundColor: "#2c3e50",
     color: "white",
-    width: 10
+    width: 10,
   }
 });
 
