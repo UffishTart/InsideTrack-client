@@ -1,12 +1,11 @@
 //import liraries
 import React, { Component } from "react";
-import {
-  scaleLinear as d3ScaleLinear,
-  scalePoint as d3ScalePoint
-} from "d3-scale";
+import { scaleLinear as d3ScaleLinear } from "d3-scale";
 import { Easing, Animated } from "react-native";
 import { Svg } from "expo";
-//const AnimatedG = Animated.createAnimatedComponent(G);
+
+const { Image, Text, G } = Svg;
+const AnimatedImage = Animated.createAnimatedComponent(Image);
 
 // create range that can space users out
 const xScaleRangeGenerator = datum => {
@@ -28,21 +27,20 @@ class Track extends Component {
     super();
     this.animatedValue = new Animated.Value(0);
   }
-  // componentDidMount () {
-  //   this.animate()
-  // }
+  componentDidMount() {
+    this.animate();
+  }
 
-  // animate() {
-  //   this.animatedValue.setValue(0);
-  //   Animated.timing(this.animatedValue, {
-  //     toValue: 1,
-  //     duration: 1000,
-  //     easing: Easing.bounce
-  //   }).start();
-  // }
+  animate() {
+    this.animatedValue.setValue(0);
+    Animated.timing(this.animatedValue, {
+      toValue: 1,
+      duration: 2000,
+      easing: Easing.linear
+    }).start();
+  }
   render() {
-    const { Image, Text, G } = Svg;
-    const { data, selectX, selectY, width, height, steps } = this.props;
+    const { data, selectX, selectY, width, height } = this.props;
     const xScale = d3ScaleLinear()
       .domain(xScaleRangeGenerator(data))
       .range([0, width - 2]);
@@ -61,16 +59,16 @@ class Track extends Component {
     return (
       <Svg width="340" height="400">
         {data.map((o, i) => {
-          console.log("!!!!! userId", o.userId);
-          console.log("!!!!! Improvement", o.Improvement);
-          console.log("!!!!! selectedX", selectScaledX(o) + 0.5);
-          console.log("!!!!! selectedY", selectScaledY(i + 1) - 6);
-          console.log("-----------------------------------");
-
+          const xLocation = selectScaledX(o);
+          const yLocation = selectScaledY(i + 1);
+          const marginLeft = this.animatedValue.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, xLocation]
+          });
           return (
             <G key={i}>
               <Text
-                x={selectScaledX(o) + 0.5}
+                x={xLocation + 0.5}
                 y={selectScaledY(i + 1) + 55}
                 fontSize="12"
                 fontWeight="bold"
@@ -79,7 +77,7 @@ class Track extends Component {
                 {o.userName}
               </Text>
               <Text
-                x={selectScaledX(o) + 0.5}
+                x={xLocation + 0.5}
                 y={selectScaledY(i + 1) + 65}
                 fontSize="12"
                 fontWeight="bold"
@@ -87,8 +85,8 @@ class Track extends Component {
               >
                 {o.Improvement}
               </Text>
-              <Image
-                x={selectScaledX(o)}
+              <AnimatedImage
+                x={marginLeft}
                 y={selectScaledY(i + 1)}
                 width="40%"
                 height="40%"
