@@ -17,7 +17,6 @@ class HomeScreen extends Component {
   };
 
   async componentDidMount() {
-    console.log('homescreen mounted')
     await this.props.getUser()
     if ((!this.props.user.length) && isSignedIn()) {
       const token = await AsyncStorage.getItem('USER_TOKEN') 

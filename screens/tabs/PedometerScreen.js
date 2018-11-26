@@ -1,14 +1,22 @@
-import Expo from 'expo';
-import React from 'react';
-import { Pedometer } from 'expo';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
-import { connect } from 'react-redux';
-import { me } from '../../store/user';
+import Expo from "expo";
+import React from "react";
+import { Pedometer } from "expo";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  ImageBackground,
+  Dimensions
+} from "react-native";
+import { connect } from "react-redux";
+import { me } from "../../store/user";
 import {
   putUpdatedPedometerData,
   fetchRaceUserData,
   putDailyAverage,
 } from '../../store/singleRaceUser';
+import Track from "../../components/Track";
 import { fetchSingleRaceFromServer } from '../../store/races';
 import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
 import CompletedRaceScreen from '../tabs/CompletedRaceScreen';
@@ -22,6 +30,16 @@ const arrayGenerater = userRaceInstance => {
   instanceArr.push(userRaceInstance.dailyAverage);
   instanceArr.push(userRaceInstance.place);
   return instanceArr;
+};
+
+const trimedObjGenerater = userRaceInstance => {
+  return {
+    userName: userRaceInstance.userInfo.userName,
+    userId: Number(userRaceInstance.userInfo.id),
+    Improvement: Number(userRaceInstance.percentImprovement),
+    dailyAverage: Number(userRaceInstance.dailyAverage),
+    place: Number(userRaceInstance.place)
+  };
 };
 
 //Helper funtion that can check if user have 7 full days info to generate the average steps
@@ -54,7 +72,7 @@ class PedometerSensor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isPedometerAvailable: 'checking',
+      isPedometerAvailable: "checking",
       pastStepCount: 0,
       averageSteps: 0,
       stepCountDuringGame: 0,
@@ -90,7 +108,7 @@ class PedometerSensor extends React.Component {
       this._unsubscribe();
     } else {
       await this.props.updateRaceAsComplete(this.props.raceId, {
-        completedStatus: true,
+        completedStatus: true
       });
       await this.props.getUserRaces(
         this.props.user.id,
@@ -103,19 +121,19 @@ class PedometerSensor extends React.Component {
   _subscribe = () => {
     this._subscription = Pedometer.watchStepCount(result => {
       this.setState({
-        currentStepCount: result.steps,
+        currentStepCount: result.steps
       });
     });
 
     Pedometer.isAvailableAsync().then(
       result => {
         this.setState({
-          isPedometerAvailable: String(result),
+          isPedometerAvailable: String(result)
         });
       },
       error => {
         this.setState({
-          isPedometerAvailable: 'Could not get isPedometerAvailable: ' + error,
+          isPedometerAvailable: "Could not get isPedometerAvailable: " + error
         });
       }
     );
@@ -149,12 +167,12 @@ class PedometerSensor extends React.Component {
           this.setState({
             pastStepCount: result.steps,
             days: daysChecking,
-            averageSteps: average,
+            averageSteps: average
           });
         },
         error => {
           this.setState({
-            pastStepCount: 'Could not get stepCount: ' + error,
+            pastStepCount: "Could not get stepCount: " + error
           });
         }
       )
@@ -171,7 +189,7 @@ class PedometerSensor extends React.Component {
     const endTimeForStopGame = endDateSetUp(
       gameStartTime,
       timeOpenApp,
-      this.props.races[0].length
+      Number(this.props.races[0].length)
     );
 
     Pedometer.getStepCountAsync(gameStartTime, endTimeForStopGame)
@@ -181,7 +199,7 @@ class PedometerSensor extends React.Component {
         },
         error => {
           this.setState({
-            stepCountDuringGame: 'Could not get stepCount: ' + error,
+            stepCountDuringGame: "Could not get stepCount: " + error
           });
         }
       )
@@ -201,12 +219,16 @@ class PedometerSensor extends React.Component {
 
   render() {
     const tableData = {
-      tableHead: ['Players', 'Improvement', 'Daily Average', 'Place'],
+      tableHead: ["Players", "Improvement", "Daily Average", "Place"],
       tableInfo: this.props.singleRaceUser
         .filter(el => el.acceptedInvitation)
         .sort((user1, user2) => user1.place - user2.place)
-        .map(el => arrayGenerater(el)),
+        .map(el => arrayGenerater(el))
     };
+    const racingUserData = this.props.singleRaceUser
+      .filter(el => el.acceptedInvitation)
+      .map(el => trimedObjGenerater(el))
+      .sort((user1, user2) => user1.place - user2.place);
 
     return (
       <View>
@@ -236,6 +258,19 @@ class PedometerSensor extends React.Component {
               />
             </TableWrapper>
           </Table>
+          <ImageBackground
+            style={styles.photo}
+            source={require("../../assets/horse-race-track-1.jpg")}
+          >
+            <Track
+              data={racingUserData}
+              selectX={datum => datum.Improvement}
+              selectY={idx => idx}
+              steps={this.state.pastStepCount}
+              width={Dimensions.get("window").width}
+              height={Dimensions.get("window").height}
+            />
+          </ImageBackground>
         </View>
       </View>
     );
@@ -246,20 +281,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center"
   },
   tableContainer: {
     flex: 1,
     fontSize: 10,
-    width: '100%',
-    height: '50%',
-    paddingTop: 20,
+    width: "100%",
+    height: "50%",
+    paddingTop: 20
   },
-  head: { height: 40, backgroundColor: '#014D7F' },
-  wrapper: { flexDirection: 'row' },
-  row: { height: 28, backgroundColor: '#9AE0FF' },
-  text: { textAlign: 'center' },
+  head: { height: 40, backgroundColor: "#014D7F" },
+  wrapper: { flexDirection: "row" },
+  row: { height: 28, backgroundColor: "#9AE0FF" },
+  text: { textAlign: "center" },
+  photo: { width: "100%", height: "80%", paddingTop: 10 }
 });
 
 const mapState = ({ singleRaceUser, races, userRaces }) => ({

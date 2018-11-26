@@ -1,8 +1,8 @@
 //import liraries
 //Will require some type of Three js import -- loading in a JSON object
 //Need for resizing probably depending on component? We'll see
-import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import React, { Component } from "react";
+import { View, Text, Image, StyleSheet } from "react-native";
 
 // create a component
 class HorseComponent extends Component {
