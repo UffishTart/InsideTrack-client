@@ -17,18 +17,20 @@ class SingleRace extends Component {
         {!!this.props.race ? (
           <Modal>
             <View style={styles.container}>
-              <HorseComponent />
+              {/* <HorseComponent />*/}
               {!!this.props.race.raceInfo.completedStatus ? (
                 <CompletedRaceScreen
                   user={this.props.user}
                   raceId={this.props.race.raceId}
                 />
               ) : (
-                <PedometerSensor
-                  user={this.props.user}
-                  raceId={this.props.race.raceId}
-                  updateRaceAsComplete={this.props.updateRaceAsComplete}
-                />
+                <View style={styles.padding}>
+                  <PedometerSensor
+                    user={this.props.user}
+                    raceId={this.props.race.raceId}
+                    updateRaceAsComplete={this.props.updateRaceAsComplete}
+                  />
+                </View>
               )}
               <Button title="Back" onPress={this.props.toggleSingleRaceView}>
                 Back
@@ -48,6 +50,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#2c3e50"
+  },
+  padding: {
+    marginTop: 20
   }
 });
 
