@@ -13,25 +13,30 @@ class SingleRace extends Component {
 
   render() {
     return (
-      <Modal>
-        <View style={styles.container}>
-          {!!this.props.race.raceInfo.completedStatus ? (
-            <CompletedRaceScreen
-              user={this.props.user}
-              raceId={this.props.race.raceId}
-            />
-          ) : (
-            <PedometerSensor
-              user={this.props.user}
-              raceId={this.props.race.raceId}
-              updateRaceAsComplete={this.props.updateRaceAsComplete}
-            />
-          )}
-          <Button title="Back" onPress={this.props.toggleSingleRaceView}>
-            SingleRace
-          </Button>
-        </View>
-      </Modal>
+      <View>
+        {!!this.props.race ? (
+          <Modal>
+            <View style={styles.container}>
+              <HorseComponent />
+              {!!this.props.race.raceInfo.completedStatus ? (
+                <CompletedRaceScreen
+                  user={this.props.user}
+                  raceId={this.props.race.raceId}
+                />
+              ) : (
+                <PedometerSensor
+                  user={this.props.user}
+                  raceId={this.props.race.raceId}
+                  updateRaceAsComplete={this.props.updateRaceAsComplete}
+                />
+              )}
+              <Button title="Back" onPress={this.props.toggleSingleRaceView}>
+                Back
+              </Button>
+            </View>
+          </Modal>
+        ) : null}
+      </View>
     );
   }
 }

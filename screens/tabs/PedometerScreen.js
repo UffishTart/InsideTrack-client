@@ -14,11 +14,13 @@ import { me } from "../../store/user";
 import {
   putUpdatedPedometerData,
   fetchRaceUserData,
-  putDailyAverage
-} from "../../store/singleRaceUser";
-import { fetchSingleRaceFromServer } from "../../store/races";
-import { Table, TableWrapper, Row, Rows } from "react-native-table-component";
+  putDailyAverage,
+} from '../../store/singleRaceUser';
 import Track from "../../components/Track";
+import { fetchSingleRaceFromServer } from '../../store/races';
+import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
+import CompletedRaceScreen from '../tabs/CompletedRaceScreen';
+import { fetchUserRacesByUser } from '../../store/userRaces';
 
 //Helper function to generate the table row array;
 const arrayGenerater = userRaceInstance => {
@@ -74,7 +76,8 @@ class PedometerSensor extends React.Component {
       pastStepCount: 0,
       averageSteps: 0,
       stepCountDuringGame: 0,
-      days: 0
+      days: 0,
+      hasCompleted: false,
     };
   }
 
@@ -90,15 +93,29 @@ class PedometerSensor extends React.Component {
     if (timeOpenApp < endTimeOfGame) {
       await this._subscribe();
     } else {
-      await this.props.updateRaceAsComplete(this.props.raceId, {
-        completedStatus: true
-      });
-      this.props.navigation.navigate("SingleRace");
+      this.setState({ hasCompleted: true });
     }
   }
 
-  componentWillUnmount() {
-    this._unsubscribe();
+  async componentWillUnmount() {
+    const gameStartTime = new Date(this.props.races[0].startTime);
+    const timeOpenApp = new Date();
+    const endTimeOfGame = endGameDate(
+      gameStartTime,
+      this.props.races[0].length + 1
+    );
+    if (timeOpenApp < endTimeOfGame) {
+      this._unsubscribe();
+    } else {
+      await this.props.updateRaceAsComplete(this.props.raceId, {
+        completedStatus: true
+      });
+      await this.props.getUserRaces(
+        this.props.user.id,
+        'acceptedInvitation',
+        true
+      );
+    }
   }
 
   _subscribe = () => {
@@ -214,16 +231,17 @@ class PedometerSensor extends React.Component {
       .sort((user1, user2) => user1.place - user2.place);
 
     return (
-      !!racingUserData.length && (
+      <View>
+        {this.state.hasCompleted ? <Text>This race is over!</Text> : null}
         <View style={styles.tableContainer}>
           <Text style={styles.text}>
-            Steps taken during the game: {this.state.stepCountDuringGame}{" "}
+            Steps taken during the game: {this.state.stepCountDuringGame}{' '}
           </Text>
           <Text style={styles.text}>
-            Average steps: {this.state.averageSteps}{" "}
+            Average steps: {this.state.averageSteps}{' '}
           </Text>
 
-          <Table borderStyle={{ borderColor: "#017EC2" }}>
+          <Table borderStyle={{ borderColor: '#017EC2' }}>
             <Row
               data={tableData.tableHead}
               flexArr={[2, 2, 2, 1]}
@@ -254,7 +272,7 @@ class PedometerSensor extends React.Component {
             />
           </ImageBackground>
         </View>
-      )
+      </View>
     );
   }
 }
@@ -280,9 +298,10 @@ const styles = StyleSheet.create({
   photo: { width: "100%", height: "80%", paddingTop: 10 }
 });
 
-const mapState = ({ singleRaceUser, races }) => ({
+const mapState = ({ singleRaceUser, races, userRaces }) => ({
   singleRaceUser,
-  races
+  races,
+  userRaces,
 });
 const mapDispatch = dispatch => ({
   fetchRaceUserData: raceId => dispatch(fetchRaceUserData(raceId)),
@@ -290,7 +309,9 @@ const mapDispatch = dispatch => ({
     dispatch(putUpdatedPedometerData(dayPedoOutput, userId, raceId)),
   getSingleRace: raceId => dispatch(fetchSingleRaceFromServer(raceId)),
   updateAverage: (steps, userId, raceId) =>
-    dispatch(putDailyAverage(steps, userId, raceId))
+    dispatch(putDailyAverage(steps, userId, raceId)),
+  getUserRaces: (userId, queryType, queryIndicator) =>
+    dispatch(fetchUserRacesByUser(userId, queryType, queryIndicator)),
 });
 
 export default connect(

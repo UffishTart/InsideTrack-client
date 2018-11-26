@@ -3,7 +3,7 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import PendingRacesListItem from './PendingRacesListItem';
 
 const PendingRacesList = props => {
-  const { user, races, isOwnerBool, toggleStart } = props;
+  const { user, races, isOwnerBool, toggleStart, getPendingRaces } = props;
   return (
     <View
       style={
@@ -16,7 +16,7 @@ const PendingRacesList = props => {
         {!!races.length &&
           races
             .filter(race => {
-              return (race.isOwner === isOwnerBool);
+              return race.isOwner === isOwnerBool;
             })
             .map(race => {
               return (
@@ -25,6 +25,7 @@ const PendingRacesList = props => {
                   user={user}
                   race={race}
                   toggleStart={toggleStart}
+                  getPendingRaces={getPendingRaces}
                 />
               );
             })}
