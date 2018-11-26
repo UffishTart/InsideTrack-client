@@ -1,12 +1,12 @@
-import axios from "axios";
-const server = "https://inside-track-server-boil.herokuapp.com";
+import axios from 'axios';
+const server = 'https://inside-track-server-boil.herokuapp.com';
 
-const GET_RACE_USERS = "GET_RACE_USERS";
-const UPDATE_PEDO_DATA = "UPDATE_PEDO_DATA";
+const GET_RACE_USERS = 'GET_RACE_USERS';
+const UPDATE_PEDO_DATA = 'UPDATE_PEDO_DATA';
 
 const getRaceUsers = raceUsers => ({
   type: GET_RACE_USERS,
-  raceUsers
+  raceUsers,
 });
 
 export const fetchRaceUserData = raceId => async dispatch => {
@@ -49,7 +49,7 @@ export const putUpdatedPedometerData = (
 
     const res = await axios.put(`${server}/api/userRaces/${raceId}/${userId}`, {
       differenceFromAverage: newDifferenceFromAverage,
-      percentImprovement: newPercentageImprovement
+      percentImprovement: newPercentageImprovement,
     });
 
     const allUsersInRace = await axios.get(`${server}/api/userRaces/${raceId}`);
@@ -63,7 +63,7 @@ export const putUpdatedPedometerData = (
           return await axios.put(
             `${server}/api/userRaces/${raceId}/${sortedUser.userId}`,
             {
-              place: index + 1
+              place: index + 1,
             }
           );
         } catch (err) {
@@ -83,7 +83,10 @@ export const updateRaceUserData = (
   updateObj
 ) => async dispatch => {
   try {
-    await axios.put(`${server}/api/userRaces/${raceId}/${userId}`, updateObj);
+    const res = await axios.put(
+      `${server}/api/userRaces/${raceId}/${userId}`,
+      updateObj
+    );
     dispatch(fetchRaceUserData(raceId));
   } catch (err) {
     console.log(err);

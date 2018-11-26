@@ -4,11 +4,12 @@ import HorseComponent from "../../components/HorseComponent";
 import { View, Text, StyleSheet, Button } from "react-native";
 import FindUsers from "../../components/FindUsers";
 
+
 // create a component
 export default class ProfileScreen extends Component {
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.container} >
         <HorseComponent />
         <FindUsers />
       </View>
@@ -22,6 +23,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#2c3e50"
+    backgroundColor: "#fbff14"
   }
 });

@@ -46,7 +46,9 @@ class RacesListItem extends Component {
               Length:
               <Text style={styles.raceInfo}>
                 <Text>{'  '}</Text>
-                <Text>{this.props.race.raceInfo.length}</Text>
+                <Text>
+                  {this.props.race.raceInfo.length === 1 ? 'Day' : 'Week'}
+                </Text>
               </Text>
             </Text>
           ) : null}

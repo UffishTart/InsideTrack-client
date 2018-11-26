@@ -9,10 +9,8 @@ class HorseComponent extends Component {
   render() {
     return (
       // <Text>Your Horse!</Text>
-      <Image
-        style={{ width: 400, height: 200 }}
-        source={require("../assets/horseRunning.gif")}
-      />
+      <Image style={{ width: 200, height: 200, resizeMode: "contain" }}
+        source={require('../assets/horse-avatar.gif')}></Image>
     );
   }
 }
@@ -21,9 +19,8 @@ class HorseComponent extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#2c3e50"
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 });
 

@@ -1,3 +1,4 @@
+import React, { Component } from 'react'
 import { StyleSheet } from 'react-native';
 import HomeScreen from '../screens/tabs/HomeScreen';
 import ProfileScreen from '../screens/tabs/ProfileScreen';
@@ -11,7 +12,18 @@ import {
   createSwitchNavigator,
   createBottomTabNavigator,
 } from 'react-navigation';
+import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 // import Icon from 'react-native-vector-icons/Ionicons' //Need to install
+import { MaterialIcons } from '@expo/vector-icons';
+
+const tabBarIcon = name => ({ tintColor }) => (
+  <MaterialIcons
+    style={{ backgroundColor: 'transparent' }}
+    name={name}
+    color={tintColor}
+    size={24}
+  />
+);
 
 const SignedOut = createStackNavigator({
   AuthFormSelect: {
@@ -32,40 +44,44 @@ const SignedOut = createStackNavigator({
       title: 'Sign Up',
     },
   },
-  SingleRace: {
-    screen: SingleRace,
-    navigationOptions: {
-      title: 'Single Race',
-    },
-  },
 });
 
-const SignedIn = createBottomTabNavigator({
+const SignedIn = createMaterialBottomTabNavigator({
   Home: {
     screen: HomeScreen,
     navigationOptions: {
-      tabBarLabel: 'Home',
+      tabBarColor: '#fff',
+      tabBarIcon: tabBarIcon('home'),
     },
   },
   Races: {
     screen: RacesScreen,
     navigationOptions: {
-      tabBarLabel: 'My Races',
+      tabBarColor: '#fff',
+      tabBarIcon: tabBarIcon('directions-run'),
     },
   },
   Profile: {
     screen: ProfileScreen,
     navigationOptions: {
-      tabBarLabel: 'My Steed',
+      tabBarColor: '#fff',
+      tabBarIcon: tabBarIcon('person'),
     },
   },
   PendingRaces: {
     screen: PendingRacesScreen,
     navigationOptions: {
-      tabBarLabel: 'Pending Races',
-    },
-  },
-});
+      tabBarColor: '#fff',
+      tabBarIcon: tabBarIcon('mail'),
+      title: 'Pending Races'
+    }
+  }
+}, {
+    initialRouteName: 'Home',
+    activeColor: '#ef1717',
+    inactiveColor: 'black',
+    barStyle: { backgroundColor: '#fff' },
+  });
 
 export const createRootNavigator = (signedIn = false) => {
   return createSwitchNavigator(

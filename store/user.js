@@ -2,7 +2,6 @@ import axios from "axios";
 const server = "https://inside-track-server-boil.herokuapp.com";
 import { onSignIn, onSignOut } from "../navigation/AsyncStorageAuth";
 const localServer = "localhost:8080"
-// import history from '../history'
 
 //  * ACTION TYPES
 
@@ -41,6 +40,21 @@ export const auth = (email, password, method, username) => async dispatch => {
     console.error(dispatchOrHistoryErr);
   }
 };
+
+export const authWithToken = token => async dispatch => {
+  let res
+  try {
+    res = await axios.post(`${server}/auth/loginWithToken`, { token })
+  } catch(authError) {
+    return dispatch(getUser({ error: authError }))
+  }
+
+  try {
+    dispatch(getUser(res.data))
+  } catch (otherErr) {
+      console.error(otherErr)
+    }
+}
 
 export const logout = () => async dispatch => {
   try {
