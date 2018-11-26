@@ -1,13 +1,12 @@
 //import liraries
 import React, { Component } from "react";
-import { View, Text, StyleSheet, ART } from "react-native";
-import { extent as d3ArrayExtent } from "d3-array";
 import {
   scaleLinear as d3ScaleLinear,
   scalePoint as d3ScalePoint
 } from "d3-scale";
-import { line as d3Line } from "d3-shape";
+import { Easing, Animated } from "react-native";
 import { Svg } from "expo";
+//const AnimatedG = Animated.createAnimatedComponent(G);
 
 // create range that can space users out
 const xScaleRangeGenerator = datum => {
@@ -25,8 +24,24 @@ const pathPhoto = [
 ];
 
 class Track extends Component {
+  constructor() {
+    super();
+    this.animatedValue = new Animated.Value(0);
+  }
+  // componentDidMount () {
+  //   this.animate()
+  // }
+
+  // animate() {
+  //   this.animatedValue.setValue(0);
+  //   Animated.timing(this.animatedValue, {
+  //     toValue: 1,
+  //     duration: 1000,
+  //     easing: Easing.bounce
+  //   }).start();
+  // }
   render() {
-    const { Image } = Svg;
+    const { Image, Text, G } = Svg;
     const { data, selectX, selectY, width, height, steps } = this.props;
     const xScale = d3ScaleLinear()
       .domain(xScaleRangeGenerator(data))
@@ -48,35 +63,44 @@ class Track extends Component {
         {data.map((o, i) => {
           console.log("!!!!! userId", o.userId);
           console.log("!!!!! Improvement", o.Improvement);
-          console.log("!!!!! selectedX", selectScaledX(o));
-          console.log("!!!!! selectedY", selectScaledY(i + 1));
+          console.log("!!!!! selectedX", selectScaledX(o) + 0.5);
+          console.log("!!!!! selectedY", selectScaledY(i + 1) - 6);
           console.log("-----------------------------------");
 
           return (
-            <Image
-              key={i}
-              x={selectScaledX(o)}
-              y={selectScaledY(i + 1)}
-              width="40%"
-              height="40%"
-              href={pathPhoto[i]}
-            />
+            <G key={i}>
+              <Text
+                x={selectScaledX(o) + 0.5}
+                y={selectScaledY(i + 1) + 55}
+                fontSize="12"
+                fontWeight="bold"
+                fill="black"
+              >
+                {o.userName}
+              </Text>
+              <Text
+                x={selectScaledX(o) + 0.5}
+                y={selectScaledY(i + 1) + 65}
+                fontSize="12"
+                fontWeight="bold"
+                fill="black"
+              >
+                {o.Improvement}
+              </Text>
+              <Image
+                x={selectScaledX(o)}
+                y={selectScaledY(i + 1)}
+                width="40%"
+                height="40%"
+                href={pathPhoto[i]}
+              />
+            </G>
           );
         })}
       </Svg>
     );
   }
 }
-
-// define your styles
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#2c3e50"
-  }
-});
 
 //make this component available to the app
 export default Track;
