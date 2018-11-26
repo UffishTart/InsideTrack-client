@@ -1,18 +1,21 @@
 import Autocomplete from "react-native-autocomplete-input";
 import React, { Component } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Button } from "react-native-elements";
 import { connect } from "react-redux";
 import { fetchAllUsers } from "../store/allUsers";
 import { addNewFriend } from "../store/userFriend";
+import { Content, Container, Card, CardItem, Left, Body, Right, Icon, Text } from 'native-base';
+
+
 
 const renderUser = user => {
   const { userName } = user;
 
   return (
-    <View>
-      <Text style={styles.titleText}>{userName}</Text>
-    </View>
+    <Body>
+      <Text>{userName}</Text>
+    </Body>
   );
 };
 class FindUsers extends Component {
@@ -49,7 +52,7 @@ class FindUsers extends Component {
     const comp = (a, b) => a.toLowerCase() === b.toLowerCase();
 
     return (
-      <View style={styles.container}>
+      <Container>
         <Autocomplete
           autoCapitalize="none"
           autoCorrect={false}
@@ -66,25 +69,25 @@ class FindUsers extends Component {
             <TouchableOpacity
               onPress={() => this.setState({ query: userName })}
             >
-              <Text style={styles.itemText}>{userName}</Text>
+              <Text>{userName}</Text>
             </TouchableOpacity>
           )}
         />
-        <View style={styles.descriptionContainer}>
+        <Container style={{ backgroundColor: "#fbff14" }}>
           {usersToFind.length > 0 ? (
-            <View>
+            <Container>
               {renderUser(usersToFind[0])}
               <Button
                 onPress={() => this.addAsFriend(user.id, usersToFind[0].id)}
                 title="Add"
               />
-            </View>
+            </Container>
           ) : (
-              <Text style={styles.infoText}>Enter Name of a Friend</Text>
+              <Text>Enter Name of a Friend</Text>
             )}
-        </View>
-      </View>
-    );
+        </Container>
+      </Container>
+    )
   }
 }
 
