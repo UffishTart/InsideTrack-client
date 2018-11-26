@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { Font } from "expo";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, AsyncStorage } from "react-native";
 import Settings from "../pop-up-screens/Settings";
 import StartNewRace from '../../components/StartNewRace'
-import { me } from "../../store/user";
+import { me, authWithToken, logout } from "../../store/user";
+import { isSignedIn } from "../../navigation/AsyncStorageAuth"
 import { connect } from "react-redux";
-
+import axios from 'axios'
 
 // create a component
 class HomeScreen extends Component {
@@ -18,6 +19,12 @@ class HomeScreen extends Component {
   async componentDidMount() {
     console.log('homescreen mounted')
     await this.props.getUser()
+    if ((!this.props.user.length) && isSignedIn()) {
+      const token = await AsyncStorage.getItem('USER_TOKEN') 
+      await this.props.reLogin(Number(token))
+      await this.props.getUser()
+    }
+    console.log('the user on state:', this.props.user)
     await Font.loadAsync({
       'FasterOne-Regular': require('../../assets/FasterOne-Regular.ttf'),
     });
@@ -65,6 +72,7 @@ class HomeScreen extends Component {
               style={styles.buttonLogout}
               onPress={() => {
                 // onSignOut
+                this.props.logout()
                 this.props.navigation.navigate("SignedOut");
               }}>
               {this.state.fontLoaded ? (
@@ -206,6 +214,8 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     getUser: () => dispatch(me()),
+    reLogin: token => dispatch(authWithToken(token)),
+    logout: () => dispatch(logout())
   };
 };
 
