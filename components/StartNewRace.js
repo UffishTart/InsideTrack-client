@@ -23,7 +23,7 @@ class StartNewRace extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: 'test',
+      name: 'Enter Race Name',
       length: 1,
       friendIdArr: [],
       selectedFriendId: 0,
@@ -80,11 +80,16 @@ class StartNewRace extends Component {
               value={this.state.name}
               onChangeText={this.nameHandleChange}
             />
-            <TextInput
-              placeholder={'Race Length'}
-              value={this.state.length}
-              onChangeText={this.lengthHandleChange}
-            />
+            <Picker
+              selectedValue={this.state.length}
+              onValueChange={lengthValue =>
+                this.setState({ length: lengthValue })
+              }
+            >
+              <Picker.Item label="Race Length" value={null} />
+              <Picker.Item label="Day" value={1} />
+              <Picker.Item label="Week" value={7} />
+            </Picker>
             <Picker
               selectedValue={this.state.selectedFriend}
               onValueChange={friendValue =>

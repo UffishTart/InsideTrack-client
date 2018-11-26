@@ -44,12 +44,6 @@ const SignedOut = createStackNavigator({
       title: 'Sign Up',
     },
   },
-  SingleRace: {
-    screen: SingleRace,
-    navigationOptions: {
-      title: 'Single Race',
-    },
-  },
 });
 
 const SignedIn = createMaterialBottomTabNavigator({
