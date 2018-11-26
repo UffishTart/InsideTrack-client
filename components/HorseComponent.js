@@ -3,14 +3,20 @@
 //Need for resizing probably depending on component? We'll see
 import React, { Component } from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
+import { Content, Card, CardItem, Left, Body, Right, Icon } from 'native-base';
+
 
 // create a component
 class HorseComponent extends Component {
   render() {
     return (
       // <Text>Your Horse!</Text>
-      <Image style={{ width: 200, height: 200, resizeMode: "contain" }}
-        source={require('../assets/horse-avatar.gif')}></Image>
+      <Card>
+        <CardItem style={{ backgroundColor: "#fbff14" }}>
+          <Image style={{ height: 200, width: null, flex: 1 }}
+            source={require('../assets/horse-avatar.gif')}></Image>
+        </CardItem>
+      </Card>
     );
   }
 }
