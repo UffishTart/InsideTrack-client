@@ -6,8 +6,7 @@ import StartNewRace from '../../components/StartNewRace'
 import { me, authWithToken, logout } from "../../store/user";
 import { isSignedIn } from "../../navigation/AsyncStorageAuth"
 import { connect } from "react-redux";
-import axios from 'axios'
-
+import { Container, Header, Left, Body, Right, Button, Icon, Title } from 'native-base';
 // create a component
 class HomeScreen extends Component {
   state = {
@@ -19,7 +18,7 @@ class HomeScreen extends Component {
   async componentDidMount() {
     await this.props.getUser()
     if ((!this.props.user.length) && isSignedIn()) {
-      const token = await AsyncStorage.getItem('USER_TOKEN') 
+      const token = await AsyncStorage.getItem('USER_TOKEN')
       await this.props.reLogin(Number(token))
       await this.props.getUser()
     }
