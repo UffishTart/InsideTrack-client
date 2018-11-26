@@ -25,20 +25,40 @@ const pathPhoto = [
 class Track extends Component {
   constructor() {
     super();
+
     this.animatedValue = new Animated.Value(0);
   }
   componentDidMount() {
     this.animate();
+    // this.setInterval(() => {
+    //     this.upAndDown(yLocation, 500, yLocation + 15, yLocation - 15);
+    //   }, 1000)
   }
 
   animate() {
     this.animatedValue.setValue(0);
+
     Animated.timing(this.animatedValue, {
       toValue: 1,
       duration: 2000,
-      easing: Easing.linear
+      easing: Easing.linear,
+      useNativeDriver: true
     }).start();
   }
+
+  upAndDown = (yPositionPropName, duration, yHighPosition, yLowPosition) => {
+    Animated.sequence([
+      Animated.timing(yPositionPropName, {
+        duration: duration || 500,
+        toValue: yHighPosition
+      }),
+      Animated.timing(yPositionPropName, {
+        duration: duration || 500,
+        toValue: yLowPosition
+      })
+    ]).start();
+  };
+
   render() {
     const { data, selectX, selectY, width, height } = this.props;
     const xScale = d3ScaleLinear()
@@ -65,6 +85,9 @@ class Track extends Component {
             inputRange: [0, 1],
             outputRange: [0, xLocation]
           });
+          const animatedYInterval = setInterval(() => {
+            this.upAndDown(yLocation, 500, yLocation + 15, yLocation - 15);
+          }, 1000);
           return (
             <G key={i}>
               <Text
@@ -87,7 +110,7 @@ class Track extends Component {
               </Text>
               <AnimatedImage
                 x={marginLeft}
-                y={selectScaledY(i + 1)}
+                y={animatedYInterval}
                 width="40%"
                 height="40%"
                 href={pathPhoto[i]}
