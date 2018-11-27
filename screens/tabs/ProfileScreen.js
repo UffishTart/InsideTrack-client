@@ -10,7 +10,7 @@ import HorseStore from "../pop-up-screens/HorseStore"
 export default class ProfileScreen extends Component {
   render() {
     return (
-      <Container style={{ backgroundColor: "#fbff14" }}>
+      <Container style={{ backgroundColor: "#fff" }}>
         <HorseComponent />
         <FindUsers />
         {/* <HorseStore /> */}
