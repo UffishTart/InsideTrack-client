@@ -11,11 +11,8 @@ import {
   Dimensions
 } from "react-native";
 
-
 import PedometerSensor from "../tabs/PedometerScreen";
 import CompletedRaceScreen from "../tabs/CompletedRaceScreen";
-// import { Container, Text, Button, Footer, FooterTab, Content, Header, Left, Body, Right, Icon, Title } from 'native-base';
-
 
 // create a component
 class SingleRace extends Component {
@@ -28,7 +25,6 @@ class SingleRace extends Component {
       <View>
         {!!this.props.race ? (
           <Modal>
-
             <View style={styles.container}>
               {!!this.props.race.raceInfo.completedStatus ? (
                 <CompletedRaceScreen
@@ -54,8 +50,6 @@ class SingleRace extends Component {
                 </ImageBackground>
               )}
             </View>
-
-               
           </Modal>
         ) : null}
       </View>
@@ -72,7 +66,6 @@ const styles = StyleSheet.create({
 
     backgroundColor: "#2c3e50",
     flexWrap: "nowrap"
-
   },
   photo: {
     width: "100%",

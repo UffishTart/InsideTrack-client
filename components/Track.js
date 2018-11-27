@@ -9,7 +9,6 @@ const { Image, Text, G } = Svg;
 const AnimatedImage = Animated.createAnimatedComponent(Image);
 const AnimatedText = Animated.createAnimatedComponent(Text);
 
-
 // create range that can space users out
 const xScaleRangeGenerator = datum => {
   const improvement = datum.map(el => el.Improvement).sort((a, b) => a - b);
@@ -40,7 +39,6 @@ const horseLinksNeeded = []
 
 
 class Track extends Component {
-
   constructor() {
     super();
     this.state = {
@@ -103,8 +101,6 @@ class Track extends Component {
     return (
       <Svg width="340" height="500">
         {data.map((o, i) => {
-          const filteredMapArray = horseUrlMap.filter(horse => horse.horseId === o.horseId)
-          const horseImageString = filteredMapArray[0].requiredHorse
           const xLocation = selectScaledX(o);
           const tagLocation = selectScaledX(o) + 1;
           const yLocation = selectScaledY(i + 1);
@@ -146,7 +142,6 @@ class Track extends Component {
                 href={this.state.horseLinksNeeded[i]}
               />
             </G>
-
           );
         })}
       </Svg>
@@ -158,12 +153,6 @@ class Track extends Component {
 export default Track;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#2c3e50"
-  },
   textContainer: {
     backgroundColor: "#eee",
     borderTopLeftRadius: 3,
