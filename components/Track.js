@@ -19,18 +19,47 @@ const xScaleRangeGenerator = datum => {
 };
 
 const pathPhoto = [
-  require('../assets/CoolClips_peop1281.png'),
-  require('../assets/rcLnXB56i.png'),
-  require('../assets/horse3.png'),
+  // require("../assets/horse1.png"),
+  require("../assets/CoolClips_peop1281.png"),
+  require("../assets/rcLnXB56i.png"),
+  require("../assets/horse3.png")
 ];
+
+console.log('pathPhoto arr', pathPhoto)
+
+const horseUrlMap = [
+  {horseId: 1, requiredHorse: require("../assets/horse1.png")},
+  {horseId: 2, requiredHorse: require("../assets/rcLnXB56i.png")},
+  {horseId: 3, requiredHorse: require("../assets/horse3.png")},
+  {horseId: 4, requiredHorse: require("../assets/CoolClips_peop1281.png")}
+]
+
+const horseLinksNeeded = []
+
+
 
 class Track extends Component {
   constructor() {
     super();
+    this.state = {
+      horseLinksNeeded: []
+    }
     this.horseAnimatedValue = new Animated.Value(0);
     this.textAnimatedValue = new Animated.Value(0);
   }
+
   componentDidMount() {
+    this.props.data.forEach(userObj => {
+      horseUrlMap.forEach(horseObj => {
+        if (userObj.horseId === horseObj.horseId) {
+          const newLink = this.state.horseLinksNeeded
+          newLink.push(horseObj.requiredHorse)
+          this.setState({
+            horseLinksNeeded: [...this.state.horseLinksNeeded, horseObj.requiredHorse]
+          })
+        }
+      })
+    })
     this.animate();
   }
 
@@ -79,7 +108,6 @@ class Track extends Component {
             inputRange: [0, 1],
             outputRange: [0, xLocation],
           });
-
           const tagMotion = this.textAnimatedValue.interpolate({
             inputRange: [0, 1],
             outputRange: [0, tagLocation],
@@ -111,7 +139,7 @@ class Track extends Component {
                 y={selectScaledY(i + 1)}
                 width="40%"
                 height="40%"
-                href={pathPhoto[i]}
+                href={this.state.horseLinksNeeded[i]}
               />
             </G>
           );

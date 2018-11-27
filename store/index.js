@@ -9,7 +9,7 @@ import userRacesPending from "./userRacesPending";
 import singleRaceUser from "./singleRaceUser";
 import userFriend from "./userFriend";
 import allUsers from "./allUsers";
-
+import horses from "./horseStore"
 const reducer = combineReducers({
   user,
   races,
@@ -17,7 +17,8 @@ const reducer = combineReducers({
   singleRaceUser,
   userFriend,
   allUsers,
-  userRacesPending
+  userRacesPending,
+  horses
 });
 
 const middleware = composeWithDevTools(
@@ -33,3 +34,4 @@ export * from "./races";
 export * from "./userRaces";
 export * from "./singleRaceUser";
 export * from "./userFriend";
+export * from "./horseStore" 

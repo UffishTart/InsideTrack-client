@@ -60,7 +60,7 @@ const trimedObjGenerater = userRaceInstance => {
     Improvement: Number(userRaceInstance.percentImprovement),
     dailyAverage: Number(userRaceInstance.dailyAverage),
     place: Number(userRaceInstance.place),
-    horseImage: userRaceInstance.userInfo.horse.imgUrl,
+    horseId: userRaceInstance.userInfo.horseId
   };
 };
 
@@ -105,6 +105,7 @@ class PedometerSensor extends React.Component {
 
   async componentDidMount() {
     await this.props.fetchRaceUserData(this.props.raceId);
+
     await this.props.getSingleRace(this.props.raceId);
     const gameStartTime = new Date(this.props.races[0].startTime);
     const timeOpenApp = new Date();
