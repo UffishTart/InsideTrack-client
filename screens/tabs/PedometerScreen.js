@@ -1,27 +1,29 @@
 import Expo from "expo";
 import React from "react";
-import { Pedometer } from "expo";
+import { Pedometer, Svg } from "expo";
 import {
   StyleSheet,
   Text,
   View,
   ScrollView,
-  ImageBackground,
-  Image,
+
+  TouchableOpacity,
+
   Dimensions
 } from "react-native";
 import { connect } from "react-redux";
-import { me } from "../../store/user";
+
 import {
   putUpdatedPedometerData,
   fetchRaceUserData,
-  putDailyAverage,
-} from '../../store/singleRaceUser';
+  putDailyAverage
+} from "../../store/singleRaceUser";
 import Track from "../../components/Track";
-import { fetchSingleRaceFromServer } from '../../store/races';
-import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
-import CompletedRaceScreen from '../tabs/CompletedRaceScreen';
-import { fetchUserRacesByUser } from '../../store/userRaces';
+
+import { fetchSingleRaceFromServer } from "../../store/races";
+import { fetchUserRacesByUser } from "../../store/userRaces";
+import StatusTable from "../../components/StatusTable";
+
 import { Container, Button, Footer, FooterTab, Content, Header, Left, Body, Right, Icon, Title } from 'native-base';
 
 
@@ -82,6 +84,7 @@ class PedometerSensor extends React.Component {
       stepCountDuringGame: 0,
       days: 0,
       hasCompleted: false,
+      showStatus: false
     };
   }
 
@@ -117,7 +120,7 @@ class PedometerSensor extends React.Component {
       });
       await this.props.getUserRaces(
         this.props.user.id,
-        'acceptedInvitation',
+        "acceptedInvitation",
         true
       );
     }
@@ -222,6 +225,9 @@ class PedometerSensor extends React.Component {
     this._subscription = null;
   };
 
+  toggleScreen = () => {
+    this.setState({ ...this.state, showStatus: !this.state.showStatus });
+  };
   render() {
     console.log('singleUserRace on state:', this.props.singleRaceUser)
     const tableData = {
@@ -239,35 +245,17 @@ class PedometerSensor extends React.Component {
     return (
       <View>
         {this.state.hasCompleted ? <Text>This race is over!</Text> : null}
-        <View style={styles.tableContainer}>
-          <Text style={styles.text}>
-            Steps taken during the game: {this.state.stepCountDuringGame}{' '}
-          </Text>
-          <Text style={styles.text}>
-            Average steps: {this.state.averageSteps}{' '}
-          </Text>
 
-          <Table borderStyle={{ borderColor: '#017EC2' }}>
-            <Row
-              data={tableData.tableHead}
-              flexArr={[2, 2, 2, 1]}
-              style={styles.head}
-              textStyle={styles.text}
-            />
-            <TableWrapper style={styles.wrapper}>
-              <Rows
-                data={tableData.tableInfo}
-                style={styles.row}
-                flexArr={[2, 2, 2, 1]}
-                heightArr={[28, 28]}
-                textStyle={styles.text}
-              />
-            </TableWrapper>
-          </Table>
-          <ImageBackground
-            style={styles.photo}
-            source={require("../../assets/horse-race-track-1.jpg")}
-          >
+        {this.state.showStatus ? (
+          <View style={styles.tableContainer}>
+            <StatusTable tableData={tableData} />
+
+            <TouchableOpacity style={styles.button} onPress={this.toggleScreen}>
+              <Text style={styles.text}>Back To Game</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={styles.tableContainer}>
             <Track
               data={racingUserData}
               selectX={datum => datum.Improvement}
@@ -276,8 +264,12 @@ class PedometerSensor extends React.Component {
               width={Dimensions.get("window").width}
               height={Dimensions.get("window").height}
             />
-          </ImageBackground>
-        </View>
+
+            <TouchableOpacity style={styles.button} onPress={this.toggleScreen}>
+              <Text style={styles.text}>Show Status</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     );
   }
@@ -290,24 +282,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-  tableContainer: {
-    flex: 1,
-    fontSize: 10,
-    width: "100%",
-    height: "50%",
-    paddingTop: 20
+  button: {
+    backgroundColor: "#fff",
+    height: "8%",
+    width: "25%",
+    borderColor: "#fbff14",
+    borderRadius: 10,
+    borderWidth: 1,
+    justifyContent: "center",
+    alignItems: "center"
   },
-  head: { height: 40, backgroundColor: "#014D7F" },
-  wrapper: { flexDirection: "row" },
-  row: { height: 28, backgroundColor: "#9AE0FF" },
   text: { textAlign: "center" },
-  photo: { width: "100%", height: "80%", paddingTop: 10 }
+  photo: { width: "100%", height: "80%" }
 });
 
 const mapState = ({ singleRaceUser, races, userRaces }) => ({
   singleRaceUser,
   races,
-  userRaces,
+  userRaces
 });
 const mapDispatch = dispatch => ({
   fetchRaceUserData: raceId => dispatch(fetchRaceUserData(raceId)),
@@ -317,7 +309,7 @@ const mapDispatch = dispatch => ({
   updateAverage: (steps, userId, raceId) =>
     dispatch(putDailyAverage(steps, userId, raceId)),
   getUserRaces: (userId, queryType, queryIndicator) =>
-    dispatch(fetchUserRacesByUser(userId, queryType, queryIndicator)),
+    dispatch(fetchUserRacesByUser(userId, queryType, queryIndicator))
 });
 
 export default connect(
