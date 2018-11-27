@@ -1,9 +1,9 @@
 //import liraries
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import { scaleLinear as d3ScaleLinear } from "d3-scale";
-import { Easing, Animated, StyleSheet } from "react-native";
-import { Svg } from "expo";
+import { scaleLinear as d3ScaleLinear } from 'd3-scale';
+import { Easing, Animated, StyleSheet } from 'react-native';
+import { Svg } from 'expo';
 
 const { Image, Text, G } = Svg;
 const AnimatedImage = Animated.createAnimatedComponent(Image);
@@ -70,13 +70,13 @@ class Track extends Component {
       Animated.timing(this.horseAnimatedValue, {
         toValue: 1,
         duration: 2000,
-        easing: Easing.linear
+        easing: Easing.linear,
       }).start(),
       Animated.timing(this.textAnimatedValue, {
         toValue: 1,
         duration: 2000,
-        easing: Easing.linear
-      }).start()
+        easing: Easing.linear,
+      }).start(),
     ]);
   }
 
@@ -99,18 +99,18 @@ class Track extends Component {
     };
 
     return (
-      <Svg width="340" height="500">
+      <Svg width="340" height="600">
         {data.map((o, i) => {
           const xLocation = selectScaledX(o);
           const tagLocation = selectScaledX(o) + 1;
           const yLocation = selectScaledY(i + 1);
           const horseMotion = this.horseAnimatedValue.interpolate({
             inputRange: [0, 1],
-            outputRange: [0, xLocation]
+            outputRange: [0, xLocation],
           });
           const tagMotion = this.textAnimatedValue.interpolate({
             inputRange: [0, 1],
-            outputRange: [0, tagLocation]
+            outputRange: [0, tagLocation],
           });
           return (
             <G key={i}>
@@ -154,13 +154,13 @@ export default Track;
 
 const styles = StyleSheet.create({
   textContainer: {
-    backgroundColor: "#eee",
+    backgroundColor: '#eee',
     borderTopLeftRadius: 3,
     borderBottomLeftRadius: 3,
-    color: "#999",
-    display: "flex",
+    color: '#999',
+    display: 'flex',
     height: 26,
     lineHeight: 26,
-    position: "relative"
-  }
+    position: 'relative',
+  },
 });

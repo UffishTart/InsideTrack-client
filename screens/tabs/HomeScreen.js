@@ -1,38 +1,47 @@
-import React, { Component } from "react";
-import { Font } from "expo";
+import React, { Component } from 'react';
+import { Font } from 'expo';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   Image,
-  AsyncStorage
-} from "react-native";
-import Settings from "../pop-up-screens/Settings";
-import StartNewRace from "../../components/StartNewRace";
-import { me, authWithToken, logout } from "../../store/user";
-import { isSignedIn } from "../../navigation/AsyncStorageAuth";
-import { connect } from "react-redux";
-import { Container, Content, Header, Left, Body, Right, Button, Icon, Title } from 'native-base';
+  AsyncStorage,
+} from 'react-native';
+import Settings from '../pop-up-screens/Settings';
+import StartNewRace from '../../components/StartNewRace';
+import { me, authWithToken, logout } from '../../store/user';
+import { isSignedIn } from '../../navigation/AsyncStorageAuth';
+import { connect } from 'react-redux';
+import {
+  Container,
+  Content,
+  Header,
+  Left,
+  Body,
+  Right,
+  Button,
+  Icon,
+  Title,
+} from 'native-base';
 
 // create a component
 class HomeScreen extends Component {
   state = {
     showSettings: false,
     fontLoaded: false,
-    showNewRacePage: false
+    showNewRacePage: false,
   };
 
   async componentDidMount() {
-    await this.props.getUser()
-    if ((!this.props.user.length) && isSignedIn()) {
-      const token = await AsyncStorage.getItem('USER_TOKEN')
-      await this.props.reLogin(Number(token))
-      await this.props.getUser()
+    await this.props.getUser();
+    if (!this.props.user.length && isSignedIn()) {
+      const token = await AsyncStorage.getItem('USER_TOKEN');
+      await this.props.reLogin(Number(token));
+      await this.props.getUser();
     }
-    console.log("the user on state:", this.props.user);
     await Font.loadAsync({
-      "FasterOne-Regular": require("../../assets/FasterOne-Regular.ttf")
+      'FasterOne-Regular': require('../../assets/FasterOne-Regular.ttf'),
     });
     this.setState({ fontLoaded: true });
   }
@@ -50,10 +59,23 @@ class HomeScreen extends Component {
       ? this.renderNewRacePage()
       : null;
     return (
-      <Container style={{ backgroundColor: "#fbff14" }}>
+      <Container style={{ backgroundColor: '#fbff14' }}>
         <Header />
-        <Body style={{ justifyContent: 'center', backgroundColor: "#fbff14", marginBottom: 50 }}>
-          <Container style={{ backgroundColor: "#fbff14", justifyContent: 'center', marginLeft: 230, marginTop: 20 }} >
+        <Body
+          style={{
+            justifyContent: 'center',
+            backgroundColor: '#fbff14',
+            marginBottom: 50,
+          }}
+        >
+          <Container
+            style={{
+              backgroundColor: '#fbff14',
+              justifyContent: 'center',
+              marginLeft: 230,
+              marginTop: 20,
+            }}
+          >
             <Button
               style={styles.buttonSettings}
               onPress={this.toggleSettingsView}
@@ -62,15 +84,28 @@ class HomeScreen extends Component {
               <View>{settingsTent}</View>
             </Button>
           </Container>
-          <Body style={{ justifyContent: 'center', backgroundColor: "#fbff14", marginTop: 30 }}>
+          <Body
+            style={{
+              justifyContent: 'center',
+              backgroundColor: '#fbff14',
+              marginTop: 30,
+            }}
+          >
             <Image
               style={styles.logo}
-              source={require("../../assets/InsideTrackLogo.png")}
+              source={require('../../assets/InsideTrackLogo.png')}
             />
           </Body>
-          <Container style={{ backgroundColor: "#fbff14", justifyContent: 'center', marginTop: 150 }} >
+          <Container
+            style={{
+              backgroundColor: '#fbff14',
+              justifyContent: 'center',
+              marginTop: 150,
+            }}
+          >
             <Content>
-              <Button light
+              <Button
+                light
                 style={styles.buttonNewRace}
                 onPress={this.toggleNewRaceView}
               >
@@ -81,14 +116,21 @@ class HomeScreen extends Component {
               </Button>
             </Content>
           </Container>
-          <Container style={{ backgroundColor: "#fbff14", justifyContent: 'center', marginTop: 30, }}>
+          <Container
+            style={{
+              backgroundColor: '#fbff14',
+              justifyContent: 'center',
+              marginTop: 30,
+            }}
+          >
             <Content>
-              <Button light
+              <Button
+                light
                 style={styles.buttonLogout}
                 onPress={() => {
                   // onSignOut
                   this.props.logout();
-                  this.props.navigation.navigate("SignedOut");
+                  this.props.navigation.navigate('SignedOut');
                 }}
               >
                 {this.state.fontLoaded ? (
@@ -98,7 +140,7 @@ class HomeScreen extends Component {
             </Content>
           </Container>
         </Body>
-      </Container >
+      </Container>
     );
   }
 
@@ -123,27 +165,27 @@ class HomeScreen extends Component {
 const styles = StyleSheet.create({
   border: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    borderColor: "#fff",
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: '#fff',
     borderTopWidth: 50,
     borderRadius: 2,
-    backgroundColor: "#fff"
+    backgroundColor: '#fff',
   },
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
     paddingHorizontal: 5,
-    alignItems: "center",
-    borderColor: "#fff",
-    backgroundColor: "#fbff14"
+    alignItems: 'center',
+    borderColor: '#fff',
+    backgroundColor: '#fbff14',
   },
   buttonSettings: {
     // shadowColor: "rgba(0,0,0, .4)", // IOS
     // shadowOffset: { height: 3, width: 3 }, // IOS
     // shadowOpacity: 1, // IOS
     // shadowRadius: 1, //IOS
-    backgroundColor: "#fbff14",
+    backgroundColor: '#fbff14',
     // elevation: 2, // Android
     height: 40,
     width: 40,
@@ -154,13 +196,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 50,
     width: 200,
-    shadowColor: "rgba(0,0,0, .4)", // IOS
+    shadowColor: 'rgba(0,0,0, .4)', // IOS
     shadowOffset: { height: 5, width: 5 }, // IOS
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
   },
   buttonLogout: {
-    shadowColor: "rgba(0,0,0, .4)", // IOS
+    shadowColor: 'rgba(0,0,0, .4)', // IOS
     shadowOffset: { height: 3, width: 3 }, // IOS
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
@@ -169,12 +211,12 @@ const styles = StyleSheet.create({
     width: 100,
     alignContent: 'center',
     position: 'relative',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   text: {
-    fontFamily: "FasterOne-Regular",
+    fontFamily: 'FasterOne-Regular',
     fontSize: 15,
-    fontStyle: "italic"
+    fontStyle: 'italic',
   },
   logo: {
     shadowOffset: { height: 4, width: 4 }, // IOS
@@ -183,15 +225,15 @@ const styles = StyleSheet.create({
     marginBottom: -150,
     alignContent: 'center',
     position: 'relative',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 });
 
 //make this component available to the app
 
 const mapState = state => {
   return {
-    user: state.user
+    user: state.user,
   };
 };
 
@@ -199,7 +241,7 @@ const mapDispatch = dispatch => {
   return {
     getUser: () => dispatch(me()),
     reLogin: token => dispatch(authWithToken(token)),
-    logout: () => dispatch(logout())
+    logout: () => dispatch(logout()),
   };
 };
 

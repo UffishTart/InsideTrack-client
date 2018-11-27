@@ -1,25 +1,25 @@
-import Expo from "expo";
-import React from "react";
-import { Pedometer, Svg } from "expo";
+import Expo from 'expo';
+import React from 'react';
+import { Pedometer, Svg } from 'expo';
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
-  Dimensions
-} from "react-native";
-import { connect } from "react-redux";
+  Dimensions,
+} from 'react-native';
+import { connect } from 'react-redux';
 
 import {
   putUpdatedPedometerData,
   fetchRaceUserData,
-  putDailyAverage
-} from "../../store/singleRaceUser";
-import Track from "../../components/Track";
+  putDailyAverage,
+} from '../../store/singleRaceUser';
+import Track from '../../components/Track';
 
-import { fetchSingleRaceFromServer } from "../../store/races";
-import { fetchUserRacesByUser } from "../../store/userRaces";
-import StatusTable from "../../components/StatusTable";
+import { fetchSingleRaceFromServer } from '../../store/races';
+import { fetchUserRacesByUser } from '../../store/userRaces';
+import StatusTable from '../../components/StatusTable';
 
 import {
   Container,
@@ -32,16 +32,24 @@ import {
   Body,
   Right,
   Icon,
-  Title
-} from "native-base";
+  Title,
+} from 'native-base';
 
 //Helper function to generate the table row array;
 const arrayGenerater = userRaceInstance => {
   const instanceArr = [];
-  instanceArr.push(userRaceInstance.userInfo.userName);
-  instanceArr.push(userRaceInstance.percentImprovement);
-  instanceArr.push(userRaceInstance.dailyAverage);
   instanceArr.push(userRaceInstance.place);
+  instanceArr.push(userRaceInstance.userInfo.userName);
+  instanceArr.push(
+    userRaceInstance.dailyAverage + userRaceInstance.differenceFromAverage
+  );
+  instanceArr.push(
+    Math.round(
+      userRaceInstance.raceInfo.length *
+        (userRaceInstance.dailyAverage / 24 / 60)
+    )
+  );
+  instanceArr.push(userRaceInstance.percentImprovement);
   return instanceArr;
 };
 
@@ -86,12 +94,12 @@ class PedometerSensor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isPedometerAvailable: "checking",
+      isPedometerAvailable: 'checking',
       pastStepCount: 0,
       averageSteps: 0,
       stepCountDuringGame: 0,
       hasCompleted: false,
-      showStatus: false
+      showStatus: false,
     };
   }
 
@@ -123,11 +131,11 @@ class PedometerSensor extends React.Component {
       this._unsubscribe();
     } else {
       await this.props.updateRaceAsComplete(this.props.raceId, {
-        completedStatus: true
+        completedStatus: true,
       });
       await this.props.getUserRaces(
         this.props.user.id,
-        "acceptedInvitation",
+        'acceptedInvitation',
         true
       );
     }
@@ -136,19 +144,19 @@ class PedometerSensor extends React.Component {
   _subscribe = () => {
     this._subscription = Pedometer.watchStepCount(result => {
       this.setState({
-        currentStepCount: result.steps
+        currentStepCount: result.steps,
       });
     });
 
     Pedometer.isAvailableAsync().then(
       result => {
         this.setState({
-          isPedometerAvailable: String(result)
+          isPedometerAvailable: String(result),
         });
       },
       error => {
         this.setState({
-          isPedometerAvailable: "Could not get isPedometerAvailable: " + error
+          isPedometerAvailable: 'Could not get isPedometerAvailable: ' + error,
         });
       }
     );
@@ -177,13 +185,12 @@ class PedometerSensor extends React.Component {
             : this.props.user.estimatedAverage;
           this.setState({
             pastStepCount: result.steps,
-            days: daysChecking,
-            averageSteps: average
+            averageSteps: average,
           });
         },
         error => {
           this.setState({
-            pastStepCount: "Could not get stepCount: " + error
+            pastStepCount: 'Could not get stepCount: ' + error,
           });
         }
       )
@@ -210,7 +217,7 @@ class PedometerSensor extends React.Component {
         },
         error => {
           this.setState({
-            stepCountDuringGame: "Could not get stepCount: " + error
+            stepCountDuringGame: 'Could not get stepCount: ' + error,
           });
         }
       )
@@ -233,11 +240,11 @@ class PedometerSensor extends React.Component {
   };
   render() {
     const tableData = {
-      tableHead: ["Players", "Improvement", "Daily Average", "Place"],
+      tableHead: ['Place', 'Player', 'Steps Taken', 'Average', 'Improvement'],
       tableInfo: this.props.singleRaceUser
         .filter(el => el.acceptedInvitation)
         .sort((user1, user2) => user1.place - user2.place)
-        .map(el => arrayGenerater(el))
+        .map(el => arrayGenerater(el)),
     };
     const racingUserData = this.props.singleRaceUser
       .filter(el => el.acceptedInvitation)
@@ -263,8 +270,8 @@ class PedometerSensor extends React.Component {
               selectX={datum => datum.Improvement}
               selectY={idx => idx}
               steps={this.state.pastStepCount}
-              width={Dimensions.get("window").width}
-              height={Dimensions.get("window").height}
+              width={Dimensions.get('window').width}
+              height={Dimensions.get('window').height}
             />
 
             <TouchableOpacity style={styles.button} onPress={this.toggleScreen}>
@@ -281,27 +288,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 15,
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   button: {
-    backgroundColor: "#fff",
-    height: "8%",
-    width: "25%",
-    borderColor: "#fbff14",
+    backgroundColor: '#fff',
+    height: '8%',
+    width: '25%',
+    borderColor: '#fbff14',
     borderRadius: 10,
     borderWidth: 1,
-    justifyContent: "center",
-    alignItems: "center"
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  text: { textAlign: "center" },
-  photo: { width: "100%", height: "80%" }
+  text: { textAlign: 'center' },
+  photo: { width: '100%', height: '80%' },
 });
 
 const mapState = ({ singleRaceUser, races, userRaces }) => ({
   singleRaceUser,
   races,
-  userRaces
+  userRaces,
 });
 const mapDispatch = dispatch => ({
   fetchRaceUserData: raceId => dispatch(fetchRaceUserData(raceId)),
@@ -311,7 +318,7 @@ const mapDispatch = dispatch => ({
   updateAverage: (steps, userId, raceId) =>
     dispatch(putDailyAverage(steps, userId, raceId)),
   getUserRaces: (userId, queryType, queryIndicator) =>
-    dispatch(fetchUserRacesByUser(userId, queryType, queryIndicator))
+    dispatch(fetchUserRacesByUser(userId, queryType, queryIndicator)),
 });
 
 export default connect(

@@ -25,6 +25,26 @@ class RacesListItem extends Component {
     this.setState({ showSingleRace: !this.state.showSingleRace });
   };
 
+  determineRaceLength = length => {
+    if (length === 15) {
+      return '15 Minutes';
+    } else if (length === 30) {
+      return '30 Minutes';
+    } else if (length === 60) {
+      return '1 Hour';
+    } else if (length === 180) {
+      return '3 Hours';
+    } else if (length === 360) {
+      return '6 Hour';
+    } else if (length === 720) {
+      return '12 Hours';
+    } else if (length === 1440) {
+      return '1 Day';
+    } else {
+      return '1 Week';
+    }
+  };
+
   renderTouchSingleRace() {
     const singleRaceContent = this.state.showSingleRace
       ? this.renderSingleRace()
@@ -47,7 +67,7 @@ class RacesListItem extends Component {
               <Text style={styles.raceInfo}>
                 <Text>{'  '}</Text>
                 <Text>
-                  {this.props.race.raceInfo.length === 1 ? 'Day' : 'Week'}
+                  {this.determineRaceLength(this.props.race.raceInfo.length)}
                 </Text>
               </Text>
             </Text>
