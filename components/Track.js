@@ -9,7 +9,6 @@ const { Image, Text, G } = Svg;
 const AnimatedImage = Animated.createAnimatedComponent(Image);
 const AnimatedText = Animated.createAnimatedComponent(Text);
 
-
 // create range that can space users out
 const xScaleRangeGenerator = datum => {
   const improvement = datum.map(el => el.Improvement).sort((a, b) => a - b);
@@ -26,7 +25,6 @@ const pathPhoto = [
 ];
 
 class Track extends Component {
-
   constructor() {
     super();
     this.horseAnimatedValue = new Animated.Value(0);
@@ -74,7 +72,6 @@ class Track extends Component {
     return (
       <Svg width="340" height="500">
         {data.map((o, i) => {
-
           const xLocation = selectScaledX(o);
           const tagLocation = selectScaledX(o) + 1;
           const yLocation = selectScaledY(i + 1);
@@ -117,23 +114,12 @@ class Track extends Component {
                 href={pathPhoto[i]}
               />
             </G>
-
           );
         })}
       </Svg>
     );
   }
 }
-
-// define your styles
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#2c3e50"
-  }
-});
 
 //make this component available to the app
 export default Track;
