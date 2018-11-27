@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import {
   View,
-  Text,
   TouchableOpacity,
   TextInput,
   Picker,
-  Button,
   StyleSheet,
   Modal
 } from "react-native";
@@ -18,20 +16,23 @@ import {
 import { postAUserRaceEntry } from "../store/userRacesPending";
 import { getFriendsOfUser } from "../store/userFriend";
 import { connect } from "react-redux";
+import Friends from './Friends'
+import { Container, Text, Button, H1, H3, Form, Footer, FooterTab, Content, Header, Input, Item, Left, Body, Right, Icon, Title } from 'native-base';
+
 
 class StartNewRace extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: 'Enter Race Name',
+      name: ' Enter Race Name',
       length: 1,
       friendIdArr: [],
-      selectedFriendId: 0
+      selectedFriendId: 0,
+      showFriends: false
     };
     this.nameHandleChange = this.nameHandleChange.bind(this);
     this.lengthHandleChange = this.lengthHandleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.addFriend = this.addFriend.bind(this);
   }
 
   async componentDidMount() {
@@ -45,17 +46,22 @@ class StartNewRace extends Component {
     });
   }
 
-  lengthHandleChange(text) {
+  lengthHandleChange() {
     this.setState({
       length: 1
     });
   }
+
+  onValueChange = (friendValue) => this.setState({ selectedFriend: friendValue })
 
   addFriend() {
     this.setState({
       friendIdArr: [...this.state.friendIdArr, this.state.selectedFriend]
     });
   }
+
+  toggleFriendsView = () =>
+    this.setState({ showFriends: !this.state.showFriends });
 
   async handleSubmit() {
     const newRaceId = await this.props.postRace(
@@ -69,62 +75,72 @@ class StartNewRace extends Component {
     );
   }
 
+  // onPress={this.props.onPress}>
+
   render() {
+    const friendsTent = this.state.showFriends
+      ? this.renderFriendsPage()
+      : null;
     return (
-      <Modal backgroundColor="blue">
-        <View style={styles.container}>
-          <View>
-            <Text>Start a Race!</Text>
-            <TextInput
-              placeholder={"Race Name"}
-              value={this.state.name}
-              onChangeText={this.nameHandleChange}
-            />
-            <Picker
-              selectedValue={this.state.length}
-              onValueChange={lengthValue =>
-                this.setState({ length: lengthValue })
-              }
-            >
-              <Picker.Item label="Race Length" value={null} />
-              <Picker.Item label="Day" value={1} />
-              <Picker.Item label="Week" value={7} />
-            </Picker>
-            <Picker
-              selectedValue={this.state.selectedFriend}
-              onValueChange={friendValue =>
-                this.setState({ selectedFriend: friendValue })
-              }
-            >
-              <Picker.Item label="Please Select A Friend" value={null} />
-              {this.props.friends &&
-                this.props.friends.map(friend => (
-                  <Picker.Item
-                    key={friend.friendId}
-                    label={friend.friendInfo.userName}
-                    value={friend.friendId}
-                  />
-                ))}
-            </Picker>
-            <TouchableOpacity onPress={this.addFriend}>
-              <Text>Add Friend</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this.handleSubmit}>
-              <Text>Submit</Text>
-            </TouchableOpacity>
-          </View>
-          <Button title="go back" onPress={this.props.onPress} />
-          {this.props.friends &&
-            this.props.friends
-              .filter(friend =>
-                this.state.friendIdArr.includes(friend.friendId)
-              )
-              .map(friend => (
-                <Text key={friend.friendId}>{friend.friendInfo.userName}</Text>
-              ))}
-        </View>
+      <Modal animationType="slide">
+        <Header>
+          <Left>
+            <Button transparent onPress={this.props.onPress}>
+              <Text>Back</Text>
+            </Button>
+          </Left>
+          <Body>
+            <Text style={{ alignSelf: 'center' }}>New Race</Text>
+          </Body>
+          <Right />
+        </Header>
+        <Container>
+          <Content>
+            <Content style={{ marginTop: 20, marginLeft: 20, marginRight: 20 }}>
+              <Item rounded>
+                <Input placeholder={"Race Name"}
+                  value={this.state.name}
+                  onChangeText={this.nameHandleChange}
+                />
+              </Item>
+              <Picker
+                selectedValue={this.state.length}
+                onValueChange={lengthValue =>
+                  this.setState({ length: lengthValue })
+                }
+                style={{ marginBottom: -70, marginTop: 10 }}
+              >
+                <Picker.Item label="Race Length" value={null} />
+                <Picker.Item label="Day" value={1} />
+                <Picker.Item label="Week" value={7} />
+              </Picker>
+              <Button rounded success
+                style={{ alignSelf: 'center', marginTop: 40 }}
+                onPress={this.toggleFriendsView}>
+                <Text>Select Friends</Text>
+              </Button>
+              <View>{friendsTent}</View>
+              <Button block primary onPress={this.handleSubmit} style={{ alignSelf: 'center', marginTop: 150 }}>
+                <Text>Submit</Text>
+              </Button>
+            </Content>
+          </Content>
+        </Container >
       </Modal>
     );
+  }
+
+
+  renderFriendsPage() {
+    return <Friends
+      addFriend={this.addFriend}
+      onValueChange={this.onValueChange}
+      friendIdArr={this.state.friendIdArr}
+      selectedFriendId={this.state.selectedFriendId}
+      friends={this.props.friends}
+      selectedFriend={this.state.selectedFriend}
+      addFriend={this.addFriend.bind(this)}
+      toggleFriendsView={this.toggleFriendsView.bind(this)} />;
   }
 }
 

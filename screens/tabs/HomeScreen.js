@@ -77,7 +77,7 @@ class HomeScreen extends Component {
                 {this.state.fontLoaded ? (
                   <Text style={styles.text}>Add Race</Text>
                 ) : null}
-                <View>{newRaceTent}</View>
+                <View style={{ backgroundColor: "#fbff14" }}>{newRaceTent}</View>
               </Button>
             </Content>
           </Container>
