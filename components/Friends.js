@@ -2,9 +2,9 @@
 import React, { Component } from 'react';
 import {
   Picker,
-  View,
   Modal
 } from "react-native";
+// import Modal from "react-native-modal";
 import { Container, Text, Button, H1, H3, Form, Footer, FooterTab, Content, Header, Input, Item, Left, Body, Right, Icon, Title } from 'native-base';
 
 // create a component
