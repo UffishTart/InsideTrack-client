@@ -38,14 +38,8 @@ class SingleRace extends Component {
                     user={this.props.user}
                     raceId={this.props.race.raceId}
                     updateRaceAsComplete={this.props.updateRaceAsComplete}
+                    toggleSingleRaceView={this.toggleSingleRaceView}
                   />
-
-                  <TouchableOpacity
-                    style={styles.button}
-                    onPress={this.props.toggleSingleRaceView}
-                  >
-                    <Text style={styles.text}>Back</Text>
-                  </TouchableOpacity>
                 </ImageBackground>
               )}
             </View>
@@ -70,21 +64,8 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height,
     flex: 1,
     justifyContent: "center"
-  },
-  button: {
-    backgroundColor: "#fff",
-    height: 50,
-    width: 100,
-    borderColor: "#fbff14",
-    borderRadius: 10,
-    borderWidth: 1,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  text: {
-    fontSize: 15,
-    fontStyle: "italic"
   }
+
   // padding: {
   //   marginTop: 20
   // }

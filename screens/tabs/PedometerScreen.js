@@ -6,7 +6,7 @@ import {
   Text,
   View,
   ScrollView,
-  ImageBackground,
+  TouchableOpacity,
   Dimensions
 } from "react-native";
 import { connect } from "react-redux";
@@ -77,7 +77,8 @@ class PedometerSensor extends React.Component {
       averageSteps: 0,
       stepCountDuringGame: 0,
       days: 0,
-      hasCompleted: false
+      hasCompleted: false,
+      showStatus: false
     };
   }
 
@@ -217,6 +218,9 @@ class PedometerSensor extends React.Component {
     this._subscription = null;
   };
 
+  toggleScreen = () => {
+    this.setState({ ...this.state, showStatus: !this.state.showStatus });
+  };
   render() {
     const tableData = {
       tableHead: ["Players", "Improvement", "Daily Average", "Place"],
@@ -233,24 +237,44 @@ class PedometerSensor extends React.Component {
     return (
       <View>
         {this.state.hasCompleted ? <Text>This race is over!</Text> : null}
-        <View style={styles.tableContainer}>
-          {/*<Text style={styles.text}>
+
+        {/*<Text style={styles.text}>
             Steps taken during the game: {this.state.stepCountDuringGame}{" "}
           </Text>
           <Text style={styles.text}>
             Average steps: {this.state.averageSteps}{" "}
     </Text>*/}
-          {/*<StatusTable tableData={tableData} />*/}
+        {this.state.showStatus ? (
+          <View style={styles.tableContainer}>
+            <StatusTable tableData={tableData} />
 
-          <Track
-            data={racingUserData}
-            selectX={datum => datum.Improvement}
-            selectY={idx => idx}
-            steps={this.state.pastStepCount}
-            width={Dimensions.get("window").width}
-            height={Dimensions.get("window").height}
-          />
-        </View>
+            <TouchableOpacity style={styles.button} onPress={this.toggleScreen}>
+              <Text style={styles.text}>Back To Game</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={styles.tableContainer}>
+            <Track
+              data={racingUserData}
+              selectX={datum => datum.Improvement}
+              selectY={idx => idx}
+              steps={this.state.pastStepCount}
+              width={Dimensions.get("window").width}
+              height={Dimensions.get("window").height}
+            />
+
+            <TouchableOpacity style={styles.button} onPress={this.toggleScreen}>
+              <Text style={styles.text}>Show Status</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={this.props.toggleSingleRaceView}
+        >
+          <Text style={styles.text}>Main Page</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -263,7 +287,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-
+  button: {
+    backgroundColor: "#fff",
+    height: "10%",
+    width: "15%",
+    borderColor: "#fbff14",
+    borderRadius: 10,
+    borderWidth: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  // buttonMargin: {
+  //   flex: 1,
+  //   marginTop: 25,
+  //   alignItems: "center",
+  //   justifyContent: "center"
+  // },
   text: { textAlign: "center" },
   photo: { width: "100%", height: "80%" }
 });

@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     width: "100%",
     height: "50%",
-    paddingTop: 20
+    marginTop: 200
   },
   head: { height: 40, backgroundColor: "#014D7F" },
   wrapper: { flexDirection: "row" },

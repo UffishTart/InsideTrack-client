@@ -47,7 +47,7 @@ class Track extends Component {
 
     const yScale = d3ScaleLinear()
       .domain([1, data.length])
-      .range([100, height - 400]);
+      .range([150, height - 350]);
 
     const selectScaledX = datum => {
       return xScale(selectX(datum));
@@ -57,7 +57,7 @@ class Track extends Component {
     };
 
     return (
-      <Svg width="340" height="400">
+      <Svg width="340" height="500">
         {data.map((o, i) => {
           const xLocation = selectScaledX(o);
           const yLocation = selectScaledY(i + 1);
