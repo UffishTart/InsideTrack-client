@@ -75,8 +75,8 @@ class PendingRacesListItem extends Component {
             <Button onPress={this.togglePendingRaceView} title="Join" />
           </View>
         ) : (
-          <View>{this.renderPendingButton()}</View>
-        )}
+            <View>{this.renderPendingButton()}</View>
+          )}
       </View>
     );
   }
@@ -99,8 +99,8 @@ class PendingRacesListItem extends Component {
             {!!this.props.race.isOwner ? (
               <View style={styles.container}>{this.renderOwnerView()}</View>
             ) : (
-              <View style={styles.container}>{this.renderPendingView()}</View>
-            )}
+                <View style={styles.container}>{this.renderPendingView()}</View>
+              )}
           </View>
         </View>
       </TouchableOpacity>

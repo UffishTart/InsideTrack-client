@@ -19,6 +19,14 @@ const arrayGenerater = userRaceInstance => {
 class CompletedRace extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isPedometerAvailable: "checking",
+      pastStepCount: 0,
+      averageSteps: 0,
+      stepCountDuringGame: 0,
+      days: 0,
+      hasCompleted: false,
+    };
   }
 
   async componentDidMount() {

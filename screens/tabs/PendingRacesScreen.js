@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, StyleSheet, ImageBackground } from 'react-native';
 import PendingRacesList from '../../components/PendingRacesList';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { putARace } from '../../store/races';
@@ -39,34 +39,36 @@ class PendingRacesScreen extends Component {
 
   render() {
     return (
-      <TabView
-        navigationState={this.state}
-        renderScene={SceneMap({
-          third: () => (
-            <PendingRacesList
-              user={this.props.user}
-              races={this.props.races}
-              isOwnerBool={true}
-              toggleStart={this.toggleStart}
-              getPendingRaces={this.props.getPendingRaces}
-            />
-          ),
-          fourth: () => (
-            <PendingRacesList
-              user={this.props.user}
-              races={this.props.races}
-              isOwnerBool={false}
-              toggleStart={this.toggleStart}
-              getPendingRaces={this.props.getPendingRaces}
-            />
-          ),
-        })}
-        onIndexChange={index => this.setState({ index })}
-        initialLayout={{
-          width: Dimensions.get('window').width,
-          height: Dimensions.get('window').height,
-        }}
-      />
+      <ImageBackground source={require('../../assets/checkered-flag.png')} style={styles.backgroundImage} >
+        <TabView
+          navigationState={this.state}
+          renderScene={SceneMap({
+            third: () => (
+              <PendingRacesList
+                user={this.props.user}
+                races={this.props.races}
+                isOwnerBool={true}
+                toggleStart={this.toggleStart}
+                getPendingRaces={this.props.getPendingRaces}
+              />
+            ),
+            fourth: () => (
+              <PendingRacesList
+                user={this.props.user}
+                races={this.props.races}
+                isOwnerBool={false}
+                toggleStart={this.toggleStart}
+                getPendingRaces={this.props.getPendingRaces}
+              />
+            ),
+          })}
+          onIndexChange={index => this.setState({ index })}
+          initialLayout={{
+            width: Dimensions.get('window').width,
+            height: Dimensions.get('window').height,
+          }}
+        />
+      </ImageBackground>
     );
   }
 }
@@ -88,6 +90,14 @@ const mapDispatch = dispatch => {
     startRace: (raceId, updateObj) => dispatch(putARace(raceId, updateObj)),
   };
 };
+
+const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    width: null,
+    height: null
+  }
+})
 
 export default connect(
   mapState,

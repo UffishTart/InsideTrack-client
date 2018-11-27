@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from "react";
-import { Dimensions } from "react-native";
+import { Dimensions, ImageBackground, StyleSheet } from "react-native";
 import RacesList from "../../components/RacesList";
 import { TabView, SceneMap } from "react-native-tab-view";
 import { fetchUserRacesByUser } from "../../store/userRaces";
@@ -29,32 +29,34 @@ class Races extends Component {
     );
 
     return (
-      <TabView
-        navigationState={this.state}
-        renderScene={SceneMap({
-          first: () => (
-            <RacesList
-              user={this.props.user}
-              races={filteredRaces}
-              isCompleted={false}
-              updateRaceAsComplete={this.props.updateRaceAsComplete}
-            />
-          ),
-          second: () => (
-            <RacesList
-              user={this.props.user}
-              races={filteredRaces}
-              isCompleted={true}
-              updateRaceAsComplete={this.props.updateRaceAsComplete}
-            />
-          )
-        })}
-        onIndexChange={index => this.setState({ index })}
-        initialLayout={{
-          width: Dimensions.get("window").width,
-          height: Dimensions.get("window").height
-        }}
-      />
+      <ImageBackground source={require('../../assets/checkered-flag.png')} style={styles.backgroundImage} >
+        <TabView
+          navigationState={this.state}
+          renderScene={SceneMap({
+            first: () => (
+              <RacesList
+                user={this.props.user}
+                races={filteredRaces}
+                isCompleted={false}
+                updateRaceAsComplete={this.props.updateRaceAsComplete}
+              />
+            ),
+            second: () => (
+              <RacesList
+                user={this.props.user}
+                races={filteredRaces}
+                isCompleted={true}
+                updateRaceAsComplete={this.props.updateRaceAsComplete}
+              />
+            )
+          })}
+          onIndexChange={index => this.setState({ index })}
+          initialLayout={{
+            width: Dimensions.get("window").width,
+            height: Dimensions.get("window").height
+          }}
+        />
+      </ImageBackground>
     );
   }
 }
@@ -75,6 +77,14 @@ const mapDispatch = dispatch => {
       dispatch(putARace(raceId, updateObj))
   };
 };
+
+const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    width: null,
+    height: null
+  }
+})
 
 export default connect(
   mapState,

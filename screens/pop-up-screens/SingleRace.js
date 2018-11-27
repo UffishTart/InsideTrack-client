@@ -1,9 +1,11 @@
 //import liraries
 import React, { Component } from "react";
-import { View, Button, Text, StyleSheet, Modal } from "react-native";
+import { View, StyleSheet, Modal } from "react-native";
 import HorseComponent from "../../components/HorseComponent";
 import PedometerSensor from "../tabs/PedometerScreen";
 import CompletedRaceScreen from "../tabs/CompletedRaceScreen";
+import { Container, Text, Button, Footer, FooterTab, Content, Header, Left, Body, Right, Icon, Title } from 'native-base';
+
 
 // create a component
 class SingleRace extends Component {
@@ -13,32 +15,30 @@ class SingleRace extends Component {
 
   render() {
     return (
-      <View>
+      <Container>
         {!!this.props.race ? (
           <Modal>
-            <View style={styles.container}>
-              {/* <HorseComponent />*/}
-              {!!this.props.race.raceInfo.completedStatus ? (
-                <CompletedRaceScreen
-                  user={this.props.user}
-                  raceId={this.props.race.raceId}
-                />
-              ) : (
-                <View style={styles.padding}>
-                  <PedometerSensor
+            <Container style={styles.container}>
+              <Content>
+                {/* <HorseComponent />*/}
+                {!!this.props.race.raceInfo.completedStatus ? (
+                  <CompletedRaceScreen
                     user={this.props.user}
                     raceId={this.props.race.raceId}
-                    updateRaceAsComplete={this.props.updateRaceAsComplete}
                   />
-                </View>
-              )}
-              <Button title="Back" onPress={this.props.toggleSingleRaceView}>
-                Back
-              </Button>
-            </View>
+                ) : (
+                    <PedometerSensor
+                      user={this.props.user}
+                      raceId={this.props.race.raceId}
+                      updateRaceAsComplete={this.props.updateRaceAsComplete}
+                    />
+                  )}
+                <Button block danger onPress={this.props.toggleSingleRaceView}><Text>Back</Text></Button>
+              </Content>
+            </Container>
           </Modal>
         ) : null}
-      </View>
+      </Container>
     );
   }
 }
@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#2c3e50"
+
   },
   padding: {
     marginTop: 20
