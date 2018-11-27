@@ -18,7 +18,6 @@ import {
 } from "../../store/singleRaceUser";
 import Track from "../../components/Track";
 import { fetchSingleRaceFromServer } from "../../store/races";
-import CompletedRaceScreen from "../tabs/CompletedRaceScreen";
 import { fetchUserRacesByUser } from "../../store/userRaces";
 import StatusTable from "../../components/StatusTable";
 
@@ -238,12 +237,6 @@ class PedometerSensor extends React.Component {
       <View>
         {this.state.hasCompleted ? <Text>This race is over!</Text> : null}
 
-        {/*<Text style={styles.text}>
-            Steps taken during the game: {this.state.stepCountDuringGame}{" "}
-          </Text>
-          <Text style={styles.text}>
-            Average steps: {this.state.averageSteps}{" "}
-    </Text>*/}
         {this.state.showStatus ? (
           <View style={styles.tableContainer}>
             <StatusTable tableData={tableData} />
@@ -268,13 +261,6 @@ class PedometerSensor extends React.Component {
             </TouchableOpacity>
           </View>
         )}
-
-        <TouchableOpacity
-          style={styles.button}
-          onPress={this.props.toggleSingleRaceView}
-        >
-          <Text style={styles.text}>Main Page</Text>
-        </TouchableOpacity>
       </View>
     );
   }
@@ -289,20 +275,14 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#fff",
-    height: "10%",
-    width: "15%",
+    height: "8%",
+    width: "25%",
     borderColor: "#fbff14",
     borderRadius: 10,
     borderWidth: 1,
     justifyContent: "center",
     alignItems: "center"
   },
-  // buttonMargin: {
-  //   flex: 1,
-  //   marginTop: 25,
-  //   alignItems: "center",
-  //   justifyContent: "center"
-  // },
   text: { textAlign: "center" },
   photo: { width: "100%", height: "80%" }
 });

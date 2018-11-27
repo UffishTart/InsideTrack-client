@@ -1,11 +1,12 @@
 //import liraries
 import React, { Component } from "react";
 import { scaleLinear as d3ScaleLinear } from "d3-scale";
-import { Easing, Animated } from "react-native";
+import { Easing, Animated, StyleSheet } from "react-native";
 import { Svg } from "expo";
 
 const { Image, Text, G } = Svg;
 const AnimatedImage = Animated.createAnimatedComponent(Image);
+const AnimatedText = Animated.createAnimatedComponent(Text);
 
 // create range that can space users out
 const xScaleRangeGenerator = datum => {
@@ -25,19 +26,28 @@ const pathPhoto = [
 class Track extends Component {
   constructor() {
     super();
-    this.animatedValue = new Animated.Value(0);
+    this.horseAnimatedValue = new Animated.Value(0);
+    this.textAnimatedValue = new Animated.Value(0);
   }
   componentDidMount() {
     this.animate();
   }
 
   animate() {
-    this.animatedValue.setValue(0);
-    Animated.timing(this.animatedValue, {
-      toValue: 1,
-      duration: 2000,
-      easing: Easing.linear
-    }).start();
+    this.horseAnimatedValue.setValue(0);
+    this.textAnimatedValue.setValue(0);
+    Animated.parallel([
+      Animated.timing(this.horseAnimatedValue, {
+        toValue: 1,
+        duration: 2000,
+        easing: Easing.linear
+      }).start(),
+      Animated.timing(this.textAnimatedValue, {
+        toValue: 1,
+        duration: 2000,
+        easing: Easing.linear
+      }).start()
+    ]);
   }
   render() {
     const { data, selectX, selectY, width, height } = this.props;
@@ -60,33 +70,41 @@ class Track extends Component {
       <Svg width="340" height="500">
         {data.map((o, i) => {
           const xLocation = selectScaledX(o);
+          const tagLocation = selectScaledX(o) + 1;
           const yLocation = selectScaledY(i + 1);
-          const marginLeft = this.animatedValue.interpolate({
+          const horseMotion = this.horseAnimatedValue.interpolate({
             inputRange: [0, 1],
             outputRange: [0, xLocation]
           });
+
+          const tagMotion = this.textAnimatedValue.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, tagLocation]
+          });
           return (
             <G key={i}>
-              <Text
-                x={xLocation + 0.5}
+              <AnimatedText
+                x={tagMotion}
                 y={selectScaledY(i + 1) + 55}
+                style={styles.textContainer}
                 fontSize="12"
                 fontWeight="bold"
                 fill="black"
               >
                 {o.userName}
-              </Text>
-              <Text
-                x={xLocation + 0.5}
+              </AnimatedText>
+              <AnimatedText
+                x={tagMotion}
                 y={selectScaledY(i + 1) + 65}
                 fontSize="12"
                 fontWeight="bold"
                 fill="black"
               >
                 {o.Improvement}
-              </Text>
+              </AnimatedText>
+
               <AnimatedImage
-                x={marginLeft}
+                x={horseMotion}
                 y={selectScaledY(i + 1)}
                 width="40%"
                 height="40%"
@@ -102,3 +120,16 @@ class Track extends Component {
 
 //make this component available to the app
 export default Track;
+
+const styles = StyleSheet.create({
+  textContainer: {
+    backgroundColor: "#eee",
+    borderTopLeftRadius: 3,
+    borderBottomLeftRadius: 3,
+    color: "#999",
+    display: "flex",
+    height: 26,
+    lineHeight: 26,
+    position: "relative"
+  }
+});
