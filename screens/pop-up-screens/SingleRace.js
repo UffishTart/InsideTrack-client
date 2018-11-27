@@ -14,7 +14,7 @@ import {
 
 import PedometerSensor from "../tabs/PedometerScreen";
 import CompletedRaceScreen from "../tabs/CompletedRaceScreen";
-import { Container, Text, Button, Footer, FooterTab, Content, Header, Left, Body, Right, Icon, Title } from 'native-base';
+// import { Container, Text, Button, Footer, FooterTab, Content, Header, Left, Body, Right, Icon, Title } from 'native-base';
 
 
 // create a component
@@ -25,7 +25,7 @@ class SingleRace extends Component {
 
   render() {
     return (
-      <Container>
+      <View>
         {!!this.props.race ? (
           <Modal>
 
@@ -58,7 +58,7 @@ class SingleRace extends Component {
                
           </Modal>
         ) : null}
-      </Container>
+      </View>
     );
   }
 }
