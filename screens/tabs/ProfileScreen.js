@@ -3,15 +3,17 @@ import React, { Component } from "react";
 import HorseComponent from "../../components/HorseComponent";
 import { View, Text, StyleSheet, Button } from "react-native";
 import FindUsers from "../../components/FindUsers";
+import { Container, Header, Left, Body, Right, Icon, Title } from 'native-base';
+
 
 // create a component
 export default class ProfileScreen extends Component {
   render() {
     return (
-      <View style={styles.container}>
+      <Container style={{ backgroundColor: "#fbff14" }}>
         <HorseComponent />
         <FindUsers />
-      </View>
+      </Container>
     );
   }
 }
@@ -22,6 +24,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#2c3e50"
+    backgroundColor: "#fbff14"
   }
 });

@@ -1,16 +1,22 @@
 //import liraries
 //Will require some type of Three js import -- loading in a JSON object
 //Need for resizing probably depending on component? We'll see
-import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import React, { Component } from "react";
+import { View, Text, Image, StyleSheet } from "react-native";
+import { Content, Card, CardItem, Left, Body, Right, Icon } from 'native-base';
+
 
 // create a component
 class HorseComponent extends Component {
   render() {
     return (
       // <Text>Your Horse!</Text>
-      <Image style={{ width: 200, height: 200 }}
-        source={require('../assets/Standard_Horse.jpg')}></Image>
+      <Card>
+        <CardItem style={{ backgroundColor: "#fbff14" }}>
+          <Image style={{ height: 200, width: null, flex: 1 }}
+            source={require('../assets/horse-avatar.gif')}></Image>
+        </CardItem>
+      </Card>
     );
   }
 }
@@ -21,8 +27,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#2c3e50',
-  },
+  }
 });
 
 //make this component available to the app

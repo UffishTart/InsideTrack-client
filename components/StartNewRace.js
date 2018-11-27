@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   View,
   Text,
@@ -7,17 +7,17 @@ import {
   Picker,
   Button,
   StyleSheet,
-  Modal,
-} from 'react-native';
-import { me } from '../store/user';
+  Modal
+} from "react-native";
+import { me } from "../store/user";
 import {
   fetchRacesDataFromServer,
   fetchSingleRaceFromServer,
-  postANewRace,
-} from '../store/races';
-import { postAUserRaceEntry } from '../store/userRacesPending';
-import { getFriendsOfUser } from '../store/userFriend';
-import { connect } from 'react-redux';
+  postANewRace
+} from "../store/races";
+import { postAUserRaceEntry } from "../store/userRacesPending";
+import { getFriendsOfUser } from "../store/userFriend";
+import { connect } from "react-redux";
 
 class StartNewRace extends Component {
   constructor(props) {
@@ -26,7 +26,7 @@ class StartNewRace extends Component {
       name: 'Enter Race Name',
       length: 1,
       friendIdArr: [],
-      selectedFriendId: 0,
+      selectedFriendId: 0
     };
     this.nameHandleChange = this.nameHandleChange.bind(this);
     this.lengthHandleChange = this.lengthHandleChange.bind(this);
@@ -41,19 +41,19 @@ class StartNewRace extends Component {
 
   nameHandleChange(text) {
     this.setState({
-      name: text,
+      name: text
     });
   }
 
   lengthHandleChange(text) {
     this.setState({
-      length: 1,
+      length: 1
     });
   }
 
   addFriend() {
     this.setState({
-      friendIdArr: [...this.state.friendIdArr, this.state.selectedFriend],
+      friendIdArr: [...this.state.friendIdArr, this.state.selectedFriend]
     });
   }
 
@@ -76,7 +76,7 @@ class StartNewRace extends Component {
           <View>
             <Text>Start a Race!</Text>
             <TextInput
-              placeholder={'Race Name'}
+              placeholder={"Race Name"}
               value={this.state.name}
               onChangeText={this.nameHandleChange}
             />
@@ -137,22 +137,22 @@ class StartNewRace extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center"
   },
   picker: {
     paddingTop: 220,
-    color: 'blue',
+    color: "blue",
     height: 50,
-    width: 100,
-  },
+    width: 100
+  }
 });
 
 const mapState = state => {
   return {
     race: state.races,
     user: state.user,
-    friends: state.userFriend,
+    friends: state.userFriend
   };
 };
 
@@ -164,7 +164,7 @@ const mapDispatch = dispatch => {
     getRace: raceId => dispatch(fetchSingleRaceFromServer(raceId)),
     postRace: (name, length) => dispatch(postANewRace(name, length)),
     postUserToRace: (userId, raceId, isOwner, acceptedInvitation) =>
-      dispatch(postAUserRaceEntry(userId, raceId, isOwner, acceptedInvitation)),
+      dispatch(postAUserRaceEntry(userId, raceId, isOwner, acceptedInvitation))
   };
 };
 

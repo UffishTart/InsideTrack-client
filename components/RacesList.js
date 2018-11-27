@@ -1,16 +1,20 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, ImageBackground } from 'react-native';
 import RacesListItem from './RacesListItem';
 
-const RacesList = props => {
-  const { user, races, isCompleted, updateRaceAsComplete } = props;
-  return (
-    <View
+{/* <View</View></View>
       style={
         isCompleted
           ? [styles.flexCont, { backgroundColor: '#D9AFAF' }]
           : [styles.flexCont, { backgroundColor: '#A3DDFA' }]
       }
+    > */}
+
+const RacesList = props => {
+  const { user, races, isCompleted, updateRaceAsComplete } = props;
+  return (
+    <View
+      style={[styles.backgroundImage]}
     >
       <ScrollView>
         {!!races.length &&

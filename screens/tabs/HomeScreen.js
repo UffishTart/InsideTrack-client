@@ -1,11 +1,19 @@
 import React, { Component } from "react";
 import { Font } from "expo";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  AsyncStorage
+} from "react-native";
 import Settings from "../pop-up-screens/Settings";
-import StartNewRace from '../../components/StartNewRace'
-import { me } from "../../store/user";
+import StartNewRace from "../../components/StartNewRace";
+import { me, authWithToken, logout } from "../../store/user";
+import { isSignedIn } from "../../navigation/AsyncStorageAuth";
 import { connect } from "react-redux";
-
+import { Container, Content, Header, Left, Body, Right, Button, Icon, Title } from 'native-base';
 
 // create a component
 class HomeScreen extends Component {
@@ -16,85 +24,90 @@ class HomeScreen extends Component {
   };
 
   async componentDidMount() {
-    console.log('homescreen mounted')
     await this.props.getUser()
+    if ((!this.props.user.length) && isSignedIn()) {
+      const token = await AsyncStorage.getItem('USER_TOKEN')
+      await this.props.reLogin(Number(token))
+      await this.props.getUser()
+    }
+    console.log("the user on state:", this.props.user);
     await Font.loadAsync({
-      'FasterOne-Regular': require('../../assets/FasterOne-Regular.ttf'),
+      "FasterOne-Regular": require("../../assets/FasterOne-Regular.ttf")
     });
     this.setState({ fontLoaded: true });
   }
 
   toggleSettingsView = () => {
-    this.setState({ showSettings: !this.state.showSettings })
-  }
+    this.setState({ showSettings: !this.state.showSettings });
+  };
 
   toggleNewRaceView = () =>
-    this.setState({ showNewRacePage: !this.state.showNewRacePage })
+    this.setState({ showNewRacePage: !this.state.showNewRacePage });
 
   renderTouchSettings() {
-    const settingsTent = this.state.showSettings
-      ? this.renderSettings()
-      : null
+    const settingsTent = this.state.showSettings ? this.renderSettings() : null;
     const newRaceTent = this.state.showNewRacePage
       ? this.renderNewRacePage()
-      : null
+      : null;
     return (
-      <View>
-        <View>
-          <TouchableOpacity
-            style={styles.buttonSettings}
-            onPress={this.toggleSettingsView}
-          >
-            {this.state.fontLoaded ? (
-              <Text style={styles.text}>*</Text>)
-              : null}
-            <View>{settingsTent}</View>
-          </TouchableOpacity>
-        </View>
-        <View marginTop={-50}>
-          <View>
-            <Image style={styles.logo} source={require('../../assets/InsideTrackLogo.png')}></Image>
-          </View>
-          {/* <View>
-          {this.state.fontLoaded ? (
-            <Text style={styles.text}>Hello, {this.props.user.name}</Text>)
-            : null}
-        </View> */}
-          <View>
-            <TouchableOpacity
-              style={styles.buttonLogout}
-              onPress={() => {
-                // onSignOut
-                this.props.navigation.navigate("SignedOut");
-              }}>
-              {this.state.fontLoaded ? (
-                <Text style={styles.text}>Log Out</Text>)
-                : null}
-            </TouchableOpacity>
-          </View>
-          <View style={styles.container}>
-            <TouchableOpacity
-              style={styles.buttonNewRace}
-              onPress={this.toggleNewRaceView}
+      <Container style={{ backgroundColor: "#fbff14" }}>
+        <Header />
+        <Body style={{ justifyContent: 'center', backgroundColor: "#fbff14", marginBottom: 50 }}>
+          <Container style={{ backgroundColor: "#fbff14", justifyContent: 'center', marginLeft: 230, marginTop: 20 }} >
+            <Button
+              style={styles.buttonSettings}
+              onPress={this.toggleSettingsView}
             >
-              {this.state.fontLoaded ? (
-                <Text style={styles.text}>Add Race</Text>)
-                : null}
-              <View>{newRaceTent}</View>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
+              {/* {this.state.fontLoaded ? <Text style={styles.text}>*</Text> : null} */}
+              <View>{settingsTent}</View>
+            </Button>
+          </Container>
+          <Body style={{ justifyContent: 'center', backgroundColor: "#fbff14", marginTop: 30 }}>
+            <Image
+              style={styles.logo}
+              source={require("../../assets/InsideTrackLogo.png")}
+            />
+          </Body>
+          <Container style={{ backgroundColor: "#fbff14", justifyContent: 'center', marginTop: 150 }} >
+            <Content>
+              <Button light
+                style={styles.buttonNewRace}
+                onPress={this.toggleNewRaceView}
+              >
+                {this.state.fontLoaded ? (
+                  <Text style={styles.text}>Add Race</Text>
+                ) : null}
+                <View>{newRaceTent}</View>
+              </Button>
+            </Content>
+          </Container>
+          <Container style={{ backgroundColor: "#fbff14", justifyContent: 'center', marginTop: 30, }}>
+            <Content>
+              <Button light
+                style={styles.buttonLogout}
+                onPress={() => {
+                  // onSignOut
+                  this.props.logout();
+                  this.props.navigation.navigate("SignedOut");
+                }}
+              >
+                {this.state.fontLoaded ? (
+                  <Text style={styles.text}>Log Out</Text>
+                ) : null}
+              </Button>
+            </Content>
+          </Container>
+        </Body>
+      </Container >
     );
   }
 
   renderSettings() {
-
     return <Settings onPress={this.toggleSettingsView.bind(this)} />;
   }
 
   renderNewRacePage() {
-    return <StartNewRace onPress={this.toggleNewRaceView.bind(this)} />
+    return <StartNewRace onPress={this.toggleNewRaceView.bind(this)} />;
   }
 
   render() {
@@ -111,77 +124,66 @@ const styles = StyleSheet.create({
   border: {
     flex: 1,
     justifyContent: "center",
-    alignItems: 'center',
-    borderColor: '#fff',
+    alignItems: "center",
+    borderColor: "#fff",
     borderTopWidth: 50,
     borderRadius: 2,
-    backgroundColor: '#fff'
+    backgroundColor: "#fff"
   },
   container: {
     flex: 1,
     justifyContent: "center",
     paddingHorizontal: 5,
-    alignItems: 'center',
-    borderColor: '#fff',
-    backgroundColor: '#fbff14'
+    alignItems: "center",
+    borderColor: "#fff",
+    backgroundColor: "#fbff14"
   },
   buttonSettings: {
-    shadowColor: 'rgba(0,0,0, .4)', // IOS
-    shadowOffset: { height: 1, width: 1 }, // IOS
-    shadowOpacity: 1, // IOS
-    shadowRadius: 1, //IOS
-    backgroundColor: '#fff',
-    elevation: 2, // Android
+    // shadowColor: "rgba(0,0,0, .4)", // IOS
+    // shadowOffset: { height: 3, width: 3 }, // IOS
+    // shadowOpacity: 1, // IOS
+    // shadowRadius: 1, //IOS
+    backgroundColor: "#fbff14",
+    // elevation: 2, // Android
     height: 40,
     width: 40,
-    marginLeft: 350,
-    marginTop: 300,
-    marginBottom: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
   },
   buttonNewRace: {
-    shadowColor: 'rgba(0,0,0, .4)', // IOS
-    shadowOffset: { height: 1, width: 1 }, // IOS
+    alignContent: 'center',
+    position: 'relative',
+    justifyContent: 'center',
+    height: 50,
+    width: 200,
+    shadowColor: "rgba(0,0,0, .4)", // IOS
+    shadowOffset: { height: 5, width: 5 }, // IOS
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
-    backgroundColor: '#fff',
-    elevation: 2, // Android
-    height: 50,
-    width: 300,
-    marginLeft: 1,
-    marginTop: -600,
-    marginBottom: 500,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
   },
   buttonLogout: {
-    shadowColor: 'rgba(0,0,0, .4)', // IOS
-    shadowOffset: { height: 1, width: 1 }, // IOS
+    shadowColor: "rgba(0,0,0, .4)", // IOS
+    shadowOffset: { height: 3, width: 3 }, // IOS
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
-    backgroundColor: '#fff',
     elevation: 2, // Android
     height: 50,
     width: 100,
-    marginTop: -300,
-    marginBottom: 80,
-    marginLeft: 175,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
+    alignContent: 'center',
+    position: 'relative',
+    justifyContent: 'center'
   },
   text: {
-    fontFamily: 'FasterOne-Regular',
+    fontFamily: "FasterOne-Regular",
     fontSize: 15,
-    fontStyle: 'italic'
+    fontStyle: "italic"
   },
   logo: {
+    shadowOffset: { height: 4, width: 4 }, // IOS
     height: 450,
     width: 450,
-    marginBottom: 250
+    marginBottom: -150,
+    alignContent: 'center',
+    position: 'relative',
+    justifyContent: 'center'
   }
 });
 
@@ -196,8 +198,12 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     getUser: () => dispatch(me()),
+    reLogin: token => dispatch(authWithToken(token)),
+    logout: () => dispatch(logout())
   };
 };
 
-
-export default connect(mapState, mapDispatch)(HomeScreen)
+export default connect(
+  mapState,
+  mapDispatch
+)(HomeScreen);

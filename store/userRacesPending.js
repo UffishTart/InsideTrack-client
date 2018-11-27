@@ -1,17 +1,17 @@
-import axios from 'axios';
-const server = 'https://inside-track-server-boil.herokuapp.com';
+import axios from "axios";
+const server = "https://inside-track-server-boil.herokuapp.com";
 
-const GET_ALL_PENDING_USER_RACES = 'GET_ALL_PENDING_USER_RACES';
-const POST_NEW_PENDING_USER_RACE = 'POST_NEW_PENDING_USER_RACE';
+const GET_ALL_PENDING_USER_RACES = "GET_ALL_PENDING_USER_RACES";
+const POST_NEW_PENDING_USER_RACE = "POST_NEW_PENDING_USER_RACE";
 
 const getAllUserRaces = races => ({
   type: GET_ALL_PENDING_USER_RACES,
-  races,
+  races
 });
 
 const postPendingNewUserRace = entry => ({
   type: POST_NEW_PENDING_USER_RACE,
-  entry,
+  entry
 });
 
 export const fetchPendingUserRacesByUser = (
