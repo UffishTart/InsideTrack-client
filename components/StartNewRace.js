@@ -87,8 +87,14 @@ class StartNewRace extends Component {
               }
             >
               <Picker.Item label="Race Length" value={null} />
-              <Picker.Item label="Day" value={1} />
-              <Picker.Item label="Week" value={7} />
+              <Picker.Item label="15 Minutes" value={15} />
+              <Picker.Item label="30 Minutes" value={30} />
+              <Picker.Item label="1 Hour" value={60} />
+              <Picker.Item label="3 Hours" value={180} />
+              <Picker.Item label="6 Hours" value={360} />
+              <Picker.Item label="12 Hours" value={720} />
+              <Picker.Item label="Day" value={1440} />
+              <Picker.Item label="Week" value={10080} />
             </Picker>
             <Picker
               selectedValue={this.state.selectedFriend}
