@@ -7,6 +7,7 @@ import {
   View,
   ScrollView,
   ImageBackground,
+  Image,
   Dimensions
 } from "react-native";
 import { connect } from "react-redux";
@@ -21,6 +22,8 @@ import { fetchSingleRaceFromServer } from '../../store/races';
 import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
 import CompletedRaceScreen from '../tabs/CompletedRaceScreen';
 import { fetchUserRacesByUser } from '../../store/userRaces';
+import { Container, Button, Footer, FooterTab, Content, Header, Left, Body, Right, Icon, Title } from 'native-base';
+
 
 //Helper function to generate the table row array;
 const arrayGenerater = userRaceInstance => {

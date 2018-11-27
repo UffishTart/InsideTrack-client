@@ -5,13 +5,7 @@ import PendingRacesListItem from './PendingRacesListItem';
 const PendingRacesList = props => {
   const { user, races, isOwnerBool, toggleStart, getPendingRaces } = props;
   return (
-    <View
-      style={
-        isOwnerBool
-          ? [styles.flexCont, { backgroundColor: '#D9AFAF' }]
-          : [styles.flexCont, { backgroundColor: '#A3DDFA' }]
-      }
-    >
+    <View>
       <ScrollView>
         {!!races.length &&
           races
@@ -46,4 +40,4 @@ const styles = StyleSheet.create({
   flexCont: {
     flex: 1,
   },
-});
+})
