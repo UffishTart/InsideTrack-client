@@ -9,10 +9,18 @@ import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
 
 const arrayGenerater = userRaceInstance => {
   const instanceArr = [];
-  instanceArr.push(userRaceInstance.userInfo.userName);
-  instanceArr.push(userRaceInstance.percentImprovement);
-  instanceArr.push(userRaceInstance.dailyAverage);
   instanceArr.push(userRaceInstance.place);
+  instanceArr.push(userRaceInstance.userInfo.userName);
+  instanceArr.push(
+    userRaceInstance.dailyAverage + userRaceInstance.differenceFromAverage
+  );
+  instanceArr.push(
+    Math.round(
+      userRaceInstance.raceInfo.length *
+        (userRaceInstance.dailyAverage / 24 / 60)
+    )
+  );
+  instanceArr.push(userRaceInstance.percentImprovement);
   return instanceArr;
 };
 
@@ -20,7 +28,7 @@ class CompletedRace extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isPedometerAvailable: "checking",
+      isPedometerAvailable: 'checking',
       pastStepCount: 0,
       averageSteps: 0,
       stepCountDuringGame: 0,
@@ -36,7 +44,7 @@ class CompletedRace extends React.Component {
 
   render() {
     const tableData = {
-      tableHead: ['Players', 'Improvement', 'Daily Average', 'Place'],
+      tableHead: ['Place', 'Player', 'Steps Taken', 'Average', 'Improvement'],
       tableInfo: this.props.singleRaceUser
         .filter(el => el.acceptedInvitation)
         .sort((user1, user2) => user1.place - user2.place)
@@ -55,7 +63,7 @@ class CompletedRace extends React.Component {
         <Table borderStyle={{ borderColor: '#017EC2' }}>
           <Row
             data={tableData.tableHead}
-            flexArr={[2, 2, 2, 1]}
+            flexArr={[1, 1.5, 1.5, 1.5, 1.5]}
             style={styles.head}
             textStyle={styles.text}
           />
@@ -63,7 +71,7 @@ class CompletedRace extends React.Component {
             <Rows
               data={tableData.tableInfo}
               style={styles.row}
-              flexArr={[2, 2, 2, 1]}
+              flexArr={[1, 1.5, 1.5, 1.5, 1.5]}
               heightArr={[28, 28]}
               textStyle={styles.text}
             />
