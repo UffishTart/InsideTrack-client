@@ -13,7 +13,7 @@ import StartNewRace from "../../components/StartNewRace";
 import { me, authWithToken, logout } from "../../store/user";
 import { isSignedIn } from "../../navigation/AsyncStorageAuth";
 import { connect } from "react-redux";
-import { Container, Header, Left, Body, Right, Button, Icon, Title } from 'native-base';
+import { Container, Content, Header, Left, Body, Right, Button, Icon, Title } from 'native-base';
 
 // create a component
 class HomeScreen extends Component {
@@ -50,55 +50,55 @@ class HomeScreen extends Component {
       ? this.renderNewRacePage()
       : null;
     return (
-      <View>
-        <View>
-          <TouchableOpacity
-            style={styles.buttonSettings}
-            onPress={this.toggleSettingsView}
-          >
-            {this.state.fontLoaded ? <Text style={styles.text}>*</Text> : null}
-            <View>{settingsTent}</View>
-          </TouchableOpacity>
-        </View>
-        <View marginTop={-50}>
-          <View>
+      <Container style={{ backgroundColor: "#fbff14" }}>
+        <Header />
+        <Body style={{ justifyContent: 'center', backgroundColor: "#fbff14", marginBottom: 50 }}>
+          <Container style={{ backgroundColor: "#fbff14", justifyContent: 'center', marginLeft: 230, marginTop: 20 }} >
+            <Button
+              style={styles.buttonSettings}
+              onPress={this.toggleSettingsView}
+            >
+              {/* {this.state.fontLoaded ? <Text style={styles.text}>*</Text> : null} */}
+              <View>{settingsTent}</View>
+            </Button>
+          </Container>
+          <Body style={{ justifyContent: 'center', backgroundColor: "#fbff14", marginTop: 30 }}>
             <Image
               style={styles.logo}
               source={require("../../assets/InsideTrackLogo.png")}
             />
-          </View>
-          {/* <View>
-          {this.state.fontLoaded ? (
-            <Text style={styles.text}>Hello, {this.props.user.name}</Text>)
-            : null}
-        </View> */}
-          <View>
-            <TouchableOpacity
-              style={styles.buttonLogout}
-              onPress={() => {
-                // onSignOut
-                this.props.logout();
-                this.props.navigation.navigate("SignedOut");
-              }}
-            >
-              {this.state.fontLoaded ? (
-                <Text style={styles.text}>Log Out</Text>
-              ) : null}
-            </TouchableOpacity>
-          </View>
-          <View style={styles.container}>
-            <TouchableOpacity
-              style={styles.buttonNewRace}
-              onPress={this.toggleNewRaceView}
-            >
-              {this.state.fontLoaded ? (
-                <Text style={styles.text}>Add Race</Text>
-              ) : null}
-              <View>{newRaceTent}</View>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
+          </Body>
+          <Container style={{ backgroundColor: "#fbff14", justifyContent: 'center', marginTop: 150 }} >
+            <Content>
+              <Button light
+                style={styles.buttonNewRace}
+                onPress={this.toggleNewRaceView}
+              >
+                {this.state.fontLoaded ? (
+                  <Text style={styles.text}>Add Race</Text>
+                ) : null}
+                <View>{newRaceTent}</View>
+              </Button>
+            </Content>
+          </Container>
+          <Container style={{ backgroundColor: "#fbff14", justifyContent: 'center', marginTop: 30, }}>
+            <Content>
+              <Button light
+                style={styles.buttonLogout}
+                onPress={() => {
+                  // onSignOut
+                  this.props.logout();
+                  this.props.navigation.navigate("SignedOut");
+                }}
+              >
+                {this.state.fontLoaded ? (
+                  <Text style={styles.text}>Log Out</Text>
+                ) : null}
+              </Button>
+            </Content>
+          </Container>
+        </Body>
+      </Container >
     );
   }
 
@@ -139,61 +139,37 @@ const styles = StyleSheet.create({
     backgroundColor: "#fbff14"
   },
   buttonSettings: {
-    shadowColor: "rgba(0,0,0, .4)", // IOS
-    shadowOffset: { height: 3, width: 3 }, // IOS
-    shadowOpacity: 1, // IOS
-    shadowRadius: 1, //IOS
-    backgroundColor: "#fff",
-    elevation: 2, // Android
+    // shadowColor: "rgba(0,0,0, .4)", // IOS
+    // shadowOffset: { height: 3, width: 3 }, // IOS
+    // shadowOpacity: 1, // IOS
+    // shadowRadius: 1, //IOS
+    backgroundColor: "#fbff14",
+    // elevation: 2, // Android
     height: 40,
     width: 40,
-    marginLeft: 350,
-    marginTop: 300,
-    borderColor: "#fbff14",
-    borderRadius: 10,
-    borderWidth: 1,
-    marginBottom: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row"
   },
   buttonNewRace: {
+    alignContent: 'center',
+    position: 'relative',
+    justifyContent: 'center',
+    height: 50,
+    width: 200,
     shadowColor: "rgba(0,0,0, .4)", // IOS
     shadowOffset: { height: 5, width: 5 }, // IOS
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
-    backgroundColor: "#fff",
-    elevation: 2, // Android
-    height: 50,
-    width: 200,
-    marginLeft: 1,
-    marginTop: -600,
-    marginBottom: 500,
-    borderColor: "#fbff14",
-    borderRadius: 10,
-    borderWidth: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row"
   },
   buttonLogout: {
     shadowColor: "rgba(0,0,0, .4)", // IOS
     shadowOffset: { height: 3, width: 3 }, // IOS
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
-    backgroundColor: "#fff",
     elevation: 2, // Android
     height: 50,
     width: 100,
-    marginTop: -300,
-    marginBottom: 80,
-    marginLeft: 175,
-    borderColor: "#fbff14",
-    borderRadius: 10,
-    borderWidth: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row"
+    alignContent: 'center',
+    position: 'relative',
+    justifyContent: 'center'
   },
   text: {
     fontFamily: "FasterOne-Regular",
@@ -204,7 +180,10 @@ const styles = StyleSheet.create({
     shadowOffset: { height: 4, width: 4 }, // IOS
     height: 450,
     width: 450,
-    marginBottom: 250
+    marginBottom: -150,
+    alignContent: 'center',
+    position: 'relative',
+    justifyContent: 'center'
   }
 });
 
