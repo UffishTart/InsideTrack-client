@@ -5,10 +5,7 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
-
   TouchableOpacity,
-
   Dimensions
 } from "react-native";
 import { connect } from "react-redux";
@@ -24,8 +21,19 @@ import { fetchSingleRaceFromServer } from "../../store/races";
 import { fetchUserRacesByUser } from "../../store/userRaces";
 import StatusTable from "../../components/StatusTable";
 
-import { Container, Button, Footer, FooterTab, Content, Header, Left, Body, Right, Icon, Title } from 'native-base';
-
+import {
+  Container,
+  Button,
+  Footer,
+  FooterTab,
+  Content,
+  Header,
+  Left,
+  Body,
+  Right,
+  Icon,
+  Title
+} from "native-base";
 
 //Helper function to generate the table row array;
 const arrayGenerater = userRaceInstance => {
@@ -90,7 +98,7 @@ class PedometerSensor extends React.Component {
 
   async componentDidMount() {
     await this.props.fetchRaceUserData(this.props.raceId);
-    console.log('here are user races', this.props.singleRaceUser)
+    console.log("here are user races", this.props.singleRaceUser);
     await this.props.getSingleRace(this.props.raceId);
     const gameStartTime = new Date(this.props.races[0].startTime);
     const timeOpenApp = new Date();
@@ -229,7 +237,7 @@ class PedometerSensor extends React.Component {
     this.setState({ ...this.state, showStatus: !this.state.showStatus });
   };
   render() {
-    console.log('singleUserRace on state:', this.props.singleRaceUser)
+    console.log("singleUserRace on state:", this.props.singleRaceUser);
     const tableData = {
       tableHead: ["Players", "Improvement", "Daily Average", "Place"],
       tableInfo: this.props.singleRaceUser
