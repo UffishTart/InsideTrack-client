@@ -65,20 +65,20 @@ const ifHaveSevenDaysData = (createdDate, usingDate) => {
     return true;
   } else {
     const difference = usingDate.getDate() - createdDate.getDate();
-    return difference > 6;
+    return difference >= 7;
   }
 };
 
 const endDateSetUp = (start, end, raceLength) => {
-  if (end.getTime() - start.getTime() > raceLength * 24 * 60 * 60 * 1000) {
-    end.setDate(start.getDate() + raceLength);
+  if (end.getTime() - start.getTime() > raceLength * 60 * 1000) {
+    end.setTime(start.getTime() + raceLength * 60 * 1000);
   }
   return end;
 };
 
 const endGameDate = (start, raceLength) => {
   const end = new Date();
-  end.setDate(start.getDate() + raceLength + 1);
+  end.setTime(start.getTime() + raceLength * 60 * 1000);
   return end;
 };
 
@@ -90,7 +90,6 @@ class PedometerSensor extends React.Component {
       pastStepCount: 0,
       averageSteps: 0,
       stepCountDuringGame: 0,
-      days: 0,
       hasCompleted: false,
       showStatus: false
     };
@@ -104,7 +103,7 @@ class PedometerSensor extends React.Component {
     const timeOpenApp = new Date();
     const endTimeOfGame = endGameDate(
       gameStartTime,
-      this.props.races[0].length + 1
+      this.props.races[0].length + 24 * 60
     );
     if (timeOpenApp < endTimeOfGame) {
       await this._subscribe();
@@ -118,7 +117,7 @@ class PedometerSensor extends React.Component {
     const timeOpenApp = new Date();
     const endTimeOfGame = endGameDate(
       gameStartTime,
-      this.props.races[0].length + 1
+      24 * 60 + this.props.races[0].length
     );
     if (timeOpenApp < endTimeOfGame) {
       this._unsubscribe();
@@ -173,12 +172,8 @@ class PedometerSensor extends React.Component {
     Pedometer.getStepCountAsync(startForAverage, gameStartTime)
       .then(
         result => {
-          let daysChecking = ifHaveSevenDaysData(startForAverage, gameStartTime)
-            ? 7
-            : gameStartTime.getDate() - startForAverage.getDate();
-
           let average = ifHaveSevenDaysData(startForAverage, gameStartTime)
-            ? Math.round(result.steps / daysChecking)
+            ? Math.round(result.steps / 7)
             : this.props.user.estimatedAverage;
           this.setState({
             pastStepCount: result.steps,
