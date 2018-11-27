@@ -10,7 +10,7 @@ import { Container, Header, Left, Body, Right, Icon, Title } from 'native-base';
 export default class ProfileScreen extends Component {
   render() {
     return (
-      <Container style={{ backgroundColor: "#fbff14" }}>
+      <Container style={{ backgroundColor: "#fff" }}>
         <HorseComponent />
         <FindUsers />
       </Container>

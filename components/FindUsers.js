@@ -1,11 +1,11 @@
 import Autocomplete from "react-native-autocomplete-input";
 import React, { Component } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { Button } from "react-native-elements";
+import { Button, FormInput } from "react-native-elements";
 import { connect } from "react-redux";
 import { fetchAllUsers } from "../store/allUsers";
 import { addNewFriend } from "../store/userFriend";
-import { Content, Container, Card, CardItem, Left, Body, Right, Icon, Text } from 'native-base';
+import { Content, Container, Item, Input, Card, CardItem, Left, Body, Right, Icon, Text } from 'native-base';
 
 
 
@@ -52,41 +52,46 @@ class FindUsers extends Component {
     const comp = (a, b) => a.toLowerCase() === b.toLowerCase();
 
     return (
-      <Container>
-        <Autocomplete
-          autoCapitalize="none"
-          autoCorrect={false}
-          containerStyle={styles.autocompleteContainer}
-          data={
-            usersToFind.length === 1 && comp(query, usersToFind[0].userName)
-              ? []
-              : usersToFind
-          }
-          defaultValue={query}
-          onChangeText={text => this.setState({ query: text })}
-          placeholder="Enter Friend Name Here"
-          renderItem={({ userName }) => (
-            <TouchableOpacity
-              onPress={() => this.setState({ query: userName })}
-            >
-              <Text>{userName}</Text>
-            </TouchableOpacity>
-          )}
-        />
-        <Container style={{ backgroundColor: "#fbff14" }}>
+      <View style={{ flex: 1, }}>
+        <View style={{ justifyContent: 'center' }}>
+          <Autocomplete
+            autoCapitalize="none"
+            autoCorrect={false}
+            containerStyle={styles.autocompleteContainer}
+            data={
+              usersToFind.length === 1 && comp(query, usersToFind[0].userName)
+                ? []
+                : usersToFind
+            }
+            defaultValue={query}
+            onChangeText={text => this.setState({ query: text })}
+            placeholder="Enter Friend Name Here"
+            renderItem={({ userName }) => (
+              <TouchableOpacity
+                onPress={() => this.setState({ query: userName })}>
+                <Text>{userName}</Text>
+              </TouchableOpacity>
+            )}
+          />
+        </View>
+        <View style={{ backgroundColor: "#fff", marginTop: -50 }}>
           {usersToFind.length > 0 ? (
-            <Container>
+            <View>
               {renderUser(usersToFind[0])}
               <Button
                 onPress={() => this.addAsFriend(user.id, usersToFind[0].id)}
                 title="Add"
+                style={{ marginBottom: 50 }}
               />
-            </Container>
+            </View>
           ) : (
-              <Text>Enter Name of a Friend</Text>
+              <View>
+                <Button disabled disabledStyle title="Enter Name To Add" style={{ marginBottom: 50 }}
+                />
+              </View>
             )}
-        </Container>
-      </Container>
+        </View>
+      </View>
     )
   }
 }
@@ -99,7 +104,9 @@ const styles = StyleSheet.create({
   },
   autocompleteContainer: {
     marginLeft: 10,
-    marginRight: 10
+    marginRight: 10,
+    marginBottom: 230,
+    width: '80%'
   },
   itemText: {
     fontSize: 15,
