@@ -1,6 +1,6 @@
 import Expo from "expo";
 import React from "react";
-import { Pedometer } from "expo";
+import { Pedometer, Svg } from "expo";
 import {
   StyleSheet,
   Text,
@@ -10,17 +10,17 @@ import {
   Dimensions
 } from "react-native";
 import { connect } from "react-redux";
-import { me } from "../../store/user";
+
 import {
   putUpdatedPedometerData,
   fetchRaceUserData,
-  putDailyAverage,
-} from '../../store/singleRaceUser';
+  putDailyAverage
+} from "../../store/singleRaceUser";
 import Track from "../../components/Track";
-import { fetchSingleRaceFromServer } from '../../store/races';
-import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
-import CompletedRaceScreen from '../tabs/CompletedRaceScreen';
-import { fetchUserRacesByUser } from '../../store/userRaces';
+import { fetchSingleRaceFromServer } from "../../store/races";
+import CompletedRaceScreen from "../tabs/CompletedRaceScreen";
+import { fetchUserRacesByUser } from "../../store/userRaces";
+import StatusTable from "../../components/StatusTable";
 
 //Helper function to generate the table row array;
 const arrayGenerater = userRaceInstance => {
@@ -77,7 +77,7 @@ class PedometerSensor extends React.Component {
       averageSteps: 0,
       stepCountDuringGame: 0,
       days: 0,
-      hasCompleted: false,
+      hasCompleted: false
     };
   }
 
@@ -112,7 +112,7 @@ class PedometerSensor extends React.Component {
       });
       await this.props.getUserRaces(
         this.props.user.id,
-        'acceptedInvitation',
+        "acceptedInvitation",
         true
       );
     }
@@ -234,43 +234,22 @@ class PedometerSensor extends React.Component {
       <View>
         {this.state.hasCompleted ? <Text>This race is over!</Text> : null}
         <View style={styles.tableContainer}>
-          <Text style={styles.text}>
-            Steps taken during the game: {this.state.stepCountDuringGame}{' '}
+          {/*<Text style={styles.text}>
+            Steps taken during the game: {this.state.stepCountDuringGame}{" "}
           </Text>
           <Text style={styles.text}>
-            Average steps: {this.state.averageSteps}{' '}
-          </Text>
+            Average steps: {this.state.averageSteps}{" "}
+    </Text>*/}
+          {/*<StatusTable tableData={tableData} />*/}
 
-          <Table borderStyle={{ borderColor: '#017EC2' }}>
-            <Row
-              data={tableData.tableHead}
-              flexArr={[2, 2, 2, 1]}
-              style={styles.head}
-              textStyle={styles.text}
-            />
-            <TableWrapper style={styles.wrapper}>
-              <Rows
-                data={tableData.tableInfo}
-                style={styles.row}
-                flexArr={[2, 2, 2, 1]}
-                heightArr={[28, 28]}
-                textStyle={styles.text}
-              />
-            </TableWrapper>
-          </Table>
-          <ImageBackground
-            style={styles.photo}
-            source={require("../../assets/horse-race-track-1.jpg")}
-          >
-            <Track
-              data={racingUserData}
-              selectX={datum => datum.Improvement}
-              selectY={idx => idx}
-              steps={this.state.pastStepCount}
-              width={Dimensions.get("window").width}
-              height={Dimensions.get("window").height}
-            />
-          </ImageBackground>
+          <Track
+            data={racingUserData}
+            selectX={datum => datum.Improvement}
+            selectY={idx => idx}
+            steps={this.state.pastStepCount}
+            width={Dimensions.get("window").width}
+            height={Dimensions.get("window").height}
+          />
         </View>
       </View>
     );
@@ -284,24 +263,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-  tableContainer: {
-    flex: 1,
-    fontSize: 10,
-    width: "100%",
-    height: "50%",
-    paddingTop: 20
-  },
-  head: { height: 40, backgroundColor: "#014D7F" },
-  wrapper: { flexDirection: "row" },
-  row: { height: 28, backgroundColor: "#9AE0FF" },
+
   text: { textAlign: "center" },
-  photo: { width: "100%", height: "80%", paddingTop: 10 }
+  photo: { width: "100%", height: "80%" }
 });
 
 const mapState = ({ singleRaceUser, races, userRaces }) => ({
   singleRaceUser,
   races,
-  userRaces,
+  userRaces
 });
 const mapDispatch = dispatch => ({
   fetchRaceUserData: raceId => dispatch(fetchRaceUserData(raceId)),
@@ -311,7 +281,7 @@ const mapDispatch = dispatch => ({
   updateAverage: (steps, userId, raceId) =>
     dispatch(putDailyAverage(steps, userId, raceId)),
   getUserRaces: (userId, queryType, queryIndicator) =>
-    dispatch(fetchUserRacesByUser(userId, queryType, queryIndicator)),
+    dispatch(fetchUserRacesByUser(userId, queryType, queryIndicator))
 });
 
 export default connect(

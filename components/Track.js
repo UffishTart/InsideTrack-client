@@ -47,7 +47,7 @@ class Track extends Component {
 
     const yScale = d3ScaleLinear()
       .domain([1, data.length])
-      .range([-20, height - 540]);
+      .range([100, height - 400]);
 
     const selectScaledX = datum => {
       return xScale(selectX(datum));
