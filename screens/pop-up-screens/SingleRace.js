@@ -1,5 +1,6 @@
 //import liraries
 import React, { Component } from "react";
+
 import {
   View,
   TouchableOpacity,
@@ -9,8 +10,12 @@ import {
   ImageBackground,
   Dimensions
 } from "react-native";
+
+
 import PedometerSensor from "../tabs/PedometerScreen";
 import CompletedRaceScreen from "../tabs/CompletedRaceScreen";
+import { Container, Text, Button, Footer, FooterTab, Content, Header, Left, Body, Right, Icon, Title } from 'native-base';
+
 
 // create a component
 class SingleRace extends Component {
@@ -20,9 +25,10 @@ class SingleRace extends Component {
 
   render() {
     return (
-      <View>
+      <Container>
         {!!this.props.race ? (
           <Modal>
+
             <View style={styles.container}>
               {!!this.props.race.raceInfo.completedStatus ? (
                 <CompletedRaceScreen
@@ -37,8 +43,8 @@ class SingleRace extends Component {
                   <PedometerSensor
                     user={this.props.user}
                     raceId={this.props.race.raceId}
-                    updateRaceAsComplete={this.props.updateRaceAsComplete}
                   />
+
                   <TouchableOpacity
                     style={styles.button}
                     onPress={this.props.toggleSingleRaceView}
@@ -48,9 +54,11 @@ class SingleRace extends Component {
                 </ImageBackground>
               )}
             </View>
+
+               
           </Modal>
         ) : null}
-      </View>
+      </Container>
     );
   }
 }
@@ -61,8 +69,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+
     backgroundColor: "#2c3e50",
     flexWrap: "nowrap"
+
   },
   photo: {
     width: "100%",

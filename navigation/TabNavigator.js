@@ -61,13 +61,6 @@ const SignedIn = createMaterialBottomTabNavigator({
       tabBarIcon: tabBarIcon('directions-run'),
     },
   },
-  Profile: {
-    screen: ProfileScreen,
-    navigationOptions: {
-      tabBarColor: '#fff',
-      tabBarIcon: tabBarIcon('person'),
-    },
-  },
   PendingRaces: {
     screen: PendingRacesScreen,
     navigationOptions: {
@@ -75,7 +68,14 @@ const SignedIn = createMaterialBottomTabNavigator({
       tabBarIcon: tabBarIcon('mail'),
       title: 'Pending Races'
     }
-  }
+  },
+  Profile: {
+    screen: ProfileScreen,
+    navigationOptions: {
+      tabBarColor: '#fff',
+      tabBarIcon: tabBarIcon('person'),
+    },
+  },
 }, {
     initialRouteName: 'Home',
     activeColor: '#ef1717',
