@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, Button} from 'react-native';
 import PendingRacesListItem from './PendingRacesListItem';
+// import { Button } from 'native-base'
 
 const PendingRacesList = props => {
-  const { user, races, isOwnerBool, toggleStart, getPendingRaces } = props;
+  const { user, races, isOwnerBool, toggleStart, refreshRaces, getPendingRaces } = props;
   return (
     <View>
+      <Button onPress={refreshRaces} title='Refresh' />
       <ScrollView>
         {!!races.length &&
           races

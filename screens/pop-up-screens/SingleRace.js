@@ -13,7 +13,7 @@ import {
 import LoopAnimation from "react-native-LoopAnimation";
 import PedometerSensor from "../tabs/PedometerScreen";
 import CompletedRaceScreen from "../tabs/CompletedRaceScreen";
-import {Header, Left, Button, Text, Body, Right} from 'native base'
+import {Header, Left, Button, Text, Body, Right} from 'native-base'
 
 // create a component
 class SingleRace extends Component {
