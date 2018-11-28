@@ -28,10 +28,9 @@ const pathPhoto = [
 console.log('pathPhoto arr', pathPhoto)
 
 const horseUrlMap = [
-  {horseId: 1, requiredHorse: require("../assets/horse1.png")},
-  {horseId: 2, requiredHorse: require("../assets/rcLnXB56i.png")},
-  {horseId: 3, requiredHorse: require("../assets/horse3.png")},
-  {horseId: 4, requiredHorse: require("../assets/CoolClips_peop1281.png")}
+  {horseId: 1, requiredHorse: require("../assets/rcLnXB56i.png")},
+  {horseId: 2, requiredHorse: require("../assets/horse3.png")},
+  {horseId: 3, requiredHorse: require("../assets/CoolClips_peop1281.png")}
 ]
 
 const horseLinksNeeded = []
