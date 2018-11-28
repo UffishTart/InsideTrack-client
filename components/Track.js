@@ -15,42 +15,6 @@ import { connect } from "react-redux";
 import store from "../store";
 import { fetchHorsesFromServer } from "../store/horseStore";
 
-//const { Image, Text, G } = Svg;
-
-// create range that can space users out
-const xScaleRangeGenerator = datum => {
-  const improvement = datum.map(el => el.Improvement).sort((a, b) => a - b);
-  const range = [];
-  range[0] = improvement[0];
-  range[1] = improvement[improvement.length - 1] + 1;
-  console.log("!!!Range", range);
-  return range;
-};
-
-const pathPhoto = [
-  // require("../assets/horse1.png"),
-  require("../assets/CoolClips_peop1281.png"),
-  require("../assets/rcLnXB56i.png"),
-  require("../assets/horse3.png")
-];
-
-console.log("pathPhoto arr", pathPhoto);
-
-// const horseUrlMap = [
-//   {horseId: 1, requiredHorse: require("../assets/horse1.png")},
-//   {horseId: 2, requiredHorse: require("../assets/rcLnXB56i.png")},
-//   {horseId: 3, requiredHorse: require("../assets/horse3.png")},
-//   {horseId: 4, requiredHorse: require("../assets/CoolClips_peop1281.png")}
-// ]
-const horseUrlMap = [
-  { horseId: 1, requiredHorse: require("../assets/horse-avatar-small.gif") },
-  { horseId: 2, requiredHorse: require("../assets/horse-avatar-small.gif") },
-  { horseId: 3, requiredHorse: require("../assets/horse-avatar-small.gif") },
-  { horseId: 4, requiredHorse: require("../assets/horse-avatar-small.gif") }
-];
-
-const horseLinksNeeded = [];
-
 class Track extends Component {
   constructor() {
     super();
@@ -88,12 +52,8 @@ class Track extends Component {
         width={this.props.width}
         style={{ marginTop: 300, alignItems: "center", paddingBottom: 400 }}
       >
-        {/*<View style={styles.textContainer}>
-          <Text>{user.userName}</Text>
-          <Text>{this.props.steps}</Text>
-    </View>*/}
         <Image
-          style={{ width: "60%", height: "100%" }}
+          style={{ width: "80%", height: "100%" }}
           source={{ uri: avatarUrl }}
         />
       </View>
@@ -113,9 +73,7 @@ export default connect(
 
 const styles = StyleSheet.create({
   textContainer: {
-    // flex: 1,
-    // flexWrap:"nowrap",
-    backgroundColor: "#fbff14",
+    backgroundColor: "#ffe6e6",
     borderTopLeftRadius: 3,
     borderBottomLeftRadius: 3,
     color: "#999",
