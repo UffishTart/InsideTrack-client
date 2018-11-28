@@ -3,8 +3,17 @@
 //Need for resizing probably depending on component? We'll see
 import React, { Component } from "react";
 import { View, Text, ImageBackground, Image, StyleSheet } from "react-native";
-import { Content, Container, Card, CardItem, Header, Left, Body, Right, Icon } from 'native-base';
-
+import {
+  Content,
+  Container,
+  Card,
+  CardItem,
+  Header,
+  Left,
+  Body,
+  Right,
+  Icon
+} from "native-base";
 
 // create a component
 class HorseComponent extends Component {
@@ -14,15 +23,22 @@ class HorseComponent extends Component {
       <Container>
         <Header>
           <Body>
-            <Text style={{ alignSelf: 'center' }}>Your Steed</Text>
+            <Text style={{ alignSelf: "center" }}>Your Steed</Text>
           </Body>
         </Header>
         <Card style={{ marginLeft: 20, marginRight: 20 }}>
-          <CardItem cardBody>
-          </CardItem>
-          <CardItem cardBody>
-            <Image style={{ height: 200, width: null, flex: 1 }}
-              source={require('../assets/horse-avatar.gif')}></Image>
+          <CardItem cardBody />
+          <CardItem
+            cardBody
+            style={{
+              shadowOffset: { height: 5, width: 5 },
+              shadowOpacity: 1
+            }}
+          >
+            <Image
+              style={{ height: 200, width: null, flex: 1 }}
+              source={require("../assets/horse-avatar.gif")}
+            />
           </CardItem>
         </Card>
       </Container>
@@ -34,8 +50,8 @@ class HorseComponent extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center"
   },
   backgroundImage: {
     flex: 1,

@@ -16,15 +16,32 @@ import {
 import { postAUserRaceEntry } from "../store/userRacesPending";
 import { getFriendsOfUser } from "../store/userFriend";
 import { connect } from "react-redux";
-import Friends from './Friends'
-import { Container, Text, Button, H1, H3, Form, Footer, FooterTab, Content, Header, Input, Item, Left, Body, Right, Icon, Title } from 'native-base';
-
+import Friends from "./Friends";
+import {
+  Container,
+  Text,
+  Button,
+  H1,
+  H3,
+  Form,
+  Footer,
+  FooterTab,
+  Content,
+  Header,
+  Input,
+  Item,
+  Left,
+  Body,
+  Right,
+  Icon,
+  Title
+} from "native-base";
 
 class StartNewRace extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: ' Enter Race Name',
+      name: " Enter Race Name",
       length: 1,
       friendIdArr: [],
       selectedFriendId: 0,
@@ -52,7 +69,7 @@ class StartNewRace extends Component {
     });
   }
 
-  onValueChange = (friendValue) => this.setState({ selectedFriend: friendValue })
+  onValueChange = friendValue => this.setState({ selectedFriend: friendValue });
 
   addFriend() {
     this.setState({
@@ -90,7 +107,7 @@ class StartNewRace extends Component {
             </Button>
           </Left>
           <Body>
-            <Text style={{ alignSelf: 'center' }}>New Race</Text>
+            <Text style={{ alignSelf: "center" }}>New Race</Text>
           </Body>
           <Right />
         </Header>
@@ -98,7 +115,8 @@ class StartNewRace extends Component {
           <Content>
             <Content style={{ marginTop: 20, marginLeft: 20, marginRight: 20 }}>
               <Item rounded>
-                <Input placeholder={"Race Name"}
+                <Input
+                  placeholder={"Race Name"}
                   value={this.state.name}
                   onChangeText={this.nameHandleChange}
                 />
@@ -120,33 +138,43 @@ class StartNewRace extends Component {
                 <Picker.Item label="Day" value={1440} />
                 <Picker.Item label="Week" value={10080} />
               </Picker>
-              <Button rounded success
-                style={{ alignSelf: 'center', marginTop: 40 }}
-                onPress={this.toggleFriendsView}>
+              <Button
+                rounded
+                success
+                style={{ alignSelf: "center", marginTop: 100 }}
+                onPress={this.toggleFriendsView}
+              >
                 <Text>Select Friends</Text>
               </Button>
               <View>{friendsTent}</View>
-              <Button block primary onPress={this.handleSubmit} style={{ alignSelf: 'center', marginTop: 150 }}>
+              <Button
+                block
+                primary
+                onPress={this.handleSubmit}
+                style={{ alignSelf: "center", marginTop: 110, width: 300 }}
+              >
                 <Text>Submit</Text>
               </Button>
             </Content>
           </Content>
-        </Container >
+        </Container>
       </Modal>
     );
   }
 
-
   renderFriendsPage() {
-    return <Friends
-      addFriend={this.addFriend}
-      onValueChange={this.onValueChange}
-      friendIdArr={this.state.friendIdArr}
-      selectedFriendId={this.state.selectedFriendId}
-      friends={this.props.friends}
-      selectedFriend={this.state.selectedFriend}
-      addFriend={this.addFriend.bind(this)}
-      toggleFriendsView={this.toggleFriendsView.bind(this)} />;
+    return (
+      <Friends
+        addFriend={this.addFriend}
+        onValueChange={this.onValueChange}
+        friendIdArr={this.state.friendIdArr}
+        selectedFriendId={this.state.selectedFriendId}
+        friends={this.props.friends}
+        selectedFriend={this.state.selectedFriend}
+        addFriend={this.addFriend.bind(this)}
+        toggleFriendsView={this.toggleFriendsView.bind(this)}
+      />
+    );
   }
 }
 
