@@ -1,22 +1,34 @@
-import React from 'react';
-import { View, StyleSheet, ScrollView, ImageBackground, Button } from 'react-native';
-import RacesListItem from './RacesListItem';
+import React from "react";
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  ImageBackground,
+  Button
+} from "react-native";
+import RacesListItem from "./RacesListItem";
 
-{/* <View</View></View>
+{
+  /* <View</View></View>
       style={
         isCompleted
           ? [styles.flexCont, { backgroundColor: '#D9AFAF' }]
           : [styles.flexCont, { backgroundColor: '#A3DDFA' }]
       }
-    > */}
+    > */
+}
 
 const RacesList = props => {
-  const { user, races, isCompleted, refreshRaces, updateRaceAsComplete } = props;
+  const {
+    user,
+    races,
+    isCompleted,
+    refreshRaces,
+    updateRaceAsComplete
+  } = props;
   return (
-    <View
-      style={[styles.backgroundImage]}
-    >
-      <Button onPress={refreshRaces} title='Refresh' />
+    <View style={[styles.backgroundImage]}>
+      <Button onPress={refreshRaces} title="Refresh" />
       <ScrollView>
         {!!races.length &&
           races
@@ -43,11 +55,11 @@ export default RacesList;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff"
   },
   flexCont: {
-    flex: 1,
-  },
+    flex: 1
+  }
 });
