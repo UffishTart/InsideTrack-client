@@ -8,7 +8,8 @@ import {
   Modal,
   ImageBackground,
   Dimensions,
-  ScrollView
+  ScrollView,
+  Text
 } from "react-native";
 import LoopAnimation from "react-native-LoopAnimation";
 import PedometerSensor from "../tabs/PedometerScreen";

@@ -291,11 +291,10 @@ class PedometerSensor extends React.Component {
           >
             <Track
               data={racingUserData}
-              selectX={datum => datum.Improvement}
-              selectY={idx => idx}
-              steps={this.state.pastStepCount}
+              steps={this.state.stepCountDuringGame}
               width={Dimensions.get("window").width}
               height={Dimensions.get("window").height}
+              user={this.props.user}
             />
 
             <Button

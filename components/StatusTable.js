@@ -19,7 +19,7 @@ class StatusTable extends Component {
           <Table borderStyle={{ borderColor: "transparent" }}>
             <Row
               data={tableData.tableHead}
-              flexArr={[1, 1.5, 1.75, 1.25, 1.75]}
+              flexArr={[1, 1.75, 1.75, 1.25, 1.75]}
               style={styles.head}
               textStyle={styles.text}
             />
@@ -27,7 +27,7 @@ class StatusTable extends Component {
               <Rows
                 data={tableData.tableInfo}
                 style={styles.row}
-                flexArr={[1, 1.5, 1.75, 1.25, 1.75]}
+                flexArr={[1, 1.75, 1.75, 1.25, 1.75]}
                 heightArr={[28, 28]}
                 textStyle={styles.text}
               />

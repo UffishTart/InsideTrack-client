@@ -11,11 +11,11 @@ import {
   Image,
   Dimensions
 } from "react-native";
-import { Svg } from "expo";
+import { connect } from "react-redux";
+import store from "../store";
+import { fetchHorsesFromServer } from "../store/horseStore";
 
 //const { Image, Text, G } = Svg;
-const AnimatedImage = Animated.createAnimatedComponent(Image);
-const AnimatedText = Animated.createAnimatedComponent(Text);
 
 // create range that can space users out
 const xScaleRangeGenerator = datum => {
@@ -60,6 +60,7 @@ class Track extends Component {
   }
 
   componentDidMount() {
+    this.props.getHorses();
     this.props.data.forEach(userObj => {
       horseUrlMap.forEach(horseObj => {
         if (userObj.horseId === horseObj.horseId) {
@@ -77,92 +78,44 @@ class Track extends Component {
   }
 
   render() {
-    //const { Image } = Svg;
-    const { data, selectX, selectY, width, height } = this.props;
-    console.log("!!!! Height", height);
-    const xScale = d3ScaleLinear()
-      .domain(xScaleRangeGenerator(data))
-      .range([0, Dimensions.get("window").width]);
-
-    const yScale = d3ScaleLinear()
-      .domain([1, data.length])
-      .range([100, height - 600]);
-
-    const selectScaledX = datum => {
-      return xScale(selectX(datum));
-    };
-
-    const selectScaledY = idx => {
-      return yScale(selectY(idx));
-    };
-
+    const { horses, user } = this.props;
+    const avatarUrl = horses
+      .filter(horse => horse.id === user.horseId)
+      .map(horse => horse.imgUrl)[0];
     return (
-      <View height={height}>
-        {data.map((o, i) => {
-          console.log("!!!!! user i", i);
-          const horseMarginLeft = selectScaledX(o);
-          console.log("!!!!! horseMarginLeft", horseMarginLeft);
-          const tagMarginLeft = selectScaledX(o) - 1;
-          console.log("!!!!! tagMarginLeft", tagMarginLeft);
-          const yLocation = selectScaledY(i + 1);
-          console.log("!!!!! yLocation", yLocation);
-          console.log("-------------------------------");
-          // const horseMotion = this.horseAnimatedValue.interpolate({
-          //   inputRange: [0, 1],
-          //   outputRange: [0, horseMarginLeft]
-          // });
-          // const tagMotion = this.textAnimatedValue.interpolate({
-          //   inputRange: [0, 1],
-          //   outputRange: [0, tagMarginLeft]
-          // });
-          // console.log("!!!!! horsemargin", horseMarginLeft);
-          return (
-            <View key={i} style={{ width: 340, height: 400 }}>
-              <Text
-                x={tagMarginLeft}
-                y={selectScaledY(i + 1) + 25}
-                style={styles.textContainer}
-                fontSize="12"
-                fontWeight="bold"
-                fill="black"
-              >
-                {o.userName}
-              </Text>
-              {/*<Text
-                x={tagMarginLeft}
-                y={selectScaledY(i + 1) + 65}
-                fontSize="12"
-                fontWeight="bold"
-                fill="black"
-              >
-                {o.Improvement}
-             </Text>*/}
-
-              <Image
-                // styles={{
-                //   paddingLeft: { horseMarginLeft },
-                //   paddingTop: { yLocation },
-                //   width: "100%",
-                //   height: "100%"
-                // }}
-                x={horseMarginLeft}
-                y={yLocation}
-                source={this.state.horseLinksNeeded[i]}
-              />
-            </View>
-          );
-        })}
+      <View
+        height={this.props.height}
+        width={this.props.width}
+        style={{ marginTop: 300, alignItems: "center", paddingBottom: 400 }}
+      >
+        {/*<View style={styles.textContainer}>
+          <Text>{user.userName}</Text>
+          <Text>{this.props.steps}</Text>
+    </View>*/}
+        <Image
+          style={{ width: "60%", height: "100%" }}
+          source={{ uri: avatarUrl }}
+        />
       </View>
     );
   }
 }
 
 //make this component available to the app
-export default Track;
+const mapState = ({ horses }) => ({ horses });
+const mapDispatch = dispatch => ({
+  getHorses: () => dispatch(fetchHorsesFromServer())
+});
+export default connect(
+  mapState,
+  mapDispatch
+)(Track);
 
 const styles = StyleSheet.create({
   textContainer: {
-    backgroundColor: "#eee",
+    // flex: 1,
+    // flexWrap:"nowrap",
+    backgroundColor: "#fbff14",
     borderTopLeftRadius: 3,
     borderBottomLeftRadius: 3,
     color: "#999",
