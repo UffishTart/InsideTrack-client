@@ -10,7 +10,7 @@ class StatusTable extends Component {
         style={styles.photo}
         source={require("../assets/leaderboard.png")}
       >
-        <View style={{ marginTop: "10%", justifyContent: "center" }}>
+        <View style={{ marginTop: "15%", justifyContent: "center" }}>
           <Image
             style={{ marginLeft: "25%" }}
             source={require("../assets/cupCopy.png")}
@@ -19,7 +19,7 @@ class StatusTable extends Component {
           <Table borderStyle={{ borderColor: "transparent" }}>
             <Row
               data={tableData.tableHead}
-              flexArr={[1, 1.5, 1.75, 1.25, 1.75]}
+              flexArr={[1, 1.75, 1.75, 1.25, 1.75]}
               style={styles.head}
               textStyle={styles.text}
             />
@@ -27,7 +27,7 @@ class StatusTable extends Component {
               <Rows
                 data={tableData.tableInfo}
                 style={styles.row}
-                flexArr={[1, 1.5, 1.75, 1.25, 1.75]}
+                flexArr={[1, 1.75, 1.75, 1.25, 1.75]}
                 heightArr={[28, 28]}
                 textStyle={styles.text}
               />

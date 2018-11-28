@@ -264,8 +264,6 @@ class PedometerSensor extends React.Component {
           <View
             style={{
               width: Dimensions.get("window").width
-              // flex: 1,
-              //justifyContent: "center"
             }}
           >
             <StatusTable tableData={tableData} />
@@ -286,20 +284,24 @@ class PedometerSensor extends React.Component {
             </Button>
           </View>
         ) : (
-          <View>
+          <View
+            style={{
+              width: Dimensions.get("window").width
+            }}
+          >
             <Track
               data={racingUserData}
-              selectX={datum => datum.Improvement}
-              selectY={idx => idx}
-              steps={this.state.pastStepCount}
+              steps={this.state.stepCountDuringGame}
               width={Dimensions.get("window").width}
               height={Dimensions.get("window").height}
+              user={this.props.user}
             />
 
             <Button
               block
+              transparent
               onPress={this.toggleScreen}
-              style={{ marginTop: -100 }}
+              style={{ position: "absolute", marginLeft: 272, marginTop: -45 }}
             >
               <Text style={styles.text}>Show Status</Text>
             </Button>
@@ -328,7 +330,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
-  text: { textAlign: "center" },
+  text: { textAlign: "center", color: "#3a6abc", fontSize: 17 },
   photo: { width: "100%", height: "80%" }
 });
 
