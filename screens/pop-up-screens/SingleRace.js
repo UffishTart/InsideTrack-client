@@ -15,13 +15,25 @@ import LoopAnimation from "react-native-LoopAnimation";
 import PedometerSensor from "../tabs/PedometerScreen";
 import CompletedRaceScreen from "../tabs/CompletedRaceScreen";
 import { Button, Header, Left, Container, Body, Right } from "native-base";
+import Splash from "../../components/Splash";
 // create a component
 class SingleRace extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      showImage: false
+    };
   }
 
   render() {
+    // setTimeout(() => this.setState({ showImage: true }), 7000);
+    // if (!this.state.showImage) {
+    //   return (
+    //     <Modal>
+    //       <Splash />
+    //     </Modal>
+    //   );
+    // }
     return (
       <Container>
         {!!this.props.race ? (
@@ -40,23 +52,16 @@ class SingleRace extends Component {
               <Right />
             </Header>
             <View style={styles.container}>
-              {!!this.props.race.raceInfo.completedStatus ? (
-                <CompletedRaceScreen
+              <View style={{ flex: 1 }}>
+                <LoopAnimation
+                  source={require("../../assets/crowd-plus-track-longer.png")}
+                  duration={60000}
+                />
+                <PedometerSensor
                   user={this.props.user}
                   raceId={this.props.race.raceId}
                 />
-              ) : (
-                <View style={{ flex: 1 }}>
-                  <LoopAnimation
-                    source={require("../../assets/crowd-plus-track-longer.png")}
-                    duration={60000}
-                  />
-                  <PedometerSensor
-                    user={this.props.user}
-                    raceId={this.props.race.raceId}
-                  />
-                </View>
-              )}
+              </View>
             </View>
           </Modal>
         ) : null}
