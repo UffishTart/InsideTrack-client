@@ -1,4 +1,5 @@
-//import liraries
+
+
 import React, { Component } from "react";
 
 import {
@@ -13,6 +14,8 @@ import {
 import { connect } from "react-redux";
 import store from "../store";
 import { fetchHorsesFromServer } from "../store/horseStore";
+
+
 
 class Track extends Component {
   constructor() {

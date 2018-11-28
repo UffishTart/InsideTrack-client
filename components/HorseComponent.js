@@ -17,7 +17,12 @@ import {
 
 // create a component
 class HorseComponent extends Component {
+  constructor(props){
+    super(props)
+  }
+
   render() {
+    this.props.user.hasOwnProperty('horse') ? console.log('the url', this.props.user.horse.imgUrl) : null
     return (
       // <Text>Your Horse!</Text>
       <Container>
@@ -35,10 +40,10 @@ class HorseComponent extends Component {
               shadowOpacity: 1
             }}
           >
-            <Image
-              style={{ height: 200, width: null, flex: 1 }}
-              source={require("../assets/horse-avatar.gif")}
-            />
+            {this.props.user.hasOwnProperty('horse') ? <Image
+              style={{ height: 250, width: null, flex: 1 }}
+              source={{uri: this.props.user.horse.imgUrl}}
+            /> : null}
           </CardItem>
         </Card>
       </Container>

@@ -1,7 +1,12 @@
 import Autocomplete from "react-native-autocomplete-input";
 import React, { Component } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { Button, FormInput } from "react-native-elements";
+import {
+  StyleSheet,
+  KeyboardAvoidingView,
+  TouchableOpacity,
+  View
+} from "react-native";
+import { Button } from "react-native-elements";
 import { connect } from "react-redux";
 import { fetchAllUsers } from "../store/allUsers";
 import { addNewFriend } from "../store/userFriend";
