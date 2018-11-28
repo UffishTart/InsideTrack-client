@@ -9,7 +9,6 @@ import {
   Dimensions
 } from "react-native";
 import { connect } from "react-redux";
-
 import {
   putUpdatedPedometerData,
   fetchRaceUserData,
@@ -31,9 +30,10 @@ import {
   Left,
   Body,
   Right,
-  Icon,
   Title
 } from "native-base";
+
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 //Helper function to generate the table row array;
 const arrayGenerater = userRaceInstance => {
@@ -268,9 +268,20 @@ class PedometerSensor extends React.Component {
           >
             <StatusTable tableData={tableData} />
 
-            <TouchableOpacity style={styles.button} onPress={this.toggleScreen}>
-              <Text style={styles.text}>Back To Game</Text>
-            </TouchableOpacity>
+            <Button
+              large
+              rounded
+              danger
+              style={{ marginBottom: 70, marginLeft: 20 }}
+              onPress={this.toggleScreen}
+            >
+              <MaterialCommunityIcons
+                name="arrow-left"
+                style={{
+                  fontSize: 50
+                }}
+              />
+            </Button>
           </View>
         ) : (
           <View>
@@ -283,9 +294,13 @@ class PedometerSensor extends React.Component {
               height={Dimensions.get("window").height}
             />
 
-            <TouchableOpacity style={styles.button} onPress={this.toggleScreen}>
+            <Button
+              block
+              onPress={this.toggleScreen}
+              style={{ marginTop: -100 }}
+            >
               <Text style={styles.text}>Show Status</Text>
-            </TouchableOpacity>
+            </Button>
           </View>
         )}
       </View>
