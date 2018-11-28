@@ -22,7 +22,14 @@ export default class Splash extends Component {
         <View>
           <Bubbles size={10} color="black" />
         </View>
-        <Text style={{ fontSize: 20, marginTop: 20 }}>
+        <Text
+          style={{
+            fontFamily: "Futura",
+            fontStyle: "italic",
+            fontSize: 20,
+            marginTop: 20
+          }}
+        >
           {randomLine(arrayOfPuns)}
         </Text>
       </View>

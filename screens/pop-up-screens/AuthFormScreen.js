@@ -1,24 +1,25 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   StyleSheet,
-} from 'react-native';
-import { connect } from 'react-redux';
-import { auth } from '../../store/user';
-import { isSignedIn } from '../../navigation/AsyncStorageAuth';
-import { Font } from 'expo';
+  KeyboardAvoidingView
+} from "react-native";
+import { connect } from "react-redux";
+import { auth } from "../../store/user";
+import { isSignedIn } from "../../navigation/AsyncStorageAuth";
+import { Button, Body, Input, Container, Form, Item } from "native-base";
+
 // import {FormLabel, FormInput, FormValidationMessage} from 'react-native-elements'
 
 export default class AuthFormScreen extends React.Component {
   constructor(props) {
     super();
     this.state = {
-      email: '',
-      password: '',
-      username: '',
+      email: "",
+      password: "",
+      username: ""
     };
     this.emailHandleChange = this.emailHandleChange.bind(this);
     this.passwordHandleChange = this.passwordHandleChange.bind(this);
@@ -28,19 +29,19 @@ export default class AuthFormScreen extends React.Component {
 
   emailHandleChange(text) {
     this.setState({
-      email: text,
+      email: text
     });
   }
 
   passwordHandleChange(text) {
     this.setState({
-      password: text,
+      password: text
     });
   }
 
   usernameHandleChange(text) {
     this.setState({
-      username: text,
+      username: text
     });
   }
 
@@ -53,51 +54,59 @@ export default class AuthFormScreen extends React.Component {
     await this.props.auth(email, password, formType, username);
     const correctLogin = await isSignedIn();
     correctLogin
-      ? this.props.navigation.navigate('SignedIn')
-      : this.props.navigation.navigate('SignedOut');
+      ? this.props.navigation.navigate("SignedIn")
+      : this.props.navigation.navigate("SignedOut");
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        <View>
-          <Text>EMAIL</Text>
-          <TextInput
-            placeholder={'email'}
-            value={this.state.email}
-            onChangeText={this.emailHandleChange}
-            keyboardType="email-address"
-          />
-        </View>
-        <View>
-          <Text>PASSWORD</Text>
-          <TextInput
-            secureTextEntry={true}
-            placeholder={'password'}
-            value={this.state.password}
-            onChangeText={this.passwordHandleChange}
-            keyboardType="default"
-          />
-          {this.props.name === 'signup' && (
-            <View>
-              <Text>USERNAME</Text>
-              <TextInput
-                placeholder={'username'}
-                value={this.state.username}
-                onChangeText={this.usernameHandleChange}
+      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+        <Container style={{ backgroundColor: "#fbff14" }}>
+          <Form
+            style={{
+              backgroundColor: "#fbff14"
+            }}
+          >
+            <Item>
+              <Input
+                placeholder={"Email"}
+                value={this.state.email}
+                onChangeText={this.emailHandleChange}
+                keyboardType="email-address"
+              />
+            </Item>
+            <Item>
+              <Input
+                secureTextEntry={true}
+                placeholder={"Password"}
+                value={this.state.password}
+                onChangeText={this.passwordHandleChange}
                 keyboardType="default"
               />
-            </View>
-          )}
-        </View>
-
-        <TouchableOpacity
-          onPress={this.handleSubmit}
-          // disabled={!this.state.email && !this.state.password}
-        >
-          <Text>{this.props.displayName}</Text>
-        </TouchableOpacity>
-      </View>
+            </Item>
+            {this.props.name === "signup" && (
+              <Item>
+                <Input
+                  placeholder={"Username"}
+                  value={this.state.username}
+                  onChangeText={this.usernameHandleChange}
+                  keyboardType="default"
+                />
+              </Item>
+            )}
+          </Form>
+          <Button
+            light
+            rounded
+            block
+            onPress={this.handleSubmit}
+            style={{ marginTop: 10 }}
+            // disabled={!this.state.email && !this.state.password}
+          >
+            <Text style={{ fontSize: 20 }}>{this.props.displayName}</Text>
+          </Button>
+        </Container>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -110,63 +119,66 @@ export default class AuthFormScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     paddingHorizontal: 5,
-    alignItems: 'center',
-    borderColor: '#fff',
-    backgroundColor: '#fbff14',
+    backgroundColor: "#fbff14"
+  },
+  authContainer: {
+    borderWidth: 3,
+    backgroundColor: "white",
+    paddingHorizontal: 25,
+    paddingVertical: 10
   },
   emailContainer: {
-    shadowColor: 'rgba(0,0,0, .4)', // IOS
+    shadowColor: "rgba(0,0,0, .4)", // IOS
     shadowOffset: { height: 1, width: 1 }, // IOS
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     elevation: 2, // Android
     height: 50,
     width: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row"
   },
   passwordContainer: {
-    shadowColor: 'rgba(0,0,0, .4)', // IOS
+    shadowColor: "rgba(0,0,0, .4)", // IOS
     shadowOffset: { height: 1, width: 1 }, // IOS
     shadowOpacity: 1, // IOS
     shadowRadius: 1, //IOS
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     elevation: 2, // Android
     height: 50,
     width: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row"
   },
   text: {
-    fontSize: 15,
-  },
+    fontSize: 15
+  }
 });
 
 const mapLogin = state => {
   return {
-    name: 'login',
-    displayName: 'Login',
-    error: state.user.error,
+    name: "login",
+    displayName: "Login",
+    error: state.user.error
   };
 };
 
 const mapSignup = state => {
   return {
-    name: 'signup',
-    displayName: 'Sign Up',
-    error: state.user.error,
+    name: "signup",
+    displayName: "Sign Up",
+    error: state.user.error
   };
 };
 
 const mapDispatch = dispatch => {
   return {
     auth: (email, password, formType, username) =>
-      dispatch(auth(email, password, formType, username)),
+      dispatch(auth(email, password, formType, username))
   };
 };
 
