@@ -5,9 +5,19 @@ import { Button, FormInput } from "react-native-elements";
 import { connect } from "react-redux";
 import { fetchAllUsers } from "../store/allUsers";
 import { addNewFriend } from "../store/userFriend";
-import { Content, Container, Item, Input, Card, CardItem, Left, Body, Right, Icon, Text } from 'native-base';
-
-
+import {
+  Content,
+  Container,
+  Item,
+  Input,
+  Card,
+  CardItem,
+  Left,
+  Body,
+  Right,
+  Icon,
+  Text
+} from "native-base";
 
 const renderUser = user => {
   const { userName } = user;
@@ -52,8 +62,8 @@ class FindUsers extends Component {
     const comp = (a, b) => a.toLowerCase() === b.toLowerCase();
 
     return (
-      <View style={{ flex: 1, }}>
-        <View style={{ justifyContent: 'center' }}>
+      <View style={{ flex: 1 }}>
+        <View style={{ justifyContent: "center", marginLeft: 10 }}>
           <Autocomplete
             autoCapitalize="none"
             autoCorrect={false}
@@ -68,7 +78,8 @@ class FindUsers extends Component {
             placeholder="Enter Friend Name Here"
             renderItem={({ userName }) => (
               <TouchableOpacity
-                onPress={() => this.setState({ query: userName })}>
+                onPress={() => this.setState({ query: userName })}
+              >
                 <Text>{userName}</Text>
               </TouchableOpacity>
             )}
@@ -85,14 +96,18 @@ class FindUsers extends Component {
               />
             </View>
           ) : (
-              <View>
-                <Button disabled disabledStyle title="Enter Name To Add" style={{ marginBottom: 50 }}
-                />
-              </View>
-            )}
+            <View>
+              <Button
+                disabled
+                disabledStyle
+                title="Enter Name To Add"
+                style={{ marginBottom: 50 }}
+              />
+            </View>
+          )}
         </View>
       </View>
-    )
+    );
   }
 }
 
@@ -100,13 +115,13 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#F5FCFF",
     width: "80%",
-    paddingTop: 25,
+    paddingTop: 25
   },
   autocompleteContainer: {
     marginLeft: 10,
     marginRight: 10,
     marginBottom: 230,
-    width: '80%'
+    width: "80%"
   },
   itemText: {
     fontSize: 15,
@@ -116,7 +131,7 @@ const styles = StyleSheet.create({
     // `backgroundColor` needs to be set otherwise the
     // autocomplete input will disappear on text input.
     backgroundColor: "#F5FCFF",
-    marginTop: 8,
+    marginTop: 8
   },
   infoText: {
     textAlign: "center"
@@ -141,7 +156,7 @@ const styles = StyleSheet.create({
     borderRadius: 0.5,
     backgroundColor: "#2c3e50",
     color: "white",
-    width: 10,
+    width: 10
   }
 });
 
