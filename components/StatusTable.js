@@ -10,7 +10,7 @@ class StatusTable extends Component {
         style={styles.photo}
         source={require("../assets/leaderboard.png")}
       >
-        <View style={{ marginTop: "10%", justifyContent: "center" }}>
+        <View style={{ marginTop: "15%", justifyContent: "center" }}>
           <Image
             style={{ marginLeft: "25%" }}
             source={require("../assets/cupCopy.png")}

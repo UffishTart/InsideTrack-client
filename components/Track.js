@@ -2,7 +2,15 @@
 import React, { Component } from "react";
 
 import { scaleLinear as d3ScaleLinear } from "d3-scale";
-import { Easing, Animated, StyleSheet, View, Text, Image } from "react-native";
+import {
+  Easing,
+  Animated,
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  Dimensions
+} from "react-native";
 import { Svg } from "expo";
 
 //const { Image, Text, G } = Svg;
@@ -15,6 +23,7 @@ const xScaleRangeGenerator = datum => {
   const range = [];
   range[0] = improvement[0];
   range[1] = improvement[improvement.length - 1] + 1;
+  console.log("!!!Range", range);
   return range;
 };
 
@@ -48,8 +57,6 @@ class Track extends Component {
     this.state = {
       horseLinksNeeded: []
     };
-    // this.horseAnimatedValue = new Animated.Value(0);
-    // this.textAnimatedValue = new Animated.Value(0);
   }
 
   componentDidMount() {
@@ -67,25 +74,7 @@ class Track extends Component {
         }
       });
     });
-    // this.animate();
   }
-
-  // animate() {
-  //   this.horseAnimatedValue.setValue(0);
-  //   // this.textAnimatedValue.setValue(0);
-  //   // Animated.parallel([
-  //   Animated.timing(this.horseAnimatedValue, {
-  //     toValue: 1,
-  //     duration: 2000,
-  //     easing: Easing.linear
-  //   }).start();
-  //   // Animated.timing(this.textAnimatedValue, {
-  //   //   toValue: 1,
-  //   //   duration: 2000,
-  //   //   easing: Easing.linear
-  //   // }).start()
-  //   // ]);
-  // }
 
   render() {
     //const { Image } = Svg;
@@ -93,11 +82,11 @@ class Track extends Component {
     console.log("!!!! Height", height);
     const xScale = d3ScaleLinear()
       .domain(xScaleRangeGenerator(data))
-      .range([10, width - 10]);
+      .range([0, Dimensions.get("window").width]);
 
     const yScale = d3ScaleLinear()
       .domain([1, data.length])
-      .range([300, height - 300]);
+      .range([100, height - 600]);
 
     const selectScaledX = datum => {
       return xScale(selectX(datum));
@@ -108,7 +97,7 @@ class Track extends Component {
     };
 
     return (
-      <View marginTop={height - 450} marginBottom={50} height={height - 450}>
+      <View height={height}>
         {data.map((o, i) => {
           console.log("!!!!! user i", i);
           const horseMarginLeft = selectScaledX(o);
@@ -128,10 +117,10 @@ class Track extends Component {
           // });
           // console.log("!!!!! horsemargin", horseMarginLeft);
           return (
-            <View key={i} marginTop="50%">
+            <View key={i} style={{ width: 340, height: 400 }}>
               <Text
                 x={tagMarginLeft}
-                y={selectScaledY(i + 1) + 55}
+                y={selectScaledY(i + 1) + 25}
                 style={styles.textContainer}
                 fontSize="12"
                 fontWeight="bold"
@@ -151,8 +140,8 @@ class Track extends Component {
 
               <Image
                 // styles={{
-                //   marginLeft: { horseMarginLeft },
-                //   marginTop: { yLocation },
+                //   paddingLeft: { horseMarginLeft },
+                //   paddingTop: { yLocation },
                 //   width: "100%",
                 //   height: "100%"
                 // }}
@@ -180,6 +169,7 @@ const styles = StyleSheet.create({
     display: "flex",
     height: 26,
     lineHeight: 26,
-    position: "relative"
+    position: "relative",
+    width: "27%"
   }
 });
