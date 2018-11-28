@@ -6,7 +6,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  AsyncStorage
+  AsyncStorage,
+  Modal
 } from "react-native";
 import Settings from "../pop-up-screens/Settings";
 import StartNewRace from "../../components/StartNewRace";
@@ -24,13 +25,15 @@ import {
   Icon,
   Title
 } from "native-base";
+import Splash from "../../components/Splash";
 
 // create a component
 class HomeScreen extends Component {
   state = {
     showSettings: false,
     fontLoaded: false,
-    showNewRacePage: false
+    showNewRacePage: false,
+    showImage: false
   };
 
   async componentDidMount() {
@@ -154,6 +157,14 @@ class HomeScreen extends Component {
   }
 
   render() {
+    setTimeout(() => this.setState({ showImage: true }), 7000);
+    if (!this.state.showImage) {
+      return (
+        <Modal>
+          <Splash />
+        </Modal>
+      );
+    }
     return (
       <View style={styles.container}>
         <View style={styles.container}>{this.renderTouchSettings()}</View>
