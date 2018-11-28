@@ -35,17 +35,26 @@ export const putDailyAverage = (steps, userId, raceId) => async dispatch => {
 export const putUpdatedPedometerData = (
   dayPedoOutput,
   userId,
-  raceId
+  raceId,
+  minsElapsed
 ) => async dispatch => {
   try {
     const result = await axios.get(
       `${server}/api/userRaces/${raceId}/${userId}`
     );
     const userRace = result.data[0];
+
     const newDifferenceFromAverage =
       Number(dayPedoOutput) - Number(userRace.dailyAverage);
+
+    const avgStepsForRaceLength =
+      (userRace.dailyAverage * userRace.raceInfo.length) / 1440;
+    const percentRaceComplete = Number(minsElapsed / userRace.raceInfo.length);
+    const avgStepsInTimeElapsed = Number(
+      percentRaceComplete * avgStepsForRaceLength
+    );
     const newPercentageImprovement =
-      Number(newDifferenceFromAverage) / Number(userRace.dailyAverage);
+      Number(dayPedoOutput) / Number(avgStepsInTimeElapsed) - 1;
 
     const res = await axios.put(`${server}/api/userRaces/${raceId}/${userId}`, {
       differenceFromAverage: newDifferenceFromAverage,
