@@ -66,6 +66,19 @@ export const logout = () => async dispatch => {
   }
 };
 
+export const updateHorse = (userId, horseId) => async dispatch => {
+  try {
+    console.log('calling the update horse thunk')
+    console.log('user id undefined?', userId)
+    console.log('horseId for req body', horseId)
+    const res = await axios.put(`${server}/api/users/${userId}`, {horseId})
+    console.log('response from axios request', res.data)
+    dispatch(getUser(res.data))
+  } catch(err) {
+    console.error(err)
+  }
+}
+
 // * REDUCER
 export default function(state = defaultUser, action) {
   switch (action.type) {

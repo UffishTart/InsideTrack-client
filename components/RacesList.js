@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, ImageBackground, Button } from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity, ImageBackground, Button } from 'react-native';
 import RacesListItem from './RacesListItem';
 
 {/* <View</View></View>
@@ -16,7 +16,7 @@ const RacesList = props => {
     <View
       style={[styles.backgroundImage]}
     >
-      <Button onPress={refreshRaces} title='Refresh' />
+      <TouchableOpacity onPress={refreshRaces} title='Refresh' style={styles.buttonNewRace} />
       <ScrollView>
         {!!races.length &&
           races
@@ -49,5 +49,15 @@ const styles = StyleSheet.create({
   },
   flexCont: {
     flex: 1,
-  },
-});
+  },buttonNewRace: {
+        alignContent: "center",
+        position: "relative",
+        justifyContent: "center",
+        height: 50,
+        width: 200,
+        shadowColor: "rgba(0,0,0, .4)", // IOS
+        shadowOffset: { height: 5, width: 5 }, // IOS
+        shadowOpacity: 1, // IOS
+        shadowRadius: 1 //IOS
+      },
+    })

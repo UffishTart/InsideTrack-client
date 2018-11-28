@@ -3,6 +3,8 @@ import { View, Modal, Text} from 'react-native'
 import { connect } from 'react-redux'
 import { fetchHorsesFromServer } from '../../store/horseStore'
 import { TabView, SceneMap } from 'react-native-tab-view'
+import HorseInStore from '../../components/horseInStore'
+
 class HorseStore extends Component {
   constructor() {
     super()
@@ -25,7 +27,7 @@ class HorseStore extends Component {
   createScenes ( horseArray ) {
     const sceneObj = {}
     horseArray.forEach(horse => {
-      sceneObj[horse.name] = () => <Text>{horse.name}</Text>
+      sceneObj[horse.name] = () => <HorseInStore toggleStore={this.props.toggleStore} horse={horse} />
     })
     return sceneObj
   }
@@ -42,7 +44,6 @@ class HorseStore extends Component {
           renderScene={SceneMap(sceneObj)}
           onIndexChange={index => this.setState({ index })}
           /> : null}
-
       </Modal>
     )
   }
