@@ -4,7 +4,6 @@ import React, { Component } from "react";
 import {
   View,
   TouchableOpacity,
-  Text,
   StyleSheet,
   Modal,
   ImageBackground,
@@ -14,6 +13,7 @@ import {
 import LoopAnimation from "react-native-LoopAnimation";
 import PedometerSensor from "../tabs/PedometerScreen";
 import CompletedRaceScreen from "../tabs/CompletedRaceScreen";
+
 import { Button, Header, Left, Container, Body, Right } from "native-base";
 // create a component
 class SingleRace extends Component {
@@ -35,6 +35,7 @@ class SingleRace extends Component {
               <Body>
                 <Text style={{ alignSelf: "center" }}>
                   {this.props.race.raceInfo.name}
+
                 </Text>
               </Body>
               <Right />
