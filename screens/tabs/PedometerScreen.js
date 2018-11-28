@@ -264,8 +264,6 @@ class PedometerSensor extends React.Component {
           <View
             style={{
               width: Dimensions.get("window").width
-              // flex: 1,
-              //justifyContent: "center"
             }}
           >
             <StatusTable tableData={tableData} />

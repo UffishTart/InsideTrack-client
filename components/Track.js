@@ -1,11 +1,11 @@
 //import liraries
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import { scaleLinear as d3ScaleLinear } from 'd3-scale';
-import { Easing, Animated, StyleSheet } from 'react-native';
-import { Svg } from 'expo';
+import { scaleLinear as d3ScaleLinear } from "d3-scale";
+import { Easing, Animated, StyleSheet, View, Text, Image } from "react-native";
+import { Svg } from "expo";
 
-const { Image, Text, G } = Svg;
+//const { Image, Text, G } = Svg;
 const AnimatedImage = Animated.createAnimatedComponent(Image);
 const AnimatedText = Animated.createAnimatedComponent(Text);
 
@@ -14,7 +14,7 @@ const xScaleRangeGenerator = datum => {
   const improvement = datum.map(el => el.Improvement).sort((a, b) => a - b);
   const range = [];
   range[0] = improvement[0];
-  range[1] = improvement[improvement.length - 1] + 0.7;
+  range[1] = improvement[improvement.length - 1] + 1;
   return range;
 };
 
@@ -25,97 +25,112 @@ const pathPhoto = [
   require("../assets/horse3.png")
 ];
 
-console.log('pathPhoto arr', pathPhoto)
+console.log("pathPhoto arr", pathPhoto);
 
+// const horseUrlMap = [
+//   {horseId: 1, requiredHorse: require("../assets/horse1.png")},
+//   {horseId: 2, requiredHorse: require("../assets/rcLnXB56i.png")},
+//   {horseId: 3, requiredHorse: require("../assets/horse3.png")},
+//   {horseId: 4, requiredHorse: require("../assets/CoolClips_peop1281.png")}
+// ]
 const horseUrlMap = [
-  {horseId: 1, requiredHorse: require("../assets/horse1.png")},
-  {horseId: 2, requiredHorse: require("../assets/rcLnXB56i.png")},
-  {horseId: 3, requiredHorse: require("../assets/horse3.png")},
-  {horseId: 4, requiredHorse: require("../assets/CoolClips_peop1281.png")}
-]
+  { horseId: 1, requiredHorse: require("../assets/horse-avatar-small.gif") },
+  { horseId: 2, requiredHorse: require("../assets/horse-avatar-small.gif") },
+  { horseId: 3, requiredHorse: require("../assets/horse-avatar-small.gif") },
+  { horseId: 4, requiredHorse: require("../assets/horse-avatar-small.gif") }
+];
 
-const horseLinksNeeded = []
-
-
+const horseLinksNeeded = [];
 
 class Track extends Component {
   constructor() {
     super();
     this.state = {
       horseLinksNeeded: []
-    }
-    this.horseAnimatedValue = new Animated.Value(0);
-    this.textAnimatedValue = new Animated.Value(0);
+    };
+    // this.horseAnimatedValue = new Animated.Value(0);
+    // this.textAnimatedValue = new Animated.Value(0);
   }
 
   componentDidMount() {
     this.props.data.forEach(userObj => {
       horseUrlMap.forEach(horseObj => {
         if (userObj.horseId === horseObj.horseId) {
-          const newLink = this.state.horseLinksNeeded
-          newLink.push(horseObj.requiredHorse)
+          const newLink = this.state.horseLinksNeeded;
+          newLink.push(horseObj.requiredHorse);
           this.setState({
-            horseLinksNeeded: [...this.state.horseLinksNeeded, horseObj.requiredHorse]
-          })
+            horseLinksNeeded: [
+              ...this.state.horseLinksNeeded,
+              horseObj.requiredHorse
+            ]
+          });
         }
-      })
-    })
-    this.animate();
+      });
+    });
+    // this.animate();
   }
 
-  animate() {
-    this.horseAnimatedValue.setValue(0);
-    this.textAnimatedValue.setValue(0);
-    Animated.parallel([
-      Animated.timing(this.horseAnimatedValue, {
-        toValue: 1,
-        duration: 2000,
-        easing: Easing.linear,
-      }).start(),
-      Animated.timing(this.textAnimatedValue, {
-        toValue: 1,
-        duration: 2000,
-        easing: Easing.linear,
-      }).start(),
-    ]);
-  }
+  // animate() {
+  //   this.horseAnimatedValue.setValue(0);
+  //   // this.textAnimatedValue.setValue(0);
+  //   // Animated.parallel([
+  //   Animated.timing(this.horseAnimatedValue, {
+  //     toValue: 1,
+  //     duration: 2000,
+  //     easing: Easing.linear
+  //   }).start();
+  //   // Animated.timing(this.textAnimatedValue, {
+  //   //   toValue: 1,
+  //   //   duration: 2000,
+  //   //   easing: Easing.linear
+  //   // }).start()
+  //   // ]);
+  // }
 
   render() {
-    const { Image } = Svg;
-    const { data, selectX, selectY, width, height, steps } = this.props;
+    //const { Image } = Svg;
+    const { data, selectX, selectY, width, height } = this.props;
+    console.log("!!!! Height", height);
     const xScale = d3ScaleLinear()
       .domain(xScaleRangeGenerator(data))
-      .range([0, width - 2]);
+      .range([10, width - 10]);
 
     const yScale = d3ScaleLinear()
       .domain([1, data.length])
-      .range([150, height - 350]);
+      .range([300, height - 300]);
 
     const selectScaledX = datum => {
       return xScale(selectX(datum));
     };
+
     const selectScaledY = idx => {
       return yScale(selectY(idx));
     };
 
     return (
-      <Svg width="340" height="600">
+      <View marginTop={height - 450} marginBottom={50} height={height - 450}>
         {data.map((o, i) => {
-          const xLocation = selectScaledX(o);
-          const tagLocation = selectScaledX(o) + 1;
+          console.log("!!!!! user i", i);
+          const horseMarginLeft = selectScaledX(o);
+          console.log("!!!!! horseMarginLeft", horseMarginLeft);
+          const tagMarginLeft = selectScaledX(o) - 1;
+          console.log("!!!!! tagMarginLeft", tagMarginLeft);
           const yLocation = selectScaledY(i + 1);
-          const horseMotion = this.horseAnimatedValue.interpolate({
-            inputRange: [0, 1],
-            outputRange: [0, xLocation],
-          });
-          const tagMotion = this.textAnimatedValue.interpolate({
-            inputRange: [0, 1],
-            outputRange: [0, tagLocation],
-          });
+          console.log("!!!!! yLocation", yLocation);
+          console.log("-------------------------------");
+          // const horseMotion = this.horseAnimatedValue.interpolate({
+          //   inputRange: [0, 1],
+          //   outputRange: [0, horseMarginLeft]
+          // });
+          // const tagMotion = this.textAnimatedValue.interpolate({
+          //   inputRange: [0, 1],
+          //   outputRange: [0, tagMarginLeft]
+          // });
+          // console.log("!!!!! horsemargin", horseMarginLeft);
           return (
-            <G key={i}>
-              <AnimatedText
-                x={tagMotion}
+            <View key={i} marginTop="50%">
+              <Text
+                x={tagMarginLeft}
                 y={selectScaledY(i + 1) + 55}
                 style={styles.textContainer}
                 fontSize="12"
@@ -123,28 +138,32 @@ class Track extends Component {
                 fill="black"
               >
                 {o.userName}
-              </AnimatedText>
-              <AnimatedText
-                x={tagMotion}
+              </Text>
+              {/*<Text
+                x={tagMarginLeft}
                 y={selectScaledY(i + 1) + 65}
                 fontSize="12"
                 fontWeight="bold"
                 fill="black"
               >
                 {o.Improvement}
-              </AnimatedText>
+             </Text>*/}
 
-              <AnimatedImage
-                x={horseMotion}
-                y={selectScaledY(i + 1)}
-                width="40%"
-                height="40%"
-                href={this.state.horseLinksNeeded[i]}
+              <Image
+                // styles={{
+                //   marginLeft: { horseMarginLeft },
+                //   marginTop: { yLocation },
+                //   width: "100%",
+                //   height: "100%"
+                // }}
+                x={horseMarginLeft}
+                y={yLocation}
+                source={this.state.horseLinksNeeded[i]}
               />
-            </G>
+            </View>
           );
         })}
-      </Svg>
+      </View>
     );
   }
 }
@@ -154,13 +173,13 @@ export default Track;
 
 const styles = StyleSheet.create({
   textContainer: {
-    backgroundColor: '#eee',
+    backgroundColor: "#eee",
     borderTopLeftRadius: 3,
     borderBottomLeftRadius: 3,
-    color: '#999',
-    display: 'flex',
+    color: "#999",
+    display: "flex",
     height: 26,
     lineHeight: 26,
-    position: 'relative',
-  },
+    position: "relative"
+  }
 });
