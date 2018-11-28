@@ -4,7 +4,6 @@ import React, { Component } from "react";
 import {
   View,
   TouchableOpacity,
-  Text,
   StyleSheet,
   Modal,
   ImageBackground,
@@ -14,6 +13,7 @@ import {
 import LoopAnimation from "react-native-LoopAnimation";
 import PedometerSensor from "../tabs/PedometerScreen";
 import CompletedRaceScreen from "../tabs/CompletedRaceScreen";
+import {Header, Left, Button, Text, Body, Right} from 'native base'
 
 // create a component
 class SingleRace extends Component {
@@ -26,6 +26,19 @@ class SingleRace extends Component {
       <View>
         {!!this.props.race ? (
           <Modal>
+            <Header>
+              <Left>
+                <Button transparent onPress={this.props.toggleSingleRaceView}>
+                  <Text>Back</Text>
+                </Button>
+              </Left>
+              <Body>
+                <Text>
+                  Race Name
+                </Text>
+              </Body>
+              <Right />
+            </Header>
             <View style={styles.container}>
               {!!this.props.race.raceInfo.completedStatus ? (
                 <CompletedRaceScreen
