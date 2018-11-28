@@ -8,6 +8,7 @@ import { fetchPendingUserRacesByUser } from '../../store/userRacesPending';
 import { fetchUserRacesByUser } from '../../store/userRaces';
 import { connect } from 'react-redux';
 import { me } from '../../store/user';
+import {Button} from 'native-base'
 
 // create a component
 class PendingRacesScreen extends Component {
@@ -22,6 +23,7 @@ class PendingRacesScreen extends Component {
       ],
     };
     this.toggleStart = this.toggleStart.bind(this);
+    this.refreshRaces = this.refreshRaces.bind(this);
   }
 
   async componentDidMount() {
@@ -37,6 +39,11 @@ class PendingRacesScreen extends Component {
     await this.props.getRaces(this.props.user.id, 'acceptedInvitation', true);
   };
 
+  refreshRaces = async () => {
+    await this.props.getPendingRaces(this.props.user.id, 'hasStarted', false);
+    await this.props.getRaces(this.props.user.id, 'acceptedInvitation', true);
+  }
+
   render() {
     return (
       <ImageBackground source={require('../../assets/checkered-flag.png')} style={styles.backgroundImage} >
@@ -49,6 +56,7 @@ class PendingRacesScreen extends Component {
                 races={this.props.races}
                 isOwnerBool={true}
                 toggleStart={this.toggleStart}
+                refreshRaces={this.refreshRaces}
                 getPendingRaces={this.props.getPendingRaces}
               />
             ),
@@ -58,6 +66,7 @@ class PendingRacesScreen extends Component {
                 races={this.props.races}
                 isOwnerBool={false}
                 toggleStart={this.toggleStart}
+                refreshRaces={this.refreshRaces}
                 getPendingRaces={this.props.getPendingRaces}
               />
             ),

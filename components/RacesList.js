@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, ImageBackground } from 'react-native';
+import { View, StyleSheet, ScrollView, ImageBackground, Button } from 'react-native';
 import RacesListItem from './RacesListItem';
 
 {/* <View</View></View>
@@ -11,11 +11,12 @@ import RacesListItem from './RacesListItem';
     > */}
 
 const RacesList = props => {
-  const { user, races, isCompleted, updateRaceAsComplete } = props;
+  const { user, races, isCompleted, refreshRaces, updateRaceAsComplete } = props;
   return (
     <View
       style={[styles.backgroundImage]}
     >
+      <Button onPress={refreshRaces} title='Refresh' />
       <ScrollView>
         {!!races.length &&
           races
