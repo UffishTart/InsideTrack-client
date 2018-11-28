@@ -13,8 +13,7 @@ import {
 import LoopAnimation from "react-native-LoopAnimation";
 import PedometerSensor from "../tabs/PedometerScreen";
 import CompletedRaceScreen from "../tabs/CompletedRaceScreen";
-import {Header, Left, Button, Text, Body, Right} from 'native-base'
-
+import { Button, Header, Left, Container, Body, Right, Text } from "native-base";
 // create a component
 class SingleRace extends Component {
   constructor(props) {
@@ -23,7 +22,7 @@ class SingleRace extends Component {
 
   render() {
     return (
-      <View>
+      <Container>
         {!!this.props.race ? (
           <Modal>
             <Header>
@@ -33,8 +32,9 @@ class SingleRace extends Component {
                 </Button>
               </Left>
               <Body>
-                <Text>
-                  Race Name
+                <Text style={{ alignSelf: "center" }}>
+                  {this.props.race.raceInfo.name}
+
                 </Text>
               </Body>
               <Right />
@@ -55,18 +55,12 @@ class SingleRace extends Component {
                     user={this.props.user}
                     raceId={this.props.race.raceId}
                   />
-                  <TouchableOpacity
-                    style={styles.button}
-                    onPress={this.props.toggleSingleRaceView}
-                  >
-                    <Text style={styles.text}>Main Page</Text>
-                  </TouchableOpacity>
                 </View>
               )}
             </View>
           </Modal>
         ) : null}
-      </View>
+      </Container>
     );
   }
 }
