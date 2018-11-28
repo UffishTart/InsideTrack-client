@@ -1,13 +1,7 @@
 import Expo from "expo";
 import React from "react";
 import { Pedometer, Svg } from "expo";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Dimensions
-} from "react-native";
+import { StyleSheet, Text, View, Dimensions } from "react-native";
 import { connect } from "react-redux";
 import {
   putUpdatedPedometerData,
