@@ -1,13 +1,7 @@
 import Expo from "expo";
 import React from "react";
 import { Pedometer, Svg } from "expo";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Dimensions
-} from "react-native";
+import { StyleSheet, Text, View, Dimensions } from "react-native";
 import { connect } from "react-redux";
 import {
   putUpdatedPedometerData,
@@ -330,7 +324,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
-  text: { textAlign: "center", color: "#3a6abc", fontSize: 17 },
+  text: { textAlign: "center", color: "#3a6abc", fontSize: 14 },
   photo: { width: "100%", height: "80%" }
 });
 

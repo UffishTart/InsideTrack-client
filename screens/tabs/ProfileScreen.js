@@ -1,7 +1,7 @@
 //import liraries
 import React, { Component } from "react";
 import HorseComponent from "../../components/HorseComponent";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Button } from "react-native";
 import FindUsers from "../../components/FindUsers";
 import { Container, Header, Left, Body, Right, Icon, Title } from "native-base";
 import HorseStore from "../pop-up-screens/HorseStore";
