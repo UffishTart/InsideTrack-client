@@ -8,9 +8,10 @@ import {
   StyleSheet,
   Modal,
   ImageBackground,
-  Dimensions
+  Dimensions,
+  ScrollView
 } from "react-native";
-
+import LoopAnimation from "react-native-LoopAnimation";
 import PedometerSensor from "../tabs/PedometerScreen";
 import CompletedRaceScreen from "../tabs/CompletedRaceScreen";
 
@@ -32,22 +33,22 @@ class SingleRace extends Component {
                   raceId={this.props.race.raceId}
                 />
               ) : (
-                <ImageBackground
-                  style={styles.photo}
-                  source={require("../../assets/horse-race-track-background-1.jpg")}
-                >
+                <View style={{ flex: 1 }}>
+                  <LoopAnimation
+                    source={require("../../assets/crowd-plus-track-longer.png")}
+                    duration={60000}
+                  />
                   <PedometerSensor
                     user={this.props.user}
                     raceId={this.props.race.raceId}
                   />
-
                   <TouchableOpacity
                     style={styles.button}
                     onPress={this.props.toggleSingleRaceView}
                   >
                     <Text style={styles.text}>Main Page</Text>
                   </TouchableOpacity>
-                </ImageBackground>
+                </View>
               )}
             </View>
           </Modal>
@@ -56,6 +57,7 @@ class SingleRace extends Component {
     );
   }
 }
+//
 
 // define your styles
 const styles = StyleSheet.create({

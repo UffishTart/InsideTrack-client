@@ -60,7 +60,7 @@ const trimedObjGenerater = userRaceInstance => {
     Improvement: Number(userRaceInstance.percentImprovement),
     dailyAverage: Number(userRaceInstance.dailyAverage),
     place: Number(userRaceInstance.place),
-    horseId: userRaceInstance.userInfo.horseId
+    horseId: userRaceInstance.userInfo.horseId,
   };
 };
 
@@ -84,9 +84,9 @@ const endDateSetUp = (start, end, raceLength) => {
   return end;
 };
 
-const endGameDate = (start, raceLength) => {
+const getEndTime = (start, minutes) => {
   const end = new Date();
-  end.setTime(start.getTime() + raceLength * 60 * 1000);
+  end.setTime(start.getTime() + minutes * 60 * 1000);
   return end;
 };
 
@@ -100,6 +100,7 @@ class PedometerSensor extends React.Component {
       stepCountDuringGame: 0,
       hasCompleted: false,
       showStatus: false,
+      minsElapsed: 0,
     };
   }
 
@@ -109,11 +110,16 @@ class PedometerSensor extends React.Component {
     await this.props.getSingleRace(this.props.raceId);
     const gameStartTime = new Date(this.props.races[0].startTime);
     const timeOpenApp = new Date();
-    const endTimeOfGame = endGameDate(
+    const endTimeOfUpdates = getEndTime(
       gameStartTime,
       this.props.races[0].length + 24 * 60
     );
-    if (timeOpenApp < endTimeOfGame) {
+    const endTimeOfGame = getEndTime(gameStartTime, this.props.races[0].length);
+    if (timeOpenApp < endTimeOfUpdates) {
+      let minsElapsed = this.props.races[0].length;
+      if (endTimeOfGame > timeOpenApp)
+        minsElapsed = (timeOpenApp.getTime() - gameStartTime.getTime()) / 60000;
+      this.setState({ minsElapsed });
       await this._subscribe();
     } else {
       this.setState({ hasCompleted: true });
@@ -123,11 +129,11 @@ class PedometerSensor extends React.Component {
   async componentWillUnmount() {
     const gameStartTime = new Date(this.props.races[0].startTime);
     const timeOpenApp = new Date();
-    const endTimeOfGame = endGameDate(
+    const endTimeOfUpdates = getEndTime(
       gameStartTime,
       24 * 60 + this.props.races[0].length
     );
-    if (timeOpenApp < endTimeOfGame) {
+    if (timeOpenApp < endTimeOfUpdates) {
       this._unsubscribe();
     } else {
       await this.props.updateRaceAsComplete(this.props.raceId, {
@@ -162,8 +168,8 @@ class PedometerSensor extends React.Component {
     );
 
     const userStartDate = new Date(this.props.user.createdAt);
-
     const gameStartTime = new Date(this.props.races[0].startTime);
+    const timeOpenApp = new Date();
 
     let startForAverage;
     //If user have 7 days data, set the start date to 7 days ago
@@ -194,15 +200,13 @@ class PedometerSensor extends React.Component {
           });
         }
       )
-      .then(() =>
+      .then(() => {
         this.props.updateAverage(
           this.state.averageSteps,
           this.props.user.id,
           this.props.raceId
-        )
-      );
-
-    const timeOpenApp = new Date();
+        );
+      });
 
     const endTimeForStopGame = endDateSetUp(
       gameStartTime,
@@ -225,7 +229,8 @@ class PedometerSensor extends React.Component {
         this.props.putUpdatedPedometerData(
           this.state.stepCountDuringGame,
           this.props.user.id,
-          this.props.raceId
+          this.props.raceId,
+          this.state.minsElapsed
         )
       );
   };
@@ -312,8 +317,10 @@ const mapState = ({ singleRaceUser, races, userRaces }) => ({
 });
 const mapDispatch = dispatch => ({
   fetchRaceUserData: raceId => dispatch(fetchRaceUserData(raceId)),
-  putUpdatedPedometerData: (dayPedoOutput, userId, raceId) =>
-    dispatch(putUpdatedPedometerData(dayPedoOutput, userId, raceId)),
+  putUpdatedPedometerData: (dayPedoOutput, userId, raceId, minsElapsed) =>
+    dispatch(
+      putUpdatedPedometerData(dayPedoOutput, userId, raceId, minsElapsed)
+    ),
   getSingleRace: raceId => dispatch(fetchSingleRaceFromServer(raceId)),
   updateAverage: (steps, userId, raceId) =>
     dispatch(putDailyAverage(steps, userId, raceId)),
