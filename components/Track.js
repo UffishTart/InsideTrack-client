@@ -1,7 +1,6 @@
 //import liraries
 import React, { Component } from "react";
 
-import { scaleLinear as d3ScaleLinear } from "d3-scale";
 import {
   Easing,
   Animated,
@@ -25,20 +24,6 @@ class Track extends Component {
 
   componentDidMount() {
     this.props.getHorses();
-    this.props.data.forEach(userObj => {
-      horseUrlMap.forEach(horseObj => {
-        if (userObj.horseId === horseObj.horseId) {
-          const newLink = this.state.horseLinksNeeded;
-          newLink.push(horseObj.requiredHorse);
-          this.setState({
-            horseLinksNeeded: [
-              ...this.state.horseLinksNeeded,
-              horseObj.requiredHorse
-            ]
-          });
-        }
-      });
-    });
   }
 
   render() {
@@ -53,7 +38,7 @@ class Track extends Component {
         style={{ marginTop: 300, alignItems: "center", paddingBottom: 400 }}
       >
         <Image
-          style={{ width: "80%", height: "100%" }}
+          style={{ width: "100%", height: "100%" }}
           source={{ uri: avatarUrl }}
         />
       </View>
