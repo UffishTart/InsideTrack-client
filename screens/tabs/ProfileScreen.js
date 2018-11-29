@@ -1,20 +1,20 @@
 //import liraries
-import React, { Component } from "react";
-import HorseComponent from "../../components/HorseComponent";
-import { StyleSheet, Button } from "react-native";
-import FindUsers from "../../components/FindUsers";
-import { Container, Header, Left, Body, Right, Icon, Title } from "native-base";
-import HorseStore from "../pop-up-screens/HorseStore";
-import { connect } from "react-redux";
-import { me, updateHorse } from "../../store/user";
-import axios from "axios";
+import React, { Component } from 'react';
+import HorseComponent from '../../components/HorseComponent';
+import { StyleSheet, Button } from 'react-native';
+import FindUsers from '../../components/FindUsers';
+import { Container, Header, Left, Body, Right, Icon, Title } from 'native-base';
+import HorseStore from '../pop-up-screens/HorseStore';
+import { connect } from 'react-redux';
+import { me, updateHorse } from '../../store/user';
+import axios from 'axios';
 // create a component
 class ProfileScreen extends Component {
   constructor() {
     super();
     this.state = {
       showStore: false,
-      fullUserInfo: {}
+      fullUserInfo: {},
     };
     this.toggleStore = this.toggleStore.bind(this);
   }
@@ -37,14 +37,13 @@ class ProfileScreen extends Component {
     );
     this.setState({
       showStore: !this.state.showStore,
-      fullUserInfo: res.data
+      fullUserInfo: res.data,
     });
   }
 
   render() {
-    console.log("user on local state", this.state.fullUserInfo);
     return (
-      <Container style={{ backgroundColor: "#fff" }}>
+      <Container style={{ backgroundColor: '#fff' }}>
         <HorseComponent user={this.state.fullUserInfo} />
         <Button onPress={this.toggleStore} title="Choose Your Steed" />
         <FindUsers />
@@ -63,19 +62,19 @@ class ProfileScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#fbff14"
-  }
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fbff14',
+  },
 });
 
 const mapState = state => ({
-  user: state.user
+  user: state.user,
 });
 
 const mapDispatch = dispatch => ({
   getUser: () => dispatch(me()),
-  updateHorse: (userId, horseId) => dispatch(updateHorse(userId, horseId))
+  updateHorse: (userId, horseId) => dispatch(updateHorse(userId, horseId)),
 });
 
 export default connect(

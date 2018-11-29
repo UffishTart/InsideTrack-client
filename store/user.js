@@ -1,12 +1,12 @@
-import axios from "axios";
-const server = "https://inside-track-server-boil.herokuapp.com";
-import { onSignIn, onSignOut } from "../navigation/AsyncStorageAuth";
-const localServer = "localhost:8080"
+import axios from 'axios';
+const server = 'https://inside-track-server-boil.herokuapp.com';
+import { onSignIn, onSignOut } from '../navigation/AsyncStorageAuth';
+const localServer = 'localhost:8080';
 
 //  * ACTION TYPES
 
-const GET_USER = "GET_USER";
-const REMOVE_USER = "REMOVE_USER";
+const GET_USER = 'GET_USER';
+const REMOVE_USER = 'REMOVE_USER';
 
 //  * INITIAL STATE
 const defaultUser = {};
@@ -28,7 +28,11 @@ export const me = () => async dispatch => {
 export const auth = (email, password, method, username) => async dispatch => {
   let res;
   try {
-    res = await axios.post(`${server}/auth/${method}`, { email, password, userName: username });
+    res = await axios.post(`${server}/auth/${method}`, {
+      email,
+      password,
+      userName: username,
+    });
   } catch (authError) {
     return dispatch(getUser({ error: authError }));
   }
@@ -42,19 +46,19 @@ export const auth = (email, password, method, username) => async dispatch => {
 };
 
 export const authWithToken = token => async dispatch => {
-  let res
+  let res;
   try {
-    res = await axios.post(`${server}/auth/loginWithToken`, { token })
-  } catch(authError) {
-    return dispatch(getUser({ error: authError }))
+    res = await axios.post(`${server}/auth/loginWithToken`, { token });
+  } catch (authError) {
+    return dispatch(getUser({ error: authError }));
   }
 
   try {
-    dispatch(getUser(res.data))
+    dispatch(getUser(res.data));
   } catch (otherErr) {
-      console.error(otherErr)
-    }
-}
+    console.error(otherErr);
+  }
+};
 
 export const logout = () => async dispatch => {
   try {
@@ -68,16 +72,12 @@ export const logout = () => async dispatch => {
 
 export const updateHorse = (userId, horseId) => async dispatch => {
   try {
-    console.log('calling the update horse thunk')
-    console.log('user id undefined?', userId)
-    console.log('horseId for req body', horseId)
-    const res = await axios.put(`${server}/api/users/${userId}`, {horseId})
-    console.log('response from axios request', res.data)
-    dispatch(getUser(res.data))
-  } catch(err) {
-    console.error(err)
+    const res = await axios.put(`${server}/api/users/${userId}`, { horseId });
+    dispatch(getUser(res.data));
+  } catch (err) {
+    console.error(err);
   }
-}
+};
 
 // * REDUCER
 export default function(state = defaultUser, action) {
