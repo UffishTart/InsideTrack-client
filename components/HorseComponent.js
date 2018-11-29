@@ -1,8 +1,8 @@
 //import liraries
 //Will require some type of Three js import -- loading in a JSON object
 //Need for resizing probably depending on component? We'll see
-import React, { Component } from "react";
-import { View, Text, ImageBackground, Image, StyleSheet } from "react-native";
+import React, { Component } from 'react';
+import { View, Text, ImageBackground, Image, StyleSheet } from 'react-native';
 import {
   Content,
   Container,
@@ -12,23 +12,22 @@ import {
   Left,
   Body,
   Right,
-  Icon
-} from "native-base";
+  Icon,
+} from 'native-base';
 
 // create a component
 class HorseComponent extends Component {
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
   }
 
   render() {
-    this.props.user.hasOwnProperty('horse') ? console.log('the url', this.props.user.horse.imgUrl) : null
     return (
       // <Text>Your Horse!</Text>
       <Container>
         <Header>
           <Body>
-            <Text style={{ alignSelf: "center" }}>Your Steed</Text>
+            <Text style={{ alignSelf: 'center' }}>Your Steed</Text>
           </Body>
         </Header>
         <Card style={{ marginLeft: 20, marginRight: 20 }}>
@@ -37,13 +36,15 @@ class HorseComponent extends Component {
             cardBody
             style={{
               shadowOffset: { height: 5, width: 5 },
-              shadowOpacity: 1
+              shadowOpacity: 1,
             }}
           >
-            {this.props.user.hasOwnProperty('horse') ? <Image
-              style={{ height: 250, width: null, flex: 1 }}
-              source={{uri: this.props.user.horse.imgUrl}}
-            /> : null}
+            {this.props.user.hasOwnProperty('horse') ? (
+              <Image
+                style={{ height: 250, width: null, flex: 1 }}
+                source={{ uri: this.props.user.horse.imgUrl }}
+              />
+            ) : null}
           </CardItem>
         </Card>
       </Container>
@@ -55,14 +56,14 @@ class HorseComponent extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   backgroundImage: {
     flex: 1,
     width: null,
-    height: null
-  }
+    height: null,
+  },
 });
 
 //make this component available to the app

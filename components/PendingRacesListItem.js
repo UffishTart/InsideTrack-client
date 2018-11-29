@@ -26,29 +26,49 @@ class PendingRacesListItem extends Component {
     this.props.getPendingRaces(this.props.user.id, 'hasStarted', false);
   };
 
+  determineRaceLength = length => {
+    if (length === 15) {
+      return '15 Minutes';
+    } else if (length === 30) {
+      return '30 Minutes';
+    } else if (length === 60) {
+      return '1 Hour';
+    } else if (length === 180) {
+      return '3 Hours';
+    } else if (length === 360) {
+      return '6 Hour';
+    } else if (length === 720) {
+      return '12 Hours';
+    } else if (length === 1440) {
+      return '1 Day';
+    } else {
+      return '1 Week';
+    }
+  };
+
   renderListItem() {
     return (
       <View>
         <View>
           {this.state.fontLoaded ? (
-            <Text style={styles.raceTitle}>
-              Name:
-              <Text style={styles.raceInfo}>
-                <Text>{'  '}</Text>
-                <Text>{this.props.race.raceInfo.name}</Text>
-              </Text>
-            </Text>
-          ) : null}
-          {this.state.fontLoaded ? (
-            <Text style={styles.raceTitle}>
-              Length:
-              <Text style={styles.raceInfo}>
-                <Text>{'  '}</Text>
-                <Text>
-                  {this.props.race.raceInfo.length === 1 ? 'Day' : 'Week'}
+            <View>
+              <Text style={styles.raceTitle}>
+                Name:
+                <Text style={styles.raceInfo}>
+                  <Text>{'  '}</Text>
+                  <Text>{this.props.race.raceInfo.name}</Text>
                 </Text>
               </Text>
-            </Text>
+              <Text style={styles.raceTitle}>
+                Length:
+                <Text style={styles.raceInfo}>
+                  <Text>{'  '}</Text>
+                  <Text>
+                    {this.determineRaceLength(this.props.race.raceInfo.length)}
+                  </Text>
+                </Text>
+              </Text>
+            </View>
           ) : null}
         </View>
       </View>
@@ -75,8 +95,8 @@ class PendingRacesListItem extends Component {
             <Button onPress={this.togglePendingRaceView} title="Join" />
           </View>
         ) : (
-            <View>{this.renderPendingButton()}</View>
-          )}
+          <View>{this.renderPendingButton()}</View>
+        )}
       </View>
     );
   }
@@ -99,8 +119,8 @@ class PendingRacesListItem extends Component {
             {!!this.props.race.isOwner ? (
               <View style={styles.container}>{this.renderOwnerView()}</View>
             ) : (
-                <View style={styles.container}>{this.renderPendingView()}</View>
-              )}
+              <View style={styles.container}>{this.renderPendingView()}</View>
+            )}
           </View>
         </View>
       </TouchableOpacity>
