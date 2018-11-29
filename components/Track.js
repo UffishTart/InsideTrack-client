@@ -30,20 +30,36 @@ class Track extends Component {
   }
 
   render() {
-    const { horses, user } = this.props;
+    const { horses, user, usersInRace } = this.props;
     const avatarUrl = horses
       .filter(horse => horse.id === user.horseId)
       .map(horse => horse.imgUrl)[0];
+    // console.log('a look at the users again', usersInRace)
+    const horsesInRace = usersInRace.map(obj => ({
+      userId: obj.userId,
+      place: obj.place, 
+      horseId: obj.userInfo.horseId, 
+      image: obj.userInfo.horse.imgUrl
+    })).sort((horseA, horseB) => horseA.place - horseB.place)
+    console.log('horse objects in race sorted!', horsesInRace)
+    const horseIdsSortedByPlace = horsesInRace
+      .sort((horseA, horseB) => horseB.place - horseA.place)
+      .map(horse => horse.horseId)
+    // console.log('sorted horse ids only', horseIdsSortedByPlace)
     return (
       <View
         height={this.props.height}
         width={this.props.width}
-        style={{ marginTop: 300, alignItems: "center", paddingBottom: 400 }}
+        style={{ marginTop: 300, flexDirection: "row", alignItems: "center", paddingBottom: 400 }}
       >
-        <Image
-          style={{ width: "100%", height: "100%" }}
-          source={{ uri: avatarUrl }}
-        />
+        {horsesInRace.map(horse => {
+          return (
+            <Image
+              key={horse.place}
+              style={{ width: "25%", height: "25%" }}
+              source={{ uri: horse.image }}
+            />)}
+        )}
       </View>
     );
   }
