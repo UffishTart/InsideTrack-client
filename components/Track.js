@@ -30,16 +30,19 @@ class Track extends Component {
   }
 
   render() {
+    console.log('track props', this.props)
     const { horses, user } = this.props;
     const avatarUrl = horses
       .filter(horse => horse.id === user.horseId)
       .map(horse => horse.imgUrl)[0];
+    const horsesInRace = this.props.usersInRace.map(obj => obj.userInfo.horseId)
     return (
       <View
         height={this.props.height}
         width={this.props.width}
         style={{ marginTop: 300, alignItems: "center", paddingBottom: 400 }}
       >
+        {horses.filter(horse => horsesInRace.includes(horse.id))}
         <Image
           style={{ width: "100%", height: "100%" }}
           source={{ uri: avatarUrl }}

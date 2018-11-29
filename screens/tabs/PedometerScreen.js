@@ -238,6 +238,7 @@ class PedometerSensor extends React.Component {
     this.setState({ ...this.state, showStatus: !this.state.showStatus });
   };
   render() {
+    console.log("users in race", this.props.userRaces.filter(obj => obj.raceId === this.props.raceId))
     const tableData = {
       tableHead: ["Place", "Player", "Steps Taken", "Average", "Improvement"],
       tableInfo: this.props.singleRaceUser
@@ -289,6 +290,7 @@ class PedometerSensor extends React.Component {
               width={Dimensions.get("window").width}
               height={Dimensions.get("window").height}
               user={this.props.user}
+              usersInRace={this.props.userRaces.filter(obj => obj.raceId === this.props.raceId)}
             />
 
             <Button
