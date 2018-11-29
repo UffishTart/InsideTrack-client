@@ -4,15 +4,15 @@ import { Dimensions, ImageBackground, StyleSheet } from "react-native";
 import RacesList from "../../components/RacesList";
 import { TabView, SceneMap } from "react-native-tab-view";
 import { fetchUserRacesByUser } from "../../store/userRaces";
-import { fetchPendingUserRacesByUser } from '../../store/userRacesPending';
+import { fetchPendingUserRacesByUser } from "../../store/userRacesPending";
 import { connect } from "react-redux";
 import { me } from "../../store/user";
-import { putARace } from "../../store";
+import { putARace } from "../../store/races";
 
 // create a component
 class Races extends Component {
   constructor() {
-    super()
+    super();
     this.state = {
       index: 0,
       routes: [
@@ -20,7 +20,7 @@ class Races extends Component {
         { key: "second", title: "Past Races" }
       ]
     };
-    this.refreshRaces = this.refreshRaces.bind(this)
+    this.refreshRaces = this.refreshRaces.bind(this);
   }
 
   async componentDidMount() {
@@ -29,16 +29,19 @@ class Races extends Component {
   }
 
   refreshRaces = async () => {
-    await this.props.getPendingRaces(this.props.user.id, 'hasStarted', false);
-    await this.props.getRaces(this.props.user.id, 'acceptedInvitation', true);
-  }
+    await this.props.getPendingRaces(this.props.user.id, "hasStarted", false);
+    await this.props.getRaces(this.props.user.id, "acceptedInvitation", true);
+  };
   render() {
     const filteredRaces = this.props.races.filter(
       race => !!race.raceInfo.hasStarted
     );
 
     return (
-      <ImageBackground source={require('../../assets/checkered-flag.png')} style={styles.backgroundImage} >
+      <ImageBackground
+        source={require("../../assets/checkered-flag.png")}
+        style={styles.backgroundImage}
+      >
         <TabView
           navigationState={this.state}
           renderScene={SceneMap({
@@ -97,7 +100,7 @@ const styles = StyleSheet.create({
     width: null,
     height: null
   }
-})
+});
 
 export default connect(
   mapState,

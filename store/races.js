@@ -1,19 +1,19 @@
-import axios from 'axios';
-import fetchUserRacesByUser from './userRaces';
+import axios from "axios";
+import fetchUserRacesByUser from "./userRaces";
 
-const server = 'https://inside-track-server-boil.herokuapp.com';
+const server = "https://inside-track-server-boil.herokuapp.com";
 
-const GET_ALL_RACES = 'GET_ALL_RACES';
-const CREATE_NEW_RACE = 'CREATE_NEW_RACE';
+const GET_ALL_RACES = "GET_ALL_RACES";
+const CREATE_NEW_RACE = "CREATE_NEW_RACE";
 
 const getAllRaces = races => ({
   type: GET_ALL_RACES,
-  races,
+  races
 });
 
 const createNewRace = race => ({
   type: CREATE_NEW_RACE,
-  race,
+  race
 });
 
 export const fetchRacesDataFromServer = () => async dispatch => {
@@ -40,7 +40,7 @@ export const postANewRace = (name, length) => async dispatch => {
   try {
     const { data } = await axios.post(`${server}/api/races`, {
       name,
-      length,
+      length
     });
     const race = data;
     dispatch(createNewRace(race));
@@ -52,7 +52,7 @@ export const postANewRace = (name, length) => async dispatch => {
 
 export const putARace = (raceId, updateObj) => async dispatch => {
   try {
-    const res = await axios.put(`${server}/api/races/${raceId}/`, updateObj);
+    await axios.put(`${server}/api/races/${raceId}/`, updateObj);
     dispatch(fetchSingleRaceFromServer(raceId));
   } catch (err) {
     console.log(err);
@@ -61,8 +61,8 @@ export const putARace = (raceId, updateObj) => async dispatch => {
 
 export const completeARace = (userId, raceId, updateObj) => async dispatch => {
   try {
-    const res = await axios.put(`${server}/api/races/${raceId}/`, updateObj);
-    dispatch(fetchUserRacesByUser(userId, 'acceptedInvitation', true));
+    await axios.put(`${server}/api/races/${raceId}/`, updateObj);
+    dispatch(fetchUserRacesByUser(userId, "acceptedInvitation", true));
   } catch (err) {
     console.log(err);
   }

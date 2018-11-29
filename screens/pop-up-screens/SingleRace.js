@@ -60,6 +60,7 @@ class SingleRace extends Component {
                 <PedometerSensor
                   user={this.props.user}
                   raceId={this.props.race.raceId}
+                  updateRaceAsComplete={this.props.updateRaceAsComplete}
                 />
               </View>
             </View>
