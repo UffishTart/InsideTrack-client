@@ -36,22 +36,13 @@ class Friends extends Component {
                     key={friend.friendId}
                     label={friend.friendInfo.userName}
                     value={friend.friendId}
+                    color= {this.props.friendIdArr.includes(friend.friendId) ? 'green' : 'black'}
                   />
                 ))}
             </Picker>
             <Button light onPress={this.props.addFriend} style={{ alignSelf: 'center', }}>
               <Text>Add Friend</Text>
             </Button>
-            {
-              this.props.friends &&
-              this.props.friends
-                .filter(friend =>
-                  this.props.friendIdArr.includes(friend.friendId)
-                )
-                .map(friend => (
-                  <Text key={friend.friendId}>{friend.friendInfo.userName}</Text>
-                ))
-            }
           </Content>
         </Container>
       </Modal >
