@@ -1,7 +1,13 @@
 //import liraries
 import React, { Component } from "react";
 import HorseComponent from "../../components/HorseComponent";
-import { StyleSheet, Button } from "react-native";
+import {
+  StyleSheet,
+  ImageBackground,
+  KeyboardAvoidingView,
+  Text,
+  TouchableOpacity
+} from "react-native";
 import FindUsers from "../../components/FindUsers";
 import { Container, Header, Left, Body, Right, Icon, Title } from "native-base";
 import HorseStore from "../pop-up-screens/HorseStore";
@@ -44,16 +50,46 @@ class ProfileScreen extends Component {
   render() {
     console.log("user on local state", this.state.fullUserInfo);
     return (
-      <Container style={{ backgroundColor: "#fff" }}>
-        <HorseComponent user={this.state.fullUserInfo} />
-        <Button onPress={this.toggleStore} title="Choose Your Steed" />
-        <FindUsers />
-        {this.state.showStore ? (
-          <HorseStore
-            toggleStore={this.toggleStore}
-            getUser={this.props.getUser}
-          />
-        ) : null}
+      <Container style={{ backgroundColor: "#fff", flex: 1 }}>
+        <ImageBackground
+          source={require("../../assets/checkered-flag.png")}
+          style={styles.backgroundImage}
+        >
+          <HorseComponent user={this.state.fullUserInfo} />
+          <KeyboardAvoidingView disabled>
+            <TouchableOpacity
+              style={{
+                flexDirection: "column",
+                alignContent: "center",
+                position: "relative",
+                justifyContent: "center",
+                height: 50,
+                width: 50,
+                borderBottomColor: "black",
+                borderTopColor: "black",
+                borderWidth: 2,
+                borderRadius: "50%",
+                shadowColor: "rgba(0,0,0, .4)", // IOS
+                shadowOffset: { height: 5, width: 5 }, // IOS
+                shadowOpacity: 1, // IOS
+                shadowRadius: 1, //IOS
+                backgroundColor: "#fbff14",
+                marginBottom: 0,
+                marginLeft: 20
+              }}
+              onPress={this.toggleStore}
+            >
+              <Text style={{ fontSize: 30 }}> 🐎</Text>
+            </TouchableOpacity>
+          </KeyboardAvoidingView>
+          <FindUsers />
+          {this.state.showStore ? (
+            <HorseStore
+              toggleStore={this.toggleStore}
+              getUser={this.props.getUser}
+            />
+          ) : null}
+        </ImageBackground>
       </Container>
     );
   }
@@ -66,6 +102,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fbff14"
+  },
+  backgroundImage: {
+    flex: 1,
+    width: null,
+    height: null
   }
 });
 

@@ -11,8 +11,7 @@ export default class Splash extends Component {
       "Whoa there!",
       "Whoa Nelly!",
       "Get off your high horse! We're loadin'",
-      "Done loading? Nay!",
-      "I miss my wife"
+      "Done loading? Neigh!"
     ];
     function randomLine(arr) {
       return arr[Math.floor(Math.random() * arr.length)];
