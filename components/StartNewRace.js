@@ -81,6 +81,7 @@ class StartNewRace extends Component {
     this.setState({ showFriends: !this.state.showFriends });
 
   async handleSubmit() {
+    this.props.toggleNewRaceView()
     const newRaceId = await this.props.postRace(
       this.state.name,
       this.state.length
