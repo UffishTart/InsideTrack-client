@@ -153,7 +153,7 @@ class HomeScreen extends Component {
   }
 
   renderNewRacePage() {
-    return <StartNewRace onPress={this.toggleNewRaceView.bind(this)} />;
+    return <StartNewRace onPress={this.toggleNewRaceView.bind(this)} toggleNewRaceView={this.toggleNewRaceView}/>;
   }
 
   render() {
