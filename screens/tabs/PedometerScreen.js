@@ -261,21 +261,16 @@ class PedometerSensor extends React.Component {
             }}
           >
             <StatusTable tableData={tableData} />
-
-            <Button
-              large
-              rounded
-              danger
-              style={{ marginBottom: 70, marginLeft: 20 }}
-              onPress={this.toggleScreen}
-            >
-              <MaterialCommunityIcons
-                name="arrow-left"
-                style={{
-                  fontSize: 50
-                }}
-              />
-            </Button>
+            <View>
+              <Button
+                block
+                light
+                style={{ height: 40, marginTop: 75 }}
+                onPress={this.toggleScreen}
+              >
+                <Text>Return</Text>
+              </Button>
+            </View>
           </View>
         ) : (
           <View
@@ -289,14 +284,16 @@ class PedometerSensor extends React.Component {
               width={Dimensions.get("window").width}
               height={Dimensions.get("window").height}
               user={this.props.user}
-              usersInRace={this.props.singleRaceUser.filter(obj => obj.raceId === this.props.raceId)}
+              usersInRace={this.props.singleRaceUser.filter(
+                obj => obj.raceId === this.props.raceId
+              )}
             />
 
             <Button
               block
               transparent
               onPress={this.toggleScreen}
-              style={{ position: "absolute", marginLeft: 272, marginTop: -45 }}
+              style={{ position: "absolute", marginLeft: 285, marginTop: -45 }}
             >
               <Text style={styles.text}>Show Status</Text>
             </Button>
@@ -325,7 +322,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
-  text: { textAlign: "center", color: "#3a6abc", fontSize: 14 },
+  text: { textAlign: "center", color: "black", fontSize: 14 },
   photo: { width: "100%", height: "80%" }
 });
 
