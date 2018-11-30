@@ -248,7 +248,7 @@ class PedometerSensor extends React.Component {
     const racingUserData = this.props.singleRaceUser
       .filter(el => el.acceptedInvitation)
       .map(el => trimedObjGenerater(el))
-      .sort((user1, user2) => user1.place - user2.place);
+      .sort((user1, user2) => user2.place - user1.place);
 
     return (
       <View>
@@ -285,11 +285,15 @@ class PedometerSensor extends React.Component {
           >
             <Track
               data={racingUserData}
+              selectX={datum => datum.Improvement}
+              selectY={idx => idx}
               steps={this.state.stepCountDuringGame}
               width={Dimensions.get("window").width}
               height={Dimensions.get("window").height}
               user={this.props.user}
-              usersInRace={this.props.singleRaceUser.filter(obj => obj.raceId === this.props.raceId)}
+              usersInRace={this.props.singleRaceUser.filter(
+                obj => obj.raceId === this.props.raceId
+              )}
             />
 
             <Button

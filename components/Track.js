@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-
+import React, { Component } from "react";
+import { scaleLinear as d3ScaleLinear } from "d3-scale";
 import {
   Easing,
   Animated,
@@ -7,17 +7,24 @@ import {
   View,
   Text,
   Image,
-  Dimensions,
-} from 'react-native';
-import { connect } from 'react-redux';
-import store from '../store';
-import { fetchHorsesFromServer } from '../store/horseStore';
+  Dimensions
+} from "react-native";
 
+import { connect } from "react-redux";
+import store from "../store";
+import { fetchHorsesFromServer } from "../store/horseStore";
+const xScaleRangeGenerator = datum => {
+  const improvement = datum.map(el => el.Improvement).sort((a, b) => a - b);
+  const range = [];
+  range[0] = improvement[0];
+  range[1] = improvement[improvement.length - 1] + 1;
+  return range;
+};
 class Track extends Component {
   constructor() {
     super();
     this.state = {
-      horseLinksNeeded: [],
+      horseLinksNeeded: []
     };
   }
 
@@ -26,42 +33,92 @@ class Track extends Component {
   }
 
   render() {
-    const { horses, user, usersInRace } = this.props;
-    const avatarUrl = horses
-      .filter(horse => horse.id === user.horseId)
-      .map(horse => horse.imgUrl)[0];
-    const horsesInRace = usersInRace
-      .map(obj => ({
-        userId: obj.userId,
-        place: obj.place,
-        horseId: obj.userInfo.horseId,
-        image: obj.userInfo.horse.imgUrl,
-      }))
-      .sort((horseA, horseB) => horseA.place - horseB.place);
-    const horseIdsSortedByPlace = horsesInRace
-      .sort((horseA, horseB) => horseB.place - horseA.place)
-      .map(horse => horse.horseId);
+    const {
+      data,
+      selectX,
+      selectY,
+      horses,
+      user,
+      usersInRace,
+      width,
+      height
+    } = this.props;
+
+    console.log("!!!!data", data);
+    console.log("!!!!horses", horses);
+
+    const xScale = d3ScaleLinear()
+      .domain(xScaleRangeGenerator(data))
+      .range([370 - width, 13]);
+
+    const yScale = d3ScaleLinear()
+      .domain([1, data.length])
+      .range([100, height - 350]);
+
+    const selectScaledX = datum => {
+      return xScale(selectX(datum));
+    };
+    const selectScaledY = idx => {
+      return yScale(selectY(idx));
+    };
+
     return (
-      <View
-        height={this.props.height}
-        width={this.props.width}
-        style={{
-          marginTop: 300,
-          flexDirection: 'row',
-          alignItems: 'center',
-          paddingBottom: 400,
-        }}
-      >
-        {horsesInRace.map(horse => {
-          return (
-            <Image
-              key={horse.place}
-              style={{ width: '25%', height: '25%' }}
-              source={{ uri: horse.image }}
-            />
-          );
-        })}
-      </View>
+      !!data.length && (
+        <View
+          height={this.props.height}
+          width={this.props.width}
+          style={{
+            marginTop: 300,
+            flexDirection: "row",
+            alignItems: "center",
+            paddingBottom: 400
+          }}
+        >
+          {data.map((user, idx) => {
+            console.log("%%%userHorseId", user.horseId);
+
+            console.log("~~~~~~~~");
+            const xLocation = selectScaledX(user);
+            console.log(":::::X", xLocation);
+            const yLocation = selectScaledY(idx);
+            const horseUrl = horses.filter(
+              horse => horse.id === user.horseId
+            )[0].imgUrl;
+            console.log(
+              "!!!1horse",
+              horses.filter(horse => horse.id === user.horseId)[0]
+            );
+
+            return (
+              <View
+                key={idx}
+                style={{
+                  width: "35%",
+                  height: "35%",
+                  marginLeft: xLocation,
+                  marginTop: yLocation
+                }}
+              >
+                <View
+                  style={{
+                    width: 40,
+                    height: 20,
+                    backgroundColor: "grey",
+                    borderRadius: "15%",
+                    justifyContent: "center"
+                  }}
+                >
+                  <Text>{user.userName}</Text>
+                </View>
+                <Image
+                  style={{ width: "100%", height: "100%" }}
+                  source={{ uri: horseUrl }}
+                />
+              </View>
+            );
+          })}
+        </View>
+      )
     );
   }
 }
@@ -69,7 +126,7 @@ class Track extends Component {
 //make this component available to the app
 const mapState = ({ horses }) => ({ horses });
 const mapDispatch = dispatch => ({
-  getHorses: () => dispatch(fetchHorsesFromServer()),
+  getHorses: () => dispatch(fetchHorsesFromServer())
 });
 export default connect(
   mapState,
@@ -78,14 +135,14 @@ export default connect(
 
 const styles = StyleSheet.create({
   textContainer: {
-    backgroundColor: '#ffe6e6',
+    backgroundColor: "#ffe6e6",
     borderTopLeftRadius: 3,
     borderBottomLeftRadius: 3,
-    color: '#999',
-    display: 'flex',
+    color: "#999",
+    display: "flex",
     height: 26,
     lineHeight: 26,
-    position: 'relative',
-    width: '27%',
-  },
+    position: "relative",
+    width: "27%"
+  }
 });
