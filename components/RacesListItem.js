@@ -1,9 +1,10 @@
-import React, { Component } from "react";
-import { Text, View, StyleSheet, TouchableOpacity, Modal } from "react-native";
-import SingleRace from "../screens/pop-up-screens/SingleRace";
-import { Font } from "expo";
-import Splash from "./Splash";
+import React, { Component } from 'react';
+import { Text, View, StyleSheet, TouchableOpacity, Modal } from 'react-native';
+import SingleRace from '../screens/pop-up-screens/SingleRace';
+import { Font } from 'expo';
+import Splash from './Splash';
 // import SingleRace from '../../screens/pop-up-screens'
+import axios from 'axios';
 
 class RacesListItem extends Component {
   constructor(props) {
@@ -11,15 +12,21 @@ class RacesListItem extends Component {
     this.state = {
       showSingleRace: false,
       fontLoaded: false,
-      singleRaceLoaded: false
+      singleRaceLoaded: false,
+      otherRacers: [],
     };
   }
 
   async componentDidMount() {
     await Font.loadAsync({
-      "FasterOne-Regular": require("../assets/FasterOne-Regular.ttf")
+      'FasterOne-Regular': require('../assets/FasterOne-Regular.ttf'),
     });
-    this.setState({ fontLoaded: true });
+    const { data } = await axios.get(
+      `https://inside-track-server-boil.herokuapp.com/api/userRaces/${
+        this.props.race.raceId
+      }`
+    );
+    this.setState({ fontLoaded: true, otherRacers: data });
   }
 
   toggleSingleRaceView = () => {
@@ -28,21 +35,21 @@ class RacesListItem extends Component {
 
   determineRaceLength = length => {
     if (length === 15) {
-      return "15 Minutes";
+      return '15 Minutes';
     } else if (length === 30) {
-      return "30 Minutes";
+      return '30 Minutes';
     } else if (length === 60) {
-      return "1 Hour";
+      return '1 Hour';
     } else if (length === 180) {
-      return "3 Hours";
+      return '3 Hours';
     } else if (length === 360) {
-      return "6 Hour";
+      return '6 Hour';
     } else if (length === 720) {
-      return "12 Hours";
+      return '12 Hours';
     } else if (length === 1440) {
-      return "1 Day";
+      return '1 Day';
     } else {
-      return "1 Week";
+      return '1 Week';
     }
   };
 
@@ -54,24 +61,37 @@ class RacesListItem extends Component {
       <View>
         <View>
           {this.state.fontLoaded ? (
-            <Text style={styles.raceTitle}>
-              Name:
-              <Text style={styles.raceInfo}>
-                <Text>{"  "}</Text>
-                <Text>{this.props.race.raceInfo.name}</Text>
-              </Text>
-            </Text>
-          ) : null}
-          {this.state.fontLoaded ? (
-            <Text style={styles.raceTitle}>
-              Length:
-              <Text style={styles.raceInfo}>
-                <Text>{"  "}</Text>
-                <Text>
-                  {this.determineRaceLength(this.props.race.raceInfo.length)}
+            <View>
+              <Text style={styles.raceTitle}>
+                Name:
+                <Text style={styles.raceInfo}>
+                  <Text>{'  '}</Text>
+                  <Text>{this.props.race.raceInfo.name}</Text>
                 </Text>
               </Text>
-            </Text>
+              <Text style={styles.raceTitle}>
+                Length:
+                <Text style={styles.raceInfo}>
+                  <Text>{'  '}</Text>
+                  <Text>
+                    {this.determineRaceLength(this.props.race.raceInfo.length)}
+                  </Text>
+                </Text>
+              </Text>
+              <Text style={styles.raceTitle}>
+                Racers:
+                <Text style={styles.raceInfo}>
+                  <Text> </Text>
+                  <Text>
+                    {this.state.otherRacers
+                      .filter(el => el.userId !== this.props.race.userId)
+                      .filter(el => el.acceptedInvitation)
+                      .map(el => el.userInfo.userName)
+                      .join(', ')}
+                  </Text>
+                </Text>
+              </Text>
+            </View>
           ) : null}
           <View>{singleRaceContent}</View>
         </View>
@@ -109,28 +129,28 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingBottom: 20,
     paddingTop: 20,
-    paddingHorizontal: 30
+    paddingHorizontal: 30,
   },
   raceTitle: {
-    fontFamily: "FasterOne-Regular",
+    fontFamily: 'FasterOne-Regular',
     fontSize: 30,
-    fontStyle: "italic"
+    fontStyle: 'italic',
   },
   raceInfo: {
-    fontFamily: "FasterOne-Regular",
+    fontFamily: 'FasterOne-Regular',
     fontSize: 19,
-    fontStyle: "italic"
+    fontStyle: 'italic',
   },
   containerInfo: {
     flex: 1,
     paddingBottom: 20,
     paddingTop: 20,
     borderWidth: 10,
-    borderColor: "#232321",
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    alignItems: "center"
-  }
+    borderColor: '#232321',
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 //make this component available to the app

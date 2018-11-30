@@ -1,6 +1,4 @@
-
-
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 import {
   Easing,
@@ -9,19 +7,17 @@ import {
   View,
   Text,
   Image,
-  Dimensions
-} from "react-native";
-import { connect } from "react-redux";
-import store from "../store";
-import { fetchHorsesFromServer } from "../store/horseStore";
-
-
+  Dimensions,
+} from 'react-native';
+import { connect } from 'react-redux';
+import store from '../store';
+import { fetchHorsesFromServer } from '../store/horseStore';
 
 class Track extends Component {
   constructor() {
     super();
     this.state = {
-      horseLinksNeeded: []
+      horseLinksNeeded: [],
     };
   }
 
@@ -34,32 +30,37 @@ class Track extends Component {
     const avatarUrl = horses
       .filter(horse => horse.id === user.horseId)
       .map(horse => horse.imgUrl)[0];
-    // console.log('a look at the users again', usersInRace)
-    const horsesInRace = usersInRace.map(obj => ({
-      userId: obj.userId,
-      place: obj.place, 
-      horseId: obj.userInfo.horseId, 
-      image: obj.userInfo.horse.imgUrl
-    })).sort((horseA, horseB) => horseA.place - horseB.place)
-    console.log('horse objects in race sorted!', horsesInRace)
+    const horsesInRace = usersInRace
+      .map(obj => ({
+        userId: obj.userId,
+        place: obj.place,
+        horseId: obj.userInfo.horseId,
+        image: obj.userInfo.horse.imgUrl,
+      }))
+      .sort((horseA, horseB) => horseA.place - horseB.place);
     const horseIdsSortedByPlace = horsesInRace
       .sort((horseA, horseB) => horseB.place - horseA.place)
-      .map(horse => horse.horseId)
-    // console.log('sorted horse ids only', horseIdsSortedByPlace)
+      .map(horse => horse.horseId);
     return (
       <View
         height={this.props.height}
         width={this.props.width}
-        style={{ marginTop: 300, flexDirection: "row", alignItems: "center", paddingBottom: 400 }}
+        style={{
+          marginTop: 300,
+          flexDirection: 'row',
+          alignItems: 'center',
+          paddingBottom: 400,
+        }}
       >
         {horsesInRace.map(horse => {
           return (
             <Image
               key={horse.place}
-              style={{ width: "25%", height: "25%" }}
+              style={{ width: '25%', height: '25%' }}
               source={{ uri: horse.image }}
-            />)}
-        )}
+            />
+          );
+        })}
       </View>
     );
   }
@@ -68,7 +69,7 @@ class Track extends Component {
 //make this component available to the app
 const mapState = ({ horses }) => ({ horses });
 const mapDispatch = dispatch => ({
-  getHorses: () => dispatch(fetchHorsesFromServer())
+  getHorses: () => dispatch(fetchHorsesFromServer()),
 });
 export default connect(
   mapState,
@@ -77,14 +78,14 @@ export default connect(
 
 const styles = StyleSheet.create({
   textContainer: {
-    backgroundColor: "#ffe6e6",
+    backgroundColor: '#ffe6e6',
     borderTopLeftRadius: 3,
     borderBottomLeftRadius: 3,
-    color: "#999",
-    display: "flex",
+    color: '#999',
+    display: 'flex',
     height: 26,
     lineHeight: 26,
-    position: "relative",
-    width: "27%"
-  }
+    position: 'relative',
+    width: '27%',
+  },
 });
