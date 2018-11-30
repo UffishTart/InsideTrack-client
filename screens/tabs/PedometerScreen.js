@@ -248,7 +248,7 @@ class PedometerSensor extends React.Component {
     const racingUserData = this.props.singleRaceUser
       .filter(el => el.acceptedInvitation)
       .map(el => trimedObjGenerater(el))
-      .sort((user1, user2) => user1.place - user2.place);
+      .sort((user1, user2) => user2.place - user1.place);
 
     return (
       <View>

@@ -17,7 +17,7 @@ const xScaleRangeGenerator = datum => {
   const improvement = datum.map(el => el.Improvement).sort((a, b) => a - b);
   const range = [];
   range[0] = improvement[0];
-  range[1] = improvement[improvement.length - 1] + 0.7;
+  range[1] = improvement[improvement.length - 1] + 1;
   return range;
 };
 class Track extends Component {
@@ -47,21 +47,9 @@ class Track extends Component {
     console.log("!!!!data", data);
     console.log("!!!!horses", horses);
 
-    // const horsesInRace = usersInRace
-    //   .map(obj => ({
-    //     userId: obj.userId,
-    //     place: obj.place,
-    //     horseId: obj.userInfo.horseId,
-    //     image: obj.userInfo.horse.imgUrl
-    //   }))
-    //   .sort((horseA, horseB) => horseA.place - horseB.place);
-    // const horseIdsSortedByPlace = horsesInRace
-    //   .sort((horseA, horseB) => horseB.place - horseA.place)
-    //   .map(horse => horse.horseId);
-
     const xScale = d3ScaleLinear()
       .domain(xScaleRangeGenerator(data))
-      .range([300 - width, 20]);
+      .range([370 - width, 13]);
 
     const yScale = d3ScaleLinear()
       .domain([1, data.length])
@@ -111,6 +99,17 @@ class Track extends Component {
                   marginTop: yLocation
                 }}
               >
+                <View
+                  style={{
+                    width: 40,
+                    height: 20,
+                    backgroundColor: "grey",
+                    borderRadius: "15%",
+                    justifyContent: "center"
+                  }}
+                >
+                  <Text>{user.userName}</Text>
+                </View>
                 <Image
                   style={{ width: "100%", height: "100%" }}
                   source={{ uri: horseUrl }}
