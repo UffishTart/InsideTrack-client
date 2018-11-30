@@ -14,13 +14,14 @@ import HorseStore from "../pop-up-screens/HorseStore";
 import { connect } from "react-redux";
 import { me, updateHorse } from "../../store/user";
 import axios from "axios";
+
 // create a component
 class ProfileScreen extends Component {
   constructor() {
     super();
     this.state = {
       showStore: false,
-      fullUserInfo: {}
+      fullUserInfo: {},
     };
     this.toggleStore = this.toggleStore.bind(this);
   }
@@ -43,12 +44,11 @@ class ProfileScreen extends Component {
     );
     this.setState({
       showStore: !this.state.showStore,
-      fullUserInfo: res.data
+      fullUserInfo: res.data,
     });
   }
 
   render() {
-    console.log("user on local state", this.state.fullUserInfo);
     return (
       <Container style={{ backgroundColor: "#fff", flex: 1 }}>
         <ImageBackground
@@ -111,12 +111,12 @@ const styles = StyleSheet.create({
 });
 
 const mapState = state => ({
-  user: state.user
+  user: state.user,
 });
 
 const mapDispatch = dispatch => ({
   getUser: () => dispatch(me()),
-  updateHorse: (userId, horseId) => dispatch(updateHorse(userId, horseId))
+  updateHorse: (userId, horseId) => dispatch(updateHorse(userId, horseId)),
 });
 
 export default connect(
