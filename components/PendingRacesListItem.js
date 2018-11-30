@@ -3,12 +3,14 @@ import { Text, View, StyleSheet, TouchableOpacity, Button } from 'react-native';
 import { Font } from 'expo';
 import { connect } from 'react-redux';
 import { updateRaceUserData } from '../store/singleRaceUser';
+import axios from 'axios';
 
 class PendingRacesListItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
       fontLoaded: false,
+      otherRacers: [],
     };
   }
 
@@ -16,7 +18,12 @@ class PendingRacesListItem extends Component {
     await Font.loadAsync({
       'FasterOne-Regular': require('../assets/FasterOne-Regular.ttf'),
     });
-    this.setState({ fontLoaded: true });
+    const { data } = await axios.get(
+      `https://inside-track-server-boil.herokuapp.com/api/userRaces/${
+        this.props.race.raceId
+      }`
+    );
+    this.setState({ fontLoaded: true, otherRacers: data });
   }
 
   togglePendingRaceView = () => {
@@ -65,6 +72,19 @@ class PendingRacesListItem extends Component {
                   <Text>{'  '}</Text>
                   <Text>
                     {this.determineRaceLength(this.props.race.raceInfo.length)}
+                  </Text>
+                </Text>
+              </Text>
+              <Text style={styles.raceTitle}>
+                Racers:
+                <Text style={styles.raceInfo}>
+                  <Text> </Text>
+                  <Text>
+                    {this.state.otherRacers
+                      .filter(el => el.userId !== this.props.race.userId)
+                      .filter(el => el.acceptedInvitation)
+                      .map(el => el.userInfo.userName)
+                      .join(', ')}
                   </Text>
                 </Text>
               </Text>
