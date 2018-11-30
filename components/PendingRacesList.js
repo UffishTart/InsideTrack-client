@@ -32,39 +32,6 @@ const PendingRacesList = props => {
                 />
               );
             })}
-        {/* <TouchableOpacity>
-          <View
-            style={{
-              height: 40,
-              width: 40,
-              borderRadius: "50%",
-              backgroundColor: "white",
-              marginBottom: 10,
-              marginLeft: 10
-            }}
-          >
-            <TouchableOpacity
-              onPress={refreshRaces}
-              style={{
-                alignItems: "center",
-                alignContent: "center",
-                marginTop: -9,
-                marginRight: -10
-              }}
-            />
-            <Text
-              style={{
-                fontFamily: "Futura",
-                fontSize: 40,
-                color: "blue",
-                marginLeft: 3,
-                marginTop: 1
-              }}
-            >
-              ↺
-            </Text>
-          </View>
-        </TouchableOpacity> */}
       </ScrollView>
     </View>
   );

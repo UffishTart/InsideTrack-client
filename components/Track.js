@@ -99,17 +99,21 @@ class Track extends Component {
                   marginTop: yLocation
                 }}
               >
-                <View
+                {/* <View
                   style={{
                     width: 40,
                     height: 20,
-                    backgroundColor: "grey",
+                    backgroundColor: "white",
                     borderRadius: "15%",
-                    justifyContent: "center"
+                    justifyContent: "center",
+                    fontFamily: "Futura",
+                    fontStyle: "italics",
+                    borderWidth: 2,
+                    borderColor: "black"
                   }}
-                >
-                  <Text>{user.userName}</Text>
-                </View>
+                > */}
+                {/* <Text style={{ alignSelf: "center" }}>{user.userName}</Text>
+                </View> */}
                 <Image
                   style={{ width: "100%", height: "100%" }}
                   source={{ uri: horseUrl }}
