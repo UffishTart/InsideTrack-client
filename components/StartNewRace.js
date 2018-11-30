@@ -41,7 +41,7 @@ class StartNewRace extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: " Enter Race Name",
+      name: "Tyler vs. Dan",
       length: 1,
       friendIdArr: [],
       selectedFriendId: 0,
