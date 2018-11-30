@@ -44,6 +44,7 @@ class HorseStore extends Component {
       <Modal animationType="slide">
         {this.state.routes.length ? (
           <TabView
+            style={{ backgroundColor: "#fff" }}
             navigationState={this.state}
             renderScene={SceneMap(sceneObj)}
             onIndexChange={index => this.setState({ index })}
