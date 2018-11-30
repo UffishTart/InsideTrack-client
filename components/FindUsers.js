@@ -2,7 +2,7 @@ import Autocomplete from "react-native-autocomplete-input";
 import React, { Component } from "react";
 import {
   StyleSheet,
-  KeyboardAvoidingView,
+  ImageBackground,
   TouchableOpacity,
   View
 } from "react-native";
@@ -58,6 +58,7 @@ class FindUsers extends Component {
 
   async addAsFriend(userId, friendId) {
     await this.props.addFriend(userId, friendId);
+    this.setState({ query: "" });
   }
 
   render() {
@@ -68,7 +69,9 @@ class FindUsers extends Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <View style={{ justifyContent: "center", marginLeft: 10 }}>
+        <View
+          style={{ justifyContent: "center", marginLeft: 50, marginTop: 30 }}
+        >
           <Autocomplete
             autoCapitalize="none"
             autoCorrect={false}
@@ -90,7 +93,7 @@ class FindUsers extends Component {
             )}
           />
         </View>
-        <View style={{ backgroundColor: "#fff", marginTop: -50 }}>
+        <View style={{ backgroundColor: "rgba(0, 0, 0, 0)", marginTop: -90 }}>
           {usersToFind.length > 0 ? (
             <View>
               {renderUser(usersToFind[0])}
@@ -162,6 +165,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#2c3e50",
     color: "white",
     width: 10
+  },
+  backgroundImage: {
+    flex: 1,
+    width: null,
+    height: null
   }
 });
 

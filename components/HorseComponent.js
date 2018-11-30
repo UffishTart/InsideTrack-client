@@ -22,31 +22,46 @@ class HorseComponent extends Component {
   }
 
   render() {
+    this.props.user.hasOwnProperty("horse")
+      ? console.log("the url", this.props.user.horse.imgUrl)
+      : null;
     return (
       // <Text>Your Horse!</Text>
       <Container>
-        <Header>
-          <Body>
-            <Text style={{ alignSelf: 'center' }}>Your Steed</Text>
-          </Body>
-        </Header>
-        <Card style={{ marginLeft: 20, marginRight: 20 }}>
-          <CardItem cardBody />
-          <CardItem
-            cardBody
+        <ImageBackground
+          source={require("../assets/checkered-flag.png")}
+          style={styles.backgroundImage}
+        >
+          <Header>
+            <Body>
+              <Text style={{ alignSelf: "center" }}>Your Steed</Text>
+            </Body>
+          </Header>
+          <Card
             style={{
-              shadowOffset: { height: 5, width: 5 },
-              shadowOpacity: 1,
+              marginLeft: 20,
+              marginRight: 20
             }}
           >
-            {this.props.user.hasOwnProperty('horse') ? (
-              <Image
-                style={{ height: 250, width: null, flex: 1 }}
-                source={{ uri: this.props.user.horse.imgUrl }}
-              />
-            ) : null}
-          </CardItem>
-        </Card>
+            <CardItem cardBody />
+            <CardItem
+              cardBody
+              style={{
+                shadowOffset: { height: 5, width: 5 },
+                shadowOpacity: 1,
+                borderWidth: 10,
+                borderColor: "black"
+              }}
+            >
+              {this.props.user.hasOwnProperty("horse") ? (
+                <Image
+                  style={{ height: 250, width: null, flex: 1 }}
+                  source={{ uri: this.props.user.horse.imgUrl }}
+                />
+              ) : null}
+            </CardItem>
+          </Card>
+        </ImageBackground>
       </Container>
     );
   }
