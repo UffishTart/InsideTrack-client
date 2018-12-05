@@ -26,5 +26,11 @@ Set Up
 
 You are ready to get racing.
 
+Team Members: Dan Needham, Tyler Zoidis, Rui Yang, Patrick Aloia
+
+URL: https://github.com/UffishTart
+
 ![](choosing-avatar.gif)
+
+
 ![](adding-a-race.gif)
