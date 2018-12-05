@@ -28,7 +28,7 @@ You are ready to get racing.
 
 Team Members: Dan Needham, Tyler Zoidis, Rui Yang, Patrick Aloia
 
-URL: https://github.com/UffishTart
+URL: https://goo.gl/11KwJn
 
 ![](choosing-avatar.gif)
 
